@@ -9,13 +9,13 @@ android {
 
 
     defaultConfig {
-        applicationId "com.apero.moduleads"
+        applicationId "com.itg.moduleads"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 2
         versionName "2.0"
         def formattedDate = new Date().format('MMM.dd.yyyy')
-        archivesBaseName = "AperoModuleAds_v${versionName}(${versionCode})_${formattedDate}"
+        archivesBaseName = "ITGModuleAds_v${versionName}(${versionCode})_${formattedDate}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
