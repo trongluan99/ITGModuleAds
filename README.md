@@ -1,6 +1,5 @@
 
-# AperoModuleAds
-This is SDK ads by [Apero](https://apero.vn/). It has built in some sdk for easy use like
+# ITGModuleAds
 - Admob
 - MAX Mediation(Applovin)
 - Google Billing
@@ -11,7 +10,7 @@ This is SDK ads by [Apero](https://apero.vn/). It has built in some sdk for easy
 # Import Module
 ~~~
 	maven { url 'https://jitpack.io' }
-	implementation 'com.github.AperoVN:AperoModuleAds:5.5.1'
+	implementation 'com.github.trongluan99:ITGModuleAds:1.0.0'
 ~~~	 
 # Summary
 * [Setup AperoAd](#setup_aperoad)
