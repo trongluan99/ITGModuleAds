@@ -1,6 +1,5 @@
 
 # AperoModuleAds
-This is SDK ads by [Apero](https://apero.vn/). It has built in some sdk for easy use like
 - Admob
 - MAX Mediation(Applovin)
 - Google Billing
