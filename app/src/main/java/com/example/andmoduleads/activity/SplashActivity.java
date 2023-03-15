@@ -8,14 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
 import com.ads.control.ads.AperoAd;
 import com.ads.control.ads.AperoAdCallback;
-import com.ads.control.config.AperoAdConfig;
 import com.ads.control.ads.AperoInitCallback;
 import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.ads.wrapper.ApNativeAd;
 import com.ads.control.billing.AppPurchase;
+import com.ads.control.config.AperoAdConfig;
+import com.ads.control.funtion.AdCallback;
 import com.ads.control.funtion.BillingListener;
 import com.example.andmoduleads.BuildConfig;
 import com.example.andmoduleads.R;
@@ -39,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
             idAdSplash = BuildConfig.ad_interstitial_splash;
         else
             idAdSplash = getString(R.string.applovin_test_inter);
-        AppPurchase.getInstance().setBillingListener(new BillingListener() {
+        /*AppPurchase.getInstance().setBillingListener(new BillingListener() {
             @Override
             public void onInitBillingFinished(int code) {
                 runOnUiThread(new Runnable() {
@@ -50,8 +52,9 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 5000);
+        }, 5000);*/
 
+        loadSplash();
         AppPurchase.getInstance().setEventConsumePurchaseTest(findViewById(R.id.txtLoading));
     }
 
@@ -98,14 +101,37 @@ public class SplashActivity extends AppCompatActivity {
 
     private void loadSplash() {
         Log.d(TAG, "onCreate: show splash ads");
-        AperoAd.getInstance().setInitCallback(new AperoInitCallback() {
+        /*AperoAd.getInstance().setInitCallback(new AperoInitCallback() {
             @Override
             public void initAdSuccess() {
-                AperoAd.getInstance().loadSplashInterstitialAds(SplashActivity.this, idAdSplash, 30000, 5000, true, adCallback);
+                ArrayList<String> lists = new ArrayList<>();
+                lists.add(getString(R.string.admod_interstitial_id));
+                lists.add(getString(R.string.admod_interstitial_id));
+                lists.add(getString(R.string.admod_interstitial_id));
+                lists.add(getString(R.string.admod_interstitial_id));
+                Admob.getInstance().loadSplashInterstitialAds(SplashActivity.this, lists, 25000,5000, true, new AdCallback(){
+                    @Override
+                    public void onNextAction() {
+                        super.onNextAction();
+                        startMain();
+                    }
+                });
+            }
+        });*/
+
+        ArrayList<String> lists = new ArrayList<>();
+        lists.add(getString(R.string.admod_interstitial_id));
+        lists.add(getString(R.string.admod_interstitial_id));
+        Admob.getInstance().loadSplashInterstitialAds(SplashActivity.this, lists, 25000,10000, true, new AdCallback(){
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                startMain();
             }
         });
 
-        loadAdmobAd();
+        /*loadAdmobAd();*/
+
     }
 
 
