@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -512,7 +511,7 @@ public class Admob {
                                     return;
                                 if (interstitialAd != null) {
                                     mInterSplashHighFloor = interstitialAd;
-                                    mInterstitialSplash = interstitialAd;
+                                    mInterstitialSplash = mInterSplashHighFloor;
                                     if (isTimeDelay) {
                                         onShowSplash((AppCompatActivity) activity, adListener);
                                         Log.i(TAG, "loadSplashInterstitialAds: high floor show ad on loaded ");
@@ -539,25 +538,31 @@ public class Admob {
                                     if (i != null)
                                         Log.e(TAG, "loadSplashInterstitialAds: load fail high floor" + i.getMessage());
 
-                                    if (mInterSplashAll == null && isTimeDelay) {
-                                        adListener.onAdFailedToLoad(i);
-                                        adListener.onNextAction();
-                                    }
+                                    /*new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (mInterSplashAll == null && isTimeDelay) {
+                                                adListener.onAdFailedToLoad(i);
+                                                adListener.onNextAction();
+                                            }
+                                        }
+                                    }, timeDelay);*/
                                 }
-
-                                mInterSplashHighFloor = null;
-                                mInterstitialSplash = null;
                             }
 
                             @Override
                             public void onAdFailedToShow(@Nullable AdError adError) {
                                 super.onAdFailedToShow(adError);
-                                if (mInterSplashAll == null && isTimeDelay) {
-                                    adListener.onAdFailedToShow(adError);
-                                    adListener.onNextAction();
-                                }
-                                mInterSplashHighFloor = null;
-                                mInterstitialSplash = null;
+                                /*new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (mInterSplashAll == null && isTimeDelay) {
+                                            adListener.onAdFailedToShow(adError);
+                                            adListener.onNextAction();
+                                        }
+                                    }
+                                }, timeDelay);*/
+
                             }
                         });
                     }
@@ -610,18 +615,15 @@ public class Admob {
                                     if (i != null)
                                         Log.e(TAG, "loadSplashInterstitialAds: load fail " + i.getMessage());
 
-                                    if (mInterSplashHighFloor == null && isTimeDelay) {
-                                        adListener.onAdFailedToLoad(i);
-                                        adListener.onNextAction();
-
-                                        if(threadAll != null){
-                                            threadAll.destroy();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (mInterSplashHighFloor == null && isTimeDelay && mInterSplashAll == null) {
+                                                adListener.onAdFailedToLoad(i);
+                                                adListener.onNextAction();
+                                            }
                                         }
-
-                                        if(threadHighFloor != null){
-                                            threadHighFloor.destroy();
-                                        }
-                                    }
+                                    }, timeDelay);
                                 }
                             }
 
@@ -629,18 +631,15 @@ public class Admob {
                             public void onAdFailedToShow(@Nullable AdError adError) {
                                 super.onAdFailedToShow(adError);
                                 if (adListener != null) {
-                                    if (mInterSplashHighFloor == null && isTimeDelay) {
-                                        adListener.onAdFailedToShow(adError);
-                                        adListener.onNextAction();
-
-                                        if(threadAll != null){
-                                            threadAll.destroy();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (mInterSplashHighFloor == null && isTimeDelay && mInterSplashAll == null) {
+                                                adListener.onAdFailedToShow(adError);
+                                                adListener.onNextAction();
+                                            }
                                         }
-
-                                        if(threadHighFloor != null){
-                                            threadHighFloor.destroy();
-                                        }
-                                    }
+                                    }, timeDelay);
                                 }
                             }
                         });

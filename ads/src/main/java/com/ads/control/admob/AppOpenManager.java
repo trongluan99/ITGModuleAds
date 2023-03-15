@@ -605,7 +605,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     public void loadSplashOpenHighFloorAndInter(Class splashActivity, Activity activity, String idOpenHighFloor, String idAll, int timeOutOpen, long timeDelay, boolean showSplashIfReady, AdCallback adListener) {
         isLoadedSplashOpen = false;
         mInterAll = null;
-        isTimeout = false;
         if (AppPurchase.getInstance().isPurchased(activity)) {
             if (adListener != null) {
                 adListener.onNextAction();
@@ -708,6 +707,12 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
                                         Log.d(TAG, "onAppOpenAdLoaded: splash");
 
+                                        // Check ads success -> destroy thread inter all
+                                        if (threadAll != null) {
+                                            threadAll.destroy();
+                                        }
+                                        isLoadedSplashOpen = true;
+
                                         timeoutHandler.removeCallbacks(runnableTimeout);
 
                                         if (isTimeout) {
@@ -726,15 +731,12 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                             });
 
                                             (new Handler()).postDelayed(() -> {
-                                                showAdIfAvailable(true);
+                                                if(isTimeDelay){
+                                                    showAdIfAvailable(true);
+                                                }
                                             }, delay);
                                         }
 
-                                        // Check ads success -> destroy thread inter all
-                                        if (threadAll != null) {
-                                            threadAll.destroy();
-                                        }
-                                        isLoadedSplashOpen = true;
                                     }
 
                                     /**
@@ -749,7 +751,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                             Log.e(TAG, "onAdFailedToLoad: splash timeout");
                                             return;
                                         }
-                                        if (fullScreenContentCallback != null && enableScreenContentCallback) {
+                                        if (fullScreenContentCallback != null && enableScreenContentCallback && isTimeDelay) {
                                             (new Handler()).postDelayed(() -> {
                                                 fullScreenContentCallback.onAdDismissedFullScreenContent();
                                             }, delay);
@@ -786,27 +788,22 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             }
                         });
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (isTimeout) {
-                                    return;
-                                }
-                                if (mInterAll != null) {
-                                    if (!isLoadedSplashOpen && adListener != null) {
-                                        Admob.getInstance().forceShowInterstitial(activity, mInterAll, adListener);
-                                    } else {
-                                        if (adListener != null) {
-                                            adListener.onNextAction();
-                                        }
-                                    }
-                                } else {
-                                    if (adListener != null) {
-                                        adListener.onNextAction();
-                                    }
+                        if (isTimeout) {
+                            return;
+                        }
+                        if (mInterAll != null) {
+                            if (!isLoadedSplashOpen && adListener != null && isTimeDelay) {
+                                Admob.getInstance().forceShowInterstitial(activity, mInterAll, adListener);
+                            } else {
+                                if (adListener != null) {
+                                    adListener.onNextAction();
                                 }
                             }
-                        }, timeDelay);
+                        } else {
+                            if (adListener != null) {
+                                adListener.onNextAction();
+                            }
+                        }
                     }
                 });
             }
