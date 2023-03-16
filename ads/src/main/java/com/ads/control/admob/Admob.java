@@ -594,13 +594,6 @@ public class Admob {
                                                 onShowSplash((AppCompatActivity) activity, adListener);
                                                 Log.i(TAG, "loadSplashInterstitialAds: show ad on loaded ");
                                                 Log.i(TAG, "XXXXX: All");
-
-                                                if(threadHighFloor != null){
-                                                    threadHighFloor.destroy();
-                                                }
-                                                if(threadAll != null){
-                                                    threadAll.destroy();
-                                                }
                                             }
                                         }
                                     }, timeDelay);
