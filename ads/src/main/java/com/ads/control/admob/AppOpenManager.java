@@ -736,14 +736,12 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                 }
                             }
                         }
-                        if (isTimeDelay) {
-                            if (splashAdMedium == null && splashAdAll == null) {
+                            if (splashAdMedium == null && splashAdAll == null && statusMedium == Type_Load_Fail && statusAll == Type_Load_Fail) {
                                 if (adListener != null && !isAppOpenShowed) {
                                     isAppOpenShowed = true;
                                     adListener.onNextAction();
                                 }
                             }
-                        }
                     }
 
                 };
@@ -834,12 +832,10 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         splashAdMedium = null;
                         statusMedium = Type_Load_Fail;
 
-                        if (isTimeDelay) {
-                            if (splashAdHigh == null && splashAdAll == null) {
-                                if (adListener != null && !isAppOpenShowed) {
-                                    isAppOpenShowed = true;
-                                    adListener.onNextAction();
-                                }
+                        if (splashAdHigh == null && splashAdAll == null && statusHigh == Type_Load_Fail && statusAll == Type_Load_Fail) {
+                            if (adListener != null && !isAppOpenShowed) {
+                                isAppOpenShowed = true;
+                                adListener.onNextAction();
                             }
                         }
                     }
@@ -931,12 +927,10 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         splashAdAll = null;
                         statusAll = Type_Load_Fail;
 
-                        if (isTimeDelay) {
-                            if (splashAdHigh == null && splashAdMedium == null) {
-                                if (adListener != null && !isAppOpenShowed) {
-                                    isAppOpenShowed = true;
-                                    adListener.onNextAction();
-                                }
+                        if (splashAdHigh == null && splashAdMedium == null && statusHigh == Type_Load_Fail && statusMedium == Type_Load_Fail) {
+                            if (adListener != null && !isAppOpenShowed) {
+                                isAppOpenShowed = true;
+                                adListener.onNextAction();
                             }
                         }
 
