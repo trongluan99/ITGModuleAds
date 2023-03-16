@@ -17,6 +17,8 @@ import com.ads.control.config.AperoAdConfig;
 import com.ads.control.funtion.AdCallback;
 import com.example.andmoduleads.BuildConfig;
 import com.example.andmoduleads.R;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.FullScreenContentCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,18 +120,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void loadAdmobAd() {
-        AppOpenManager.getInstance().loadSplashOpenHighFloor(SplashActivity.class, this,
-                "ca-app-pub-3940256099942544/3419835294",
-                "ca-app-pub-3940256099942544/3419835294",
-                "ca-app-pub-3940256099942544/3419835294",
-                25000, new AdCallback() {
-                    @Override
-                    public void onNextAction() {
-                        super.onNextAction();
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    }
-                });
-        /*AppOpenManager.getInstance().setSplashActivity(SplashActivity.class, getString(R.string.admod_app_open_ad_id), 30000);
+        AppOpenManager.getInstance().setSplashActivity(SplashActivity.class, getString(R.string.admod_app_open_ad_id), 30000);
         AppOpenManager.getInstance().setFullScreenContentCallback(new FullScreenContentCallback() {
             @Override
             public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
@@ -158,7 +149,7 @@ public class SplashActivity extends AppCompatActivity {
                 super.onAdClicked();
             }
         });
-        AppOpenManager.getInstance().loadAndShowSplashAds(getString(R.string.admod_app_open_ad_id));*/
+        AppOpenManager.getInstance().loadAndShowSplashAds(getString(R.string.admod_app_open_ad_id));
     }
 
     private void startMain() {
