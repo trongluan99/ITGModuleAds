@@ -8,21 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
 import com.ads.control.ads.AperoAd;
 import com.ads.control.ads.AperoAdCallback;
-import com.ads.control.ads.AperoInitCallback;
 import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.ads.wrapper.ApNativeAd;
-import com.ads.control.billing.AppPurchase;
 import com.ads.control.config.AperoAdConfig;
 import com.ads.control.funtion.AdCallback;
-import com.ads.control.funtion.BillingListener;
 import com.example.andmoduleads.BuildConfig;
 import com.example.andmoduleads.R;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.FullScreenContentCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +49,8 @@ public class SplashActivity extends AppCompatActivity {
         }, 5000);*/
 
         loadSplash();
-        AppPurchase.getInstance().setEventConsumePurchaseTest(findViewById(R.id.txtLoading));
+//        AppPurchase.getInstance().setEventConsumePurchaseTest(findViewById(R.id.txtLoading));
     }
-
 
 
     AperoAdCallback adCallback = new AperoAdCallback() {
@@ -119,24 +112,24 @@ public class SplashActivity extends AppCompatActivity {
             }
         });*/
 
-        ArrayList<String> lists = new ArrayList<>();
-        lists.add(getString(R.string.admod_interstitial_id));
-        lists.add(getString(R.string.admod_interstitial_id));
-        Admob.getInstance().loadSplashInterstitialAds(SplashActivity.this, lists, 25000,10000, true, new AdCallback(){
-            @Override
-            public void onNextAction() {
-                super.onNextAction();
-                startMain();
-            }
-        });
-
-        /*loadAdmobAd();*/
+        loadAdmobAd();
 
     }
 
 
     private void loadAdmobAd() {
-        AppOpenManager.getInstance().setSplashActivity(SplashActivity.class, getString(R.string.admod_app_open_ad_id), 30000);
+        AppOpenManager.getInstance().loadSplashOpenHighFloor(SplashActivity.class, this,
+                "ca-app-pub-3940256099942544/3419835294",
+                "ca-app-pub-3940256099942544/3419835294",
+                "ca-app-pub-3940256099942544/3419835294",
+                25000, new AdCallback() {
+                    @Override
+                    public void onNextAction() {
+                        super.onNextAction();
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    }
+                });
+        /*AppOpenManager.getInstance().setSplashActivity(SplashActivity.class, getString(R.string.admod_app_open_ad_id), 30000);
         AppOpenManager.getInstance().setFullScreenContentCallback(new FullScreenContentCallback() {
             @Override
             public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
@@ -165,7 +158,7 @@ public class SplashActivity extends AppCompatActivity {
                 super.onAdClicked();
             }
         });
-        AppOpenManager.getInstance().loadAndShowSplashAds(getString(R.string.admod_app_open_ad_id));
+        AppOpenManager.getInstance().loadAndShowSplashAds(getString(R.string.admod_app_open_ad_id));*/
     }
 
     private void startMain() {
@@ -176,20 +169,20 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "Splash onPause: " );
+        Log.e(TAG, "Splash onPause: ");
         //AperoAd.getInstance().onCheckShowSplashWhenFail(this, adCallback, 1000);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e(TAG, "Splash onPause: " );
+        Log.e(TAG, "Splash onPause: ");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e(TAG, "Splash onStop: " );
+        Log.e(TAG, "Splash onStop: ");
     }
 
     @Override

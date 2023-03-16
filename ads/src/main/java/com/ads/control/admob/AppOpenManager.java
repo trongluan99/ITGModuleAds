@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Lifecycle;
@@ -34,7 +33,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.appopen.AppOpenAd;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +47,10 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private AppOpenAd appResumeAd = null;
     private AppOpenAd splashAd = null;
     private AppOpenAd.AppOpenAdLoadCallback loadCallback;
+
+    private AppOpenAd.AppOpenAdLoadCallback loadCallbackHigh;
+    private AppOpenAd.AppOpenAdLoadCallback loadCallbackMedium;
+    private AppOpenAd.AppOpenAdLoadCallback loadCallbackAll;
     private FullScreenContentCallback fullScreenContentCallback;
 
     private String appResumeAdId;
@@ -75,10 +77,24 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private boolean isTimeout = false;
     private static final int TIMEOUT_MSG = 11;
 
-    public Thread threadHighFloor;
+    public Thread threadHigh;
+    public Thread threadMedium;
     public Thread threadAll;
-    public InterstitialAd mInterAll = null;
-    private boolean isLoadedSplashOpen = false;
+
+    private AppOpenAd splashAdHigh = null;
+    private AppOpenAd splashAdMedium = null;
+    private AppOpenAd splashAdAll = null;
+
+    private int statusHigh = -1;
+    private int statusMedium = -1;
+    private int statusAll = -1;
+
+    private int Type_Loading = 0;
+    private int Type_Load_Success = 1;
+    private int Type_Load_Fail = 2;
+
+    private boolean isAppOpenShowed = false;
+
     private Dialog dialogSplash = null;
     private boolean isTimeDelay = false;
 
@@ -602,8 +618,13 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         }
     }
 
-    public void loadSplashOpenHighFloorAndInter(Class splashActivity, Activity activity, String idOpenHighFloor, String idAll, int timeOutOpen, long timeDelay, boolean showSplashIfReady, AdCallback adListener) {
-        isLoadedSplashOpen = false;
+    public void loadSplashOpenHighFloor(Class splashActivity, Activity activity, String idOpenHigh, String idOpenMedium, String idOpenAll, int timeOutOpen, AdCallback adListener) {
+        isAppOpenShowed = false;
+        isTimeDelay = false;
+
+        statusHigh = Type_Loading;
+        statusMedium = Type_Loading;
+        statusAll = Type_Loading;
 
         if (AppPurchase.getInstance().isPurchased(activity)) {
             if (adListener != null) {
@@ -615,29 +636,35 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //check delay show ad splash
                 isTimeDelay = true;
+                if (adListener != null && !isAppOpenShowed) {
+                    isAppOpenShowed = true;
+                    adListener.onNextAction();
+                }
             }
-        }, timeDelay);
+        }, timeOutOpen);
 
-        int delay = 0;
-        threadHighFloor = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                activity.runOnUiThread(new Runnable() {
+        AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenHigh, timeOutOpen);
+
+        // load Open Splash High
+        loadCallbackHigh =
+                new AppOpenAd.AppOpenAdLoadCallback() {
                     @Override
-                    public void run() {
-                        AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenHighFloor, timeOutOpen);
-                        AppOpenManager.getInstance().setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                super.onAdFailedToShowFullScreenContent(adError);
-                                splashAd = null;
-                            }
+                    public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
+                        Log.d(TAG, "onAppOpenAdLoaded: splash");
+                        if (adListener != null) {
+                            adListener.onAdLoadedHigh();
+                        }
 
+                        appOpenAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
-                            public void onAdShowedFullScreenContent() {
-                                super.onAdShowedFullScreenContent();
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                                disableAdResumeByClickAction = true;
+
+                                if (adListener != null) {
+                                    adListener.onAdClickedHigh();
+                                }
                             }
 
                             @Override
@@ -649,132 +676,411 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             }
 
                             @Override
-                            public void onAdImpression() {
-                                super.onAdImpression();
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Log.e(TAG, "onAdFailedToShowFullScreenContent: High");
+
+                                statusHigh = Type_Load_Fail;
+
+                                if (splashAdHigh != null && statusMedium == Type_Load_Success && !isAppOpenShowed) {
+                                    AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenMedium, timeOutOpen);
+
+                                    if (splashAdMedium != null) {
+                                        splashAdMedium.show(activity);
+                                    }
+                                }
+                                splashAdHigh = null;
+
+                                if (adListener != null) {
+                                    adListener.onAdFailedToShowHigh(adError);
+                                }
                             }
 
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                                isAppOpenShowed = true;
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                            }
+                        });
+
+                        splashAdHigh = appOpenAd;
+                        splashLoadTime = new Date().getTime();
+                        appOpenAd.setOnPaidEventListener(adValue -> {
+                            AperoLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
+                                    adValue,
+                                    appOpenAd.getAdUnitId(),
+                                    appOpenAd.getResponseInfo()
+                                            .getMediationAdapterClassName(), AdType.APP_OPEN);
+                        });
+
+                        if (!isAppOpenShowed) {
+                            splashAdHigh.show(currentActivity);
+                        }
+
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        statusHigh = Type_Load_Fail;
+                        if (splashAdHigh == null) {
+                            if (statusMedium == Type_Load_Success && !isAppOpenShowed) {
+                                AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenMedium, timeOutOpen);
+
+                                if (splashAdMedium != null) {
+                                    splashAdMedium.show(activity);
+                                }
+                            }
+                        }
+                        if (isTimeDelay) {
+                            if (splashAdMedium == null && splashAdAll == null) {
+                                if (adListener != null && !isAppOpenShowed) {
+                                    isAppOpenShowed = true;
+                                    adListener.onNextAction();
+                                }
+                            }
+                        }
+                    }
+
+                };
+
+        // load Open Splash Medium
+        loadCallbackMedium =
+                new AppOpenAd.AppOpenAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
+                        Log.d(TAG, "onAppOpenAdLoaded: splash");
+                        if (adListener != null) {
+                            adListener.onAdLoaded();
+                        }
+                        statusMedium = Type_Load_Success;
+                        splashAdMedium = appOpenAd;
+                        if ((statusHigh == Type_Load_Fail || statusHigh == Type_Load_Success) && (statusAll == Type_Load_Fail || statusAll == Type_Load_Success || statusAll == Type_Loading) && !isAppOpenShowed) {
+                            AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenMedium, timeOutOpen);
+
+                            if (splashAdMedium != null) {
+                                splashAdMedium.show(activity);
+                            }
+                        }
+
+                        splashAdMedium.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
                             public void onAdClicked() {
                                 super.onAdClicked();
+                                disableAdResumeByClickAction = true;
+
+                                if (adListener != null) {
+                                    adListener.onAdClickedMedium();
+                                }
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                if (adListener != null) {
+                                    adListener.onNextAction();
+                                }
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Log.e(TAG, "onAdFailedToShowFullScreenContent: Medium");
+
+                                splashAdMedium = null;
+                                statusMedium = Type_Load_Fail;
+
+                                if (statusAll == Type_Load_Success && !isAppOpenShowed) {
+                                    AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenAll, timeOutOpen);
+
+                                    if (splashAdAll != null && !isAppOpenShowed) {
+                                        splashAdAll.show(activity);
+                                    }
+                                }
+
+                                if (adListener != null) {
+                                    adListener.onAdFailedToShowMedium(adError);
+                                }
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                                isAppOpenShowed = true;
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
                             }
                         });
+                        splashLoadTime = new Date().getTime();
+                        appOpenAd.setOnPaidEventListener(adValue -> {
+                            AperoLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
+                                    adValue,
+                                    appOpenAd.getAdUnitId(),
+                                    appOpenAd.getResponseInfo()
+                                            .getMediationAdapterClassName(), AdType.APP_OPEN);
+                        });
+                    }
 
-                        // load Open Splash
-                        isTimeout = false;
-                        enableScreenContentCallback = true;
-                        if (currentActivity != null && AppPurchase.getInstance().isPurchased(currentActivity)) {
-                            if (fullScreenContentCallback != null && enableScreenContentCallback) {
-                                (new Handler()).postDelayed(() -> {
-                                    fullScreenContentCallback.onAdDismissedFullScreenContent();
-                                }, delay);
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Log.e(TAG, "onAppOpenAdFailedToLoad: splash " + loadAdError.getMessage());
+                        splashAdMedium = null;
+                        statusMedium = Type_Load_Fail;
+
+                        if (isTimeDelay) {
+                            if (splashAdHigh == null && splashAdAll == null) {
+                                if (adListener != null && !isAppOpenShowed) {
+                                    isAppOpenShowed = true;
+                                    adListener.onNextAction();
+                                }
                             }
-                            return;
-                        }
-
-                        loadCallback =
-                                new AppOpenAd.AppOpenAdLoadCallback() {
-                                    @Override
-                                    public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
-                                        Log.d(TAG, "onAppOpenAdLoaded: splash");
-
-                                        timeoutHandler.removeCallbacks(runnableTimeout);
-
-                                        if (isTimeout) {
-                                            Log.e(TAG, "onAppOpenAdLoaded: splash timeout");
-                                        } else {
-                                            AppOpenManager.this.splashAd = appOpenAd;
-                                            splashLoadTime = new Date().getTime();
-                                            appOpenAd.setOnPaidEventListener(adValue -> {
-                                                AperoLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
-                                                        adValue,
-                                                        appOpenAd.getAdUnitId(),
-                                                        appOpenAd.getResponseInfo()
-                                                                .getMediationAdapterClassName(), AdType.APP_OPEN);
-                                            });
-
-                                            (new Handler()).postDelayed(() -> {
-                                                showAdIfAvailable(true);
-                                            }, delay);
-
-                                            isLoadedSplashOpen = true;
-
-                                            if (threadAll != null) {
-                                                threadAll.destroy();
-                                            }
-                                        }
-                                    }
-
-                                    /**
-                                     * Called when an app open ad has failed to load.
-                                     *
-                                     * @param loadAdError the error.
-                                     */
-                                    @Override
-                                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                        Log.e(TAG, "onAppOpenAdFailedToLoad: splash " + loadAdError.getMessage());
-                                        if (isTimeout) {
-                                            Log.e(TAG, "onAdFailedToLoad: splash timeout");
-                                            return;
-                                        }
-
-                                        splashAd = null;
-                                        /*if (fullScreenContentCallback != null && enableScreenContentCallback) {
-                                            (new Handler()).postDelayed(() -> {
-                                                fullScreenContentCallback.onAdDismissedFullScreenContent();
-                                            }, delay);
-                                            enableScreenContentCallback = false;
-                                        }*/
-                                    }
-
-                                };
-                        AdRequest request = getAdRequest();
-                        AppOpenAd.load(
-                                myApplication, splashAdId, request,
-                                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
-
-                        if (splashTimeout > 0) {
-                            timeoutHandler = new Handler();
-                            timeoutHandler.postDelayed(runnableTimeout, splashTimeout);
                         }
                     }
-                });
-            }
-        });
 
-        threadAll = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                activity.runOnUiThread(new Runnable() {
+                };
+
+        // load Open Splash All
+        loadCallbackAll =
+                new AppOpenAd.AppOpenAdLoadCallback() {
                     @Override
-                    public void run() {
-                        Admob.getInstance().getInterstitialAds(activity, idAll, new AdCallback() {
-                            @Override
-                            public void onInterstitialLoad(@Nullable InterstitialAd interstitialAd) {
-                                super.onInterstitialLoad(interstitialAd);
-                                mInterAll = interstitialAd;
-                            }
-                        });
+                    public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
+                        Log.d(TAG, "onAppOpenAdLoaded: splash");
+                        if (adListener != null) {
+                            adListener.onAdLoadedAll();
+                        }
+                        splashAdAll = appOpenAd;
+                        statusAll = Type_Load_Success;
 
-                        new Handler().postDelayed(new Runnable() {
+                        if ((statusHigh == Type_Load_Fail || statusHigh == Type_Load_Success) && (statusMedium == Type_Load_Fail || statusMedium == Type_Load_Success) && !isAppOpenShowed) {
+                            AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenAll, timeOutOpen);
+
+                            if (splashAdAll != null) {
+                                splashAdAll.show(activity);
+                            }
+                        }
+
+                        splashAdAll.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
-                            public void run() {
-                                if (mInterAll != null && splashAd == null && isTimeDelay && !isLoadedSplashOpen ) {
-                                    Admob.getInstance().forceShowInterstitial(activity, mInterAll, adListener);
-                                } else {
-                                    if (adListener != null) {
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                                disableAdResumeByClickAction = true;
+
+                                if (adListener != null) {
+                                    adListener.onAdClickedAll();
+                                }
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                if (adListener != null) {
+                                    adListener.onNextAction();
+                                }
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Log.e(TAG, "onAdFailedToShowFullScreenContent: All");
+
+                                splashAdAll = null;
+                                statusAll = Type_Load_Fail;
+
+                                if (statusHigh == Type_Load_Fail && statusMedium == Type_Load_Fail) {
+                                    if (adListener != null && !isAppOpenShowed) {
                                         adListener.onNextAction();
                                     }
                                 }
+
+                                if (adListener != null) {
+                                    adListener.onAdFailedToShowAll(adError);
+                                }
                             }
-                        }, timeDelay);
+
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                                isAppOpenShowed = true;
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                            }
+                        });
+
+                        splashLoadTime = new Date().getTime();
+                        appOpenAd.setOnPaidEventListener(adValue -> {
+                            AperoLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
+                                    adValue,
+                                    appOpenAd.getAdUnitId(),
+                                    appOpenAd.getResponseInfo()
+                                            .getMediationAdapterClassName(), AdType.APP_OPEN);
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        splashAdAll = null;
+                        statusAll = Type_Load_Fail;
+
+                        if (isTimeDelay) {
+                            if (splashAdHigh == null && splashAdMedium == null) {
+                                if (adListener != null && !isAppOpenShowed) {
+                                    isAppOpenShowed = true;
+                                    adListener.onNextAction();
+                                }
+                            }
+                        }
 
                     }
-                });
+
+                };
+
+        AdRequest request = getAdRequest();
+        AdRequest request1 = getAdRequest();
+        AdRequest request2 = getAdRequest();
+        AppOpenAd.load(myApplication, idOpenHigh, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackHigh);
+        AppOpenAd.load(myApplication, idOpenMedium, request1, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackMedium);
+        AppOpenAd.load(myApplication, idOpenAll, request2, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackAll);
+
+
+        AppOpenManager.getInstance().setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                splashAdHigh = null;
+                statusHigh = Type_Load_Fail;
+
+                if (statusMedium == Type_Load_Success && !isAppOpenShowed) {
+                    AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenMedium, timeOutOpen);
+                    AdRequest request = getAdRequest();
+                    AppOpenAd.load(
+                            myApplication, idOpenMedium, request,
+                            AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackMedium);
+
+                    if (splashTimeout > 0) {
+                        timeoutHandler = new Handler();
+                        timeoutHandler.postDelayed(runnableTimeout, splashTimeout);
+                    }
+                }
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                if (adListener != null) {
+                    adListener.onNextAction();
+                }
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
             }
         });
 
-        threadHighFloor.start();
-        threadAll.start();
+        AppOpenManager.getInstance().setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                splashAdMedium = null;
+                statusMedium = Type_Load_Fail;
+
+                if (statusAll == Type_Load_Success && !isAppOpenShowed) {
+                    AdRequest request = getAdRequest();
+                    AppOpenAd.load(
+                            myApplication, idOpenMedium, request,
+                            AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackAll);
+
+                    if (splashTimeout > 0) {
+                        timeoutHandler = new Handler();
+                        timeoutHandler.postDelayed(runnableTimeout, splashTimeout);
+                    }
+                }
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                if (adListener != null) {
+                    adListener.onNextAction();
+                }
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+                isAppOpenShowed = true;
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+        });
+
+        AppOpenManager.getInstance().setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                splashAdAll = null;
+                statusAll = Type_Load_Fail;
+
+                if (statusHigh == Type_Load_Fail && statusMedium == Type_Load_Fail) {
+                    if (adListener != null) {
+                        adListener.onNextAction();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                if (adListener != null) {
+                    adListener.onNextAction();
+                }
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+                isAppOpenShowed = true;
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+        });
     }
 
 

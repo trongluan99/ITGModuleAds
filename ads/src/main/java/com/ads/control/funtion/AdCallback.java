@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.rewarded.RewardedAd;
@@ -26,11 +25,29 @@ public class AdCallback {
     public void onAdFailedToShow(@Nullable AdError adError) {
     }
 
+    public void onAdFailedToShowHigh(@Nullable AdError adError) {
+    }
+
+    public void onAdFailedToShowMedium(@Nullable AdError adError) {
+    }
+
+    public void onAdFailedToShowAll(@Nullable AdError adError) {
+    }
+
     public void onAdLeftApplication() {
     }
 
 
     public void onAdLoaded() {
+    }
+
+    public void onAdLoadedHigh() {
+    }
+
+    public void onAdLoadedMedium() {
+    }
+
+    public void onAdLoadedAll() {
     }
 
     public void onAdSplashReady() {
@@ -42,6 +59,16 @@ public class AdCallback {
 
     public void onAdClicked() {
     }
+
+    public void onAdClickedHigh() {
+    }
+
+    public void onAdClickedMedium() {
+    }
+
+    public void onAdClickedAll() {
+    }
+
 
     public void onAdImpression() {
     }
