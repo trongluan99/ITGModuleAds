@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.control.admob.Admob;
+import com.ads.control.admob.AppOpenManager;
 import com.ads.control.funtion.AdCallback;
 import com.example.andmoduleads.R;
 
@@ -19,7 +20,7 @@ public class TestSplash extends AppCompatActivity {
 
         Admob.getInstance().loadSplashInterstitialAdsHighFloor(TestSplash.this,
                 "ca-app-pub-3940256099942544/1033173712", "ca-app-pub-3940256099942544/1033173712",
-                25000, 10000, new AdCallback() {
+                25000, 15000, new AdCallback() {
                     @Override
                     public void onNextAction() {
                         super.onNextAction();
@@ -27,7 +28,7 @@ public class TestSplash extends AppCompatActivity {
                     }
                 });
 
-        /*AppOpenManager.getInstance().loadSplashOpenHighFloorAndInter(SplashActivity.class, this,
+        /*AppOpenManager.getInstance().loadSplashOpenHighFloorAndInter(TestSplash.class, this,
                 "ca-app-pub-3940256099942544/3419835294",
                 "ca-app-pub-3940256099942544/1033173712",
                 30000, 10000, true, new AdCallback() {
@@ -36,7 +37,7 @@ public class TestSplash extends AppCompatActivity {
                         super.onNextAction();
                         startActivity(new Intent(TestSplash.this, MainActivity.class));
                     }
-
                 });*/
+
     }
 }
