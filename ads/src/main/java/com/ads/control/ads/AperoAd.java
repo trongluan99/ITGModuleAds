@@ -390,6 +390,105 @@ public class AperoAd {
         loadSplashInterstitialAds(context, id, timeOut, timeDelay, true, adListener);
     }
 
+    public void loadSplashInterstitialAdsHighFloor(Activity activity, String idHighFloor, String idAll, long timeOut, long timeDelay, AperoAdCallback adListener) {
+        switch (adConfig.getMediationProvider()) {
+            case AperoAdConfig.PROVIDER_ADMOB:
+                Admob.getInstance().loadSplashInterstitialAdsHighFloor(activity, idHighFloor, idAll, timeOut, timeDelay, new AdCallback() {
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                        adListener.onAdClosed();
+                    }
+
+                    @Override
+                    public void onNextAction() {
+                        super.onNextAction();
+                        adListener.onNextAction();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@Nullable LoadAdError i) {
+                        super.onAdFailedToLoad(i);
+                        adListener.onAdFailedToLoad(new ApAdError(i));
+
+                    }
+
+                    @Override
+                    public void onAdFailedToShow(@Nullable AdError adError) {
+                        super.onAdFailedToShow(adError);
+                        adListener.onAdFailedToShow(new ApAdError(adError));
+
+                    }
+
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        adListener.onAdLoaded();
+                    }
+
+                    @Override
+                    public void onAdSplashReady() {
+                        super.onAdSplashReady();
+                        adListener.onAdSplashReady();
+                    }
+
+
+                    @Override
+                    public void onAdClicked() {
+                        super.onAdClicked();
+                        if (adListener != null) {
+                            adListener.onAdClicked();
+                        }
+                    }
+                });
+                break;
+
+            case AperoAdConfig.PROVIDER_MAX:
+                AppLovin.getInstance().loadSplashInterstitialAds(activity, idAll, timeOut, timeDelay, true, new AppLovinCallback() {
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                        adListener.onAdClosed();
+                        adListener.onNextAction();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@Nullable MaxError i) {
+                        super.onAdFailedToLoad(i);
+                        adListener.onAdFailedToLoad(new ApAdError(i));
+                        adListener.onNextAction();
+                    }
+
+                    @Override
+                    public void onAdFailedToShow(@Nullable MaxError adError) {
+                        super.onAdFailedToShow(adError);
+                        adListener.onAdFailedToShow(new ApAdError(adError));
+                        adListener.onNextAction();
+                    }
+
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        adListener.onAdLoaded();
+                    }
+
+                    @Override
+                    public void onAdSplashReady() {
+                        super.onAdSplashReady();
+                        adListener.onAdSplashReady();
+                    }
+
+                    @Override
+                    public void onAdClicked() {
+                        super.onAdClicked();
+                        if (adListener != null) {
+                            adListener.onAdClicked();
+                        }
+                    }
+                });
+        }
+    }
+
     public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, boolean showSplashIfReady, AperoAdCallback adListener) {
         switch (adConfig.getMediationProvider()) {
             case AperoAdConfig.PROVIDER_ADMOB:
