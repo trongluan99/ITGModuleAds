@@ -494,7 +494,6 @@ public class Admob {
             handlerTimeout.postDelayed(rdTimeout, timeOut);
         }
 
-        // C2
         threadHighFloor = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -516,6 +515,7 @@ public class Admob {
                                         onShowSplash((AppCompatActivity) activity, adListener);
                                         Log.i(TAG, "loadSplashInterstitialAds: high floor show ad on loaded ");
                                         Log.i(TAG, "XXXXX: high floor");
+                                        mInterSplashAll = null;
                                     }
                                     if (threadAll != null) {
                                         threadAll.destroy();
@@ -594,6 +594,13 @@ public class Admob {
                                                 onShowSplash((AppCompatActivity) activity, adListener);
                                                 Log.i(TAG, "loadSplashInterstitialAds: show ad on loaded ");
                                                 Log.i(TAG, "XXXXX: All");
+
+                                                if(threadHighFloor != null){
+                                                    threadHighFloor.destroy();
+                                                }
+                                                if(threadAll != null){
+                                                    threadAll.destroy();
+                                                }
                                             }
                                         }
                                     }, timeDelay);

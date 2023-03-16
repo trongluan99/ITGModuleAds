@@ -604,33 +604,23 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
     public void loadSplashOpenHighFloorAndInter(Class splashActivity, Activity activity, String idOpenHighFloor, String idAll, int timeOutOpen, long timeDelay, boolean showSplashIfReady, AdCallback adListener) {
         isLoadedSplashOpen = false;
-        mInterAll = null;
+
         if (AppPurchase.getInstance().isPurchased(activity)) {
             if (adListener != null) {
                 adListener.onNextAction();
             }
             return;
         }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 //check delay show ad splash
-                if (mInterAll != null) {
-                    if (!isLoadedSplashOpen && adListener != null) {
-                        Admob.getInstance().forceShowInterstitial(activity, mInterAll, adListener);
-                    } else {
-                        if (adListener != null) {
-                            adListener.onNextAction();
-                        }
-                    }
-                    return;
-                }
                 isTimeDelay = true;
             }
         }, timeDelay);
 
         int delay = 0;
-
         threadHighFloor = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -642,22 +632,12 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             @Override
                             public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                                 super.onAdFailedToShowFullScreenContent(adError);
-
-                                if (ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                                    try {
-                                        if (dialogSplash != null && dialogSplash.isShowing()) {
-                                            dialogSplash.dismiss();
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
+                                splashAd = null;
                             }
 
                             @Override
                             public void onAdShowedFullScreenContent() {
                                 super.onAdShowedFullScreenContent();
-                                isLoadedSplashOpen = true;
                             }
 
                             @Override
@@ -665,16 +645,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                 super.onAdDismissedFullScreenContent();
                                 if (adListener != null) {
                                     adListener.onNextAction();
-                                }
-
-                                if (ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                                    try {
-                                        if (dialogSplash != null && dialogSplash.isShowing()) {
-                                            dialogSplash.dismiss();
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
                                 }
                             }
 
@@ -707,21 +677,13 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
                                         Log.d(TAG, "onAppOpenAdLoaded: splash");
 
-                                        // Check ads success -> destroy thread inter all
-                                        if (threadAll != null) {
-                                            threadAll.destroy();
-                                        }
-                                        isLoadedSplashOpen = true;
-
                                         timeoutHandler.removeCallbacks(runnableTimeout);
 
                                         if (isTimeout) {
                                             Log.e(TAG, "onAppOpenAdLoaded: splash timeout");
                                         } else {
                                             AppOpenManager.this.splashAd = appOpenAd;
-
                                             splashLoadTime = new Date().getTime();
-
                                             appOpenAd.setOnPaidEventListener(adValue -> {
                                                 AperoLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
                                                         adValue,
@@ -731,12 +693,15 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                             });
 
                                             (new Handler()).postDelayed(() -> {
-                                                if(isTimeDelay){
-                                                    showAdIfAvailable(true);
-                                                }
+                                                showAdIfAvailable(true);
                                             }, delay);
-                                        }
 
+                                            isLoadedSplashOpen = true;
+
+                                            if (threadAll != null) {
+                                                threadAll.destroy();
+                                            }
+                                        }
                                     }
 
                                     /**
@@ -751,18 +716,20 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                             Log.e(TAG, "onAdFailedToLoad: splash timeout");
                                             return;
                                         }
-                                        if (fullScreenContentCallback != null && enableScreenContentCallback && isTimeDelay) {
+
+                                        splashAd = null;
+                                        /*if (fullScreenContentCallback != null && enableScreenContentCallback) {
                                             (new Handler()).postDelayed(() -> {
                                                 fullScreenContentCallback.onAdDismissedFullScreenContent();
                                             }, delay);
                                             enableScreenContentCallback = false;
-                                        }
+                                        }*/
                                     }
 
                                 };
                         AdRequest request = getAdRequest();
                         AppOpenAd.load(
-                                myApplication, idOpenHighFloor, request,
+                                myApplication, splashAdId, request,
                                 AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
 
                         if (splashTimeout > 0) {
@@ -788,22 +755,19 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             }
                         });
 
-                        if (isTimeout) {
-                            return;
-                        }
-                        if (mInterAll != null) {
-                            if (!isLoadedSplashOpen && adListener != null && isTimeDelay) {
-                                Admob.getInstance().forceShowInterstitial(activity, mInterAll, adListener);
-                            } else {
-                                if (adListener != null) {
-                                    adListener.onNextAction();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mInterAll != null && splashAd == null && isTimeDelay && !isLoadedSplashOpen ) {
+                                    Admob.getInstance().forceShowInterstitial(activity, mInterAll, adListener);
+                                } else {
+                                    if (adListener != null) {
+                                        adListener.onNextAction();
+                                    }
                                 }
                             }
-                        } else {
-                            if (adListener != null) {
-                                adListener.onNextAction();
-                            }
-                        }
+                        }, timeDelay);
+
                     }
                 });
             }
