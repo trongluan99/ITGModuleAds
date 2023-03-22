@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
         AppOpenManager.getInstance().loadSplashOpenAndInter(SplashActivity.class, this,
                 "ca-app-pub-3940256099942544/3419835294",
                 "ca-app-pub-3940256099942544/1033173712",
-                25000, 5000, new AdCallback() {
+                25000, new AdCallback() {
                     @Override
                     public void onNextAction() {
                         super.onNextAction();

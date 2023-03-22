@@ -1005,7 +1005,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         adAppOpen.show(activity);
     }
 
-    public void loadSplashOpenAndInter(Class splashActivity, AppCompatActivity activity, String idOpen, String idInter, int timeOutOpen, int timeDelay, AdCallback adListener) {
+    public void loadSplashOpenAndInter(Class splashActivity, AppCompatActivity activity, String idOpen, String idInter, int timeOutOpen, AdCallback adListener) {
         isAppOpenShowed = false;
         isTimeDelay = false;
         statusOpen = Type_Loading;
