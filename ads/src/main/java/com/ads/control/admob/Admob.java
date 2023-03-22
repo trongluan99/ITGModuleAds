@@ -1249,6 +1249,144 @@ public class Admob {
         }
     }
 
+    public void onShowSplash(AppCompatActivity activity, AdCallback adListener, InterstitialAd mInter) {
+        mInterstitialSplash = mInter;
+        isShowLoadingSplash = true;
+        Log.d(TAG, "onShowSplash: ");
+
+        if (mInter == null) {
+            adListener.onNextAction();
+            return;
+        }
+
+        mInterstitialSplash.setOnPaidEventListener(adValue -> {
+            Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
+
+            AperoLogEventManager.logPaidAdImpression(context,
+                    adValue,
+                    mInterstitialSplash.getAdUnitId(),
+                    mInterstitialSplash.getResponseInfo()
+                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+        });
+
+        if (handlerTimeout != null && rdTimeout != null) {
+            handlerTimeout.removeCallbacks(rdTimeout);
+        }
+
+        if (adListener != null) {
+            adListener.onAdLoaded();
+        }
+
+        mInterstitialSplash.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdShowedFullScreenContent() {
+                Log.d(TAG, " Splash:onAdShowedFullScreenContent ");
+                AppOpenManager.getInstance().setInterstitialShowing(true);
+                isShowLoadingSplash = false;
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                Log.d(TAG, " Splash:onAdDismissedFullScreenContent ");
+                AppOpenManager.getInstance().setInterstitialShowing(false);
+                mInterstitialSplash = null;
+                if (adListener != null) {
+                    if (!openActivityAfterShowInterAds) {
+                        adListener.onNextAction();
+                    }
+                    adListener.onAdClosed();
+
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+                isShowLoadingSplash = false;
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                Log.e(TAG, "Splash onAdFailedToShowFullScreenContent: " + adError.getMessage());
+                mInterstitialSplash = null;
+                isShowLoadingSplash = false;
+                if (adListener != null) {
+                    adListener.onAdFailedToShow(adError);
+                    if (!openActivityAfterShowInterAds) {
+                        adListener.onNextAction();
+                    }
+
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+                if (disableAdResumeWhenClickAds)
+                    AppOpenManager.getInstance().disableAdResumeByClickAction();
+                AperoLogEventManager.logClickAdsEvent(context, mInterstitialSplash.getAdUnitId());
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+                if (adListener != null) {
+                    adListener.onAdImpression();
+                }
+            }
+        });
+
+        if (ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+            try {
+                if (dialog != null && dialog.isShowing())
+                    dialog.dismiss();
+                dialog = new PrepareLoadingAdsDialog(activity);
+                try {
+                    dialog.show();
+                } catch (Exception e) {
+                    adListener.onNextAction();
+                    return;
+                }
+            } catch (Exception e) {
+                dialog = null;
+                e.printStackTrace();
+            }
+            new Handler().postDelayed(() -> {
+                if (activity.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (openActivityAfterShowInterAds && adListener != null) {
+                        adListener.onNextAction();
+                        new Handler().postDelayed(() -> {
+                            if (dialog != null && dialog.isShowing() && !activity.isDestroyed())
+                                dialog.dismiss();
+                        }, 1500);
+                    }
+                    if (activity != null && mInterstitialSplash != null) {
+                        Log.i(TAG, "start show InterstitialAd " + activity.getLifecycle().getCurrentState().name() + "/" + ProcessLifecycleOwner.get().getLifecycle().getCurrentState().name());
+                        mInterstitialSplash.show(activity);
+                        isShowLoadingSplash = false;
+                    } else if (adListener != null) {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                        adListener.onNextAction();
+                        isShowLoadingSplash = false;
+                    }
+                } else {
+                    if (dialog != null && dialog.isShowing() && !activity.isDestroyed())
+                        dialog.dismiss();
+                    isShowLoadingSplash = false;
+                    Log.e(TAG, "onShowSplash:   show fail in background after show loading ad");
+                    adListener.onAdFailedToShow(new AdError(0, " show fail in background after show loading ad", "AperoAd"));
+                }
+            }, 800);
+
+        } else {
+            isShowLoadingSplash = false;
+            Log.e(TAG, "onShowSplash: fail on background");
+        }
+    }
+
     public void onCheckShowSplashWhenFail(AppCompatActivity activity, AdCallback callback, int timeDelay) {
         new Handler(activity.getMainLooper()).postDelayed(new Runnable() {
             @Override

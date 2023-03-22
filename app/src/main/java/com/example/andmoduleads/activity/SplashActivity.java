@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
 import com.ads.control.ads.AperoAd;
 import com.ads.control.ads.AperoAdCallback;
@@ -50,8 +51,31 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 5000);*/
 
-        loadSplash();
+//        loadSplash();
 //        AppPurchase.getInstance().setEventConsumePurchaseTest(findViewById(R.id.txtLoading));
+
+        /*AppOpenManager.getInstance().loadSplashOpenHighFloor(SplashActivity.class, this,
+                "ca-app-pub-3940256099942544/3419835295",
+                "ca-app-pub-3940256099942544/3419835295",
+                "ca-app-pub-3940256099942544/3419835294", 25000, new AdCallback() {
+                    @Override
+                    public void onNextAction() {
+                        super.onNextAction();
+                        Log.e("loadSplashOpenHighFloor", "onNextAction: ");
+                        startMain();
+                    }
+                });*/
+
+        AppOpenManager.getInstance().loadSplashOpenAndInter(SplashActivity.class, this,
+                "ca-app-pub-3940256099942544/3419835294",
+                "ca-app-pub-3940256099942544/1033173712",
+                25000, 5000, new AdCallback() {
+                    @Override
+                    public void onNextAction() {
+                        super.onNextAction();
+                        startMain();
+                    }
+                });
     }
 
 
@@ -161,7 +185,13 @@ public class SplashActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.e(TAG, "Splash onPause: ");
-        //AperoAd.getInstance().onCheckShowSplashWhenFail(this, adCallback, 1000);
+        Admob.getInstance().onCheckShowSplashWhenFail(this, new AdCallback() {
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                startMain();
+            }
+        }, 1000);
     }
 
     @Override
