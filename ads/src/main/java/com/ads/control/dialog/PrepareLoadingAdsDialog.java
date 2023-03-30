@@ -9,8 +9,6 @@ import com.ads.control.R;
 
 
 public class PrepareLoadingAdsDialog extends Dialog {
-
-
     public PrepareLoadingAdsDialog(Context context) {
         super(context, R.style.AppTheme);
     }

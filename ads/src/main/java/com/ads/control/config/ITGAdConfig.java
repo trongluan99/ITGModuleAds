@@ -5,7 +5,7 @@ import android.app.Application;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AperoAdConfig {
+public class ITGAdConfig {
 
     //switch mediation use for app
     public static final int PROVIDER_ADMOB = 0;
@@ -50,11 +50,11 @@ public class AperoAdConfig {
      */
     private int intervalInterstitialAd = 0;
 
-    public AperoAdConfig(Application application) {
+    public ITGAdConfig(Application application) {
         this.application = application;
     }
 
-    public AperoAdConfig(Application application, int mediationProvider, String environment) {
+    public ITGAdConfig(Application application, int mediationProvider, String environment) {
         this.mediationProvider = mediationProvider;
         this.isVariantDev = environment.equals(ENVIRONMENT_DEVELOP);
         this.application = application;

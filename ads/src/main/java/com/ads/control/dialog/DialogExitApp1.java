@@ -16,7 +16,6 @@ import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
 public class DialogExitApp1 extends Dialog {
-
     private Context context;
     private FrameLayout frameLayout;
     NativeAdView adView;

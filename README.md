@@ -193,7 +193,7 @@ Show and auto release ad interstitial
 
 #### Latest way:
 ~~~
-    <com.ads.control.ads.bannerAds.AperoBannerAdView
+    <com.ads.control.ads.bannerAds.ITGBannerAdView
         android:id="@+id/bannerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -238,7 +238,7 @@ auto load and show native contains loading
 
 in layout XML
 ~~~
-      <com.ads.control.ads.nativeAds.AperoNativeAdView
+      <com.ads.control.ads.nativeAds.ITGNativeAdView
         android:id="@+id/aperoNativeAds"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_150sdp"

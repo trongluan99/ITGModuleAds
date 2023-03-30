@@ -10,11 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
-import com.ads.control.ads.AperoAd;
-import com.ads.control.ads.AperoAdCallback;
+import com.ads.control.ads.ITGAd;
+import com.ads.control.ads.ITGAdCallback;
 import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.ads.wrapper.ApNativeAd;
-import com.ads.control.config.AperoAdConfig;
+import com.ads.control.config.ITGAdConfig;
 import com.ads.control.funtion.AdCallback;
 import com.example.andmoduleads.BuildConfig;
 import com.example.andmoduleads.R;
@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        if (AperoAd.getInstance().getMediationProvider() == AperoAdConfig.PROVIDER_ADMOB)
+        if (ITGAd.getInstance().getMediationProvider() == ITGAdConfig.PROVIDER_ADMOB)
             idAdSplash = BuildConfig.ad_interstitial_splash;
         else
             idAdSplash = getString(R.string.applovin_test_inter);
@@ -79,7 +79,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-    AperoAdCallback adCallback = new AperoAdCallback() {
+    ITGAdCallback adCallback = new ITGAdCallback() {
         @Override
         public void onAdFailedToLoad(@Nullable ApAdError i) {
             super.onAdFailedToLoad(i);
@@ -120,7 +120,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void loadSplash() {
         Log.d(TAG, "onCreate: show splash ads");
-        /*AperoAd.getInstance().setInitCallback(new AperoInitCallback() {
+        /*ITGAd.getInstance().setInitCallback(new ITGInitCallback() {
             @Override
             public void initAdSuccess() {
                 ArrayList<String> lists = new ArrayList<>();

@@ -17,7 +17,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
-import com.ads.control.ads.AperoAdCallback;
+import com.ads.control.ads.ITGAdCallback;
 import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.dialog.ResumeLoadingDialog;
@@ -43,7 +43,7 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
     private boolean disableAdResumeByClickAction = false;
     private boolean displayAdResume = false;
     private boolean isInitialized = false; // on  - off ad resume on app
-    private AperoAdCallback aperoAdCallback;
+    private ITGAdCallback ITGAdCallback;
 
     public static synchronized AppOpenMax getInstance() {
         if (INSTANCE == null) {
@@ -72,8 +72,8 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.d(TAG, "onAdLoaded: ");
-                if (aperoAdCallback != null) {
-                    aperoAdCallback.onAdLoaded();
+                if (ITGAdCallback != null) {
+                    ITGAdCallback.onAdLoaded();
                 }
             }
 
@@ -81,8 +81,8 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
             public void onAdDisplayed(MaxAd ad) {
                 displayAdResume = true;
                 Log.d(TAG, "onAdDisplayed: ");
-                if (aperoAdCallback != null) {
-                    aperoAdCallback.onAdImpression();
+                if (ITGAdCallback != null) {
+                    ITGAdCallback.onAdImpression();
                 }
             }
 
@@ -92,8 +92,8 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
                 appOpenAd.loadAd();
                 dismissDialogLoading();
                 displayAdResume = false;
-                if (aperoAdCallback != null) {
-                    aperoAdCallback.onAdClosed();
+                if (ITGAdCallback != null) {
+                    ITGAdCallback.onAdClosed();
                 }
             }
 
@@ -101,8 +101,8 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
             public void onAdClicked(MaxAd ad) {
                 Log.d(TAG, "onAdClicked: ");
                 disableAdResumeByClickAction = true;
-                if (aperoAdCallback != null) {
-                    aperoAdCallback.onAdClicked();
+                if (ITGAdCallback != null) {
+                    ITGAdCallback.onAdClicked();
                 }
             }
 
@@ -110,8 +110,8 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
             public void onAdLoadFailed(String adUnitId, MaxError error) {
                 Log.d(TAG, "onAdLoadFailed: ");
                 dismissDialogLoading();
-                if (aperoAdCallback != null) {
-                    aperoAdCallback.onAdFailedToLoad(new ApAdError(error));
+                if (ITGAdCallback != null) {
+                    ITGAdCallback.onAdFailedToLoad(new ApAdError(error));
                 }
             }
 
@@ -120,8 +120,8 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
                 Log.d(TAG, "onAdDisplayFailed: ");
                 appOpenAd.loadAd();
                 dismissDialogLoading();
-                if (aperoAdCallback != null) {
-                    aperoAdCallback.onAdFailedToShow(new ApAdError(error));
+                if (ITGAdCallback != null) {
+                    ITGAdCallback.onAdFailedToShow(new ApAdError(error));
                 }
             }
         });
@@ -170,8 +170,8 @@ public class AppOpenMax implements Application.ActivityLifecycleCallbacks, Lifec
         this.disableAdResumeByClickAction = disableAdResumeByClickAction;
     }
 
-    public void setAppOpenMaxCallback(AperoAdCallback aperoAdCallback) {
-        this.aperoAdCallback = aperoAdCallback;
+    public void setAppOpenMaxCallback(ITGAdCallback ITGAdCallback) {
+        this.ITGAdCallback = ITGAdCallback;
     }
 
 

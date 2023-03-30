@@ -10,25 +10,23 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.applovin.mediation.nativeAds.adPlacer.MaxRecyclerAdapter;
-
 public class AdmobRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public int TYPE_AD_VIEW = 0;
     private final int TYPE_CONTENT_VIEW = 1;
-    private final AperoAdPlacerSettings settings;
+    private final ITGAdPlacerSettings settings;
 
     private RecyclerView.Adapter adapterOriginal;
     private Activity activity;
-    private AperoAdPlacer adPlacer;
+    private ITGAdPlacer adPlacer;
     private AdapterDataObserver adapterDataObserver = new AdapterDataObserver();
 
-    public AdmobRecyclerAdapter(AperoAdPlacerSettings settings, RecyclerView.Adapter adapterOriginal, Activity activity) {
+    public AdmobRecyclerAdapter(ITGAdPlacerSettings settings, RecyclerView.Adapter adapterOriginal, Activity activity) {
         this.adapterOriginal = adapterOriginal;
         this.registerAdapterDataObserver(adapterDataObserver);
         this.activity = activity;
         this.settings = settings;
-        adPlacer = new AperoAdPlacer(settings, adapterOriginal, activity);
+        adPlacer = new ITGAdPlacer(settings, adapterOriginal, activity);
     }
 
     @NonNull
@@ -36,7 +34,7 @@ public class AdmobRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_AD_VIEW) {
             View view = LayoutInflater.from(parent.getContext()).inflate(settings.getLayoutAdPlaceHolder(), parent, false);
-            return new AperoViewHolder(view);
+            return new ITGViewHolder(view);
         } else {
             return adapterOriginal.onCreateViewHolder(parent, viewType);
         }
@@ -72,8 +70,8 @@ public class AdmobRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         return adPlacer.getAdjustedCount();
     }
 
-    private class AperoViewHolder extends RecyclerView.ViewHolder {
-        public AperoViewHolder(@NonNull View itemView) {
+    private class ITGViewHolder extends RecyclerView.ViewHolder {
+        public ITGViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 

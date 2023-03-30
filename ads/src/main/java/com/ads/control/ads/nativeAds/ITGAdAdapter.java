@@ -4,15 +4,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.applovin.mediation.nativeAds.adPlacer.MaxRecyclerAdapter;
 
-public class AperoAdAdapter {
+public class ITGAdAdapter {
     private AdmobRecyclerAdapter admobRecyclerAdapter;
     private MaxRecyclerAdapter maxRecyclerAdapter;
 
-    public AperoAdAdapter(AdmobRecyclerAdapter admobRecyclerAdapter) {
+    public ITGAdAdapter(AdmobRecyclerAdapter admobRecyclerAdapter) {
         this.admobRecyclerAdapter = admobRecyclerAdapter;
     }
 
-    public AperoAdAdapter(MaxRecyclerAdapter maxRecyclerAdapter) {
+    public ITGAdAdapter(MaxRecyclerAdapter maxRecyclerAdapter) {
         this.maxRecyclerAdapter = maxRecyclerAdapter;
     }
 

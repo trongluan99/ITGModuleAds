@@ -14,18 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
-import com.ads.control.ads.AperoAd;
-import com.ads.control.ads.AperoAdCallback;
-import com.ads.control.config.AperoAdConfig;
-import com.ads.control.ads.bannerAds.AperoBannerAdView;
-import com.ads.control.ads.nativeAds.AperoNativeAdView;
+import com.ads.control.ads.ITGAd;
+import com.ads.control.ads.ITGAdCallback;
+import com.ads.control.config.ITGAdConfig;
+import com.ads.control.ads.bannerAds.ITGBannerAdView;
+import com.ads.control.ads.nativeAds.ITGNativeAdView;
 import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.ads.wrapper.ApInterstitialAd;
 import com.ads.control.ads.wrapper.ApRewardAd;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.dialog.DialogExitApp1;
 import com.ads.control.dialog.InAppDialog;
-import com.ads.control.event.AperoAdjust;
+import com.ads.control.event.ITGAdjust;
 import com.ads.control.funtion.AdCallback;
 import com.ads.control.funtion.DialogExitListener;
 import com.ads.control.funtion.PurchaseListener;
@@ -54,17 +54,17 @@ public class MainActivity extends AppCompatActivity {
     private String idInter = "";
 
     private int layoutNativeCustom;
-    private AperoNativeAdView aperoNativeAdView;
+    private ITGNativeAdView ITGNativeAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        aperoNativeAdView = findViewById(R.id.aperoNativeAds);
+        ITGNativeAdView = findViewById(R.id.ITGNativeAds);
 
 
         configMediationProvider();
-        AperoAd.getInstance().setCountClickToShowAds(3);
+        ITGAd.getInstance().setCountClickToShowAds(3);
 
         AppOpenManager.getInstance().setEnableScreenContentCallback(true);
         AppOpenManager.getInstance().setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -79,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
          * Sample integration native ads
          */
         /*
-        AperoAd.getInstance().loadNativeAd(this, idNative, layoutNativeCustom);
-        aperoNativeAdView.setLayoutLoading(R.layout.loading_native_medium);
-        aperoNativeAdView.setLayoutCustomNativeAd(layoutNativeCustom);
-        aperoNativeAdView.loadNativeAd(this, idNative,layoutNativeCustom,R.layout.loading_native_medium);
+        ITGAd.getInstance().loadNativeAd(this, idNative, layoutNativeCustom);
+        ITGNativeAdView.setLayoutLoading(R.layout.loading_native_medium);
+        ITGNativeAdView.setLayoutCustomNativeAd(layoutNativeCustom);
+        ITGNativeAdView.loadNativeAd(this, idNative,layoutNativeCustom,R.layout.loading_native_medium);
         */
-        aperoNativeAdView.loadNativeAd(this, idNative, new AperoAdCallback() {
+        ITGNativeAdView.loadNativeAd(this, idNative, new ITGAdCallback() {
             @Override
             public void onAdImpression() {
                 super.onAdImpression();
@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        AperoAd.getInstance().loadBanner(this, idBanner);
-        AperoBannerAdView bannerAdView = findViewById(R.id.bannerView);
-        bannerAdView.loadBanner(this, idBanner, new AperoAdCallback() {
+//        ITGAd.getInstance().loadBanner(this, idBanner);
+        ITGBannerAdView bannerAdView = findViewById(R.id.bannerView);
+        bannerAdView.loadBanner(this, idBanner, new ITGAdCallback() {
             @Override
             public void onAdImpression() {
                 super.onAdImpression();
@@ -125,9 +125,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btShowAds).setOnClickListener(v -> {
             if (mInterstitialAd.isReady()) {
 
-                ApInterstitialAd inter = AperoAd.getInstance().getInterstitialAds(this, idInter);
+                ApInterstitialAd inter = ITGAd.getInstance().getInterstitialAds(this, idInter);
 
-                AperoAd.getInstance().showInterstitialAdByTimes(this, mInterstitialAd, new AperoAdCallback() {
+                ITGAd.getInstance().showInterstitialAdByTimes(this, mInterstitialAd, new ITGAdCallback() {
                     @Override
                     public void onNextAction() {
                         Log.i(TAG, "onNextAction: start content and finish main");
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btForceShowAds).setOnClickListener(v -> {
             if (mInterstitialAd.isReady()) {
-                AperoAd.getInstance().forceShowInterstitial(this, mInterstitialAd, new AperoAdCallback() {
+                ITGAd.getInstance().forceShowInterstitial(this, mInterstitialAd, new ITGAdCallback() {
                     @Override
                     public void onNextAction() {
                         Log.i(TAG, "onAdClosed: start content and finish main");
@@ -181,10 +181,10 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnShowReward).setOnClickListener(v -> {
             if (rewardAd != null && rewardAd.isReady()) {
-                AperoAd.getInstance().forceShowRewardAd(this, rewardAd, new AperoAdCallback());
+                ITGAd.getInstance().forceShowRewardAd(this, rewardAd, new ITGAdCallback());
                 return;
             }
-            rewardAd = AperoAd.getInstance().getRewardAd(this,  BuildConfig.ad_reward);
+            rewardAd = ITGAd.getInstance().getRewardAd(this,  BuildConfig.ad_reward);
         });
 
         Button btnIAP = findViewById(R.id.btIap);
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configMediationProvider() {
-        if (AperoAd.getInstance().getMediationProvider() == AperoAdConfig.PROVIDER_ADMOB) {
+        if (ITGAd.getInstance().getMediationProvider() == ITGAdConfig.PROVIDER_ADMOB) {
             idBanner = BuildConfig.ad_banner;
             idNative = BuildConfig.ad_native;
             idInter = BuildConfig.ad_interstitial_splash;
@@ -224,16 +224,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadAdInterstitial() {
 
-        mInterstitialAd = AperoAd.getInstance().getInterstitialAds(this, idInter);
+        mInterstitialAd = ITGAd.getInstance().getInterstitialAds(this, idInter);
     }
 
 
     public void onTrackSimpleEventClick(View v) {
-        AperoAdjust.onTrackEvent(EVENT_TOKEN_SIMPLE);
+        ITGAdjust.onTrackEvent(EVENT_TOKEN_SIMPLE);
     }
 
     public void onTrackRevenueEventClick(View v) {
-        AperoAdjust.onTrackRevenue(EVENT_TOKEN_REVENUE, 1f, "EUR");
+        ITGAdjust.onTrackRevenue(EVENT_TOKEN_REVENUE, 1f, "EUR");
     }
 
 
