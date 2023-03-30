@@ -10,7 +10,7 @@
 # Import Module
 ~~~
 	maven { url 'https://jitpack.io' }
-	implementation 'com.github.trongluan99:ITGModuleAds:1.0.0'
+	implementation 'com.github.trongluan99:ITGModuleAds:1.0.8'
 ~~~	 
 # Summary
 * [Setup AperoAd](#setup_aperoad)
@@ -33,17 +33,23 @@ We recommend you to setup 2 environments for your project, and only use test id 
 ~~~    
       productFlavors {
       appDev {
-              manifestPlaceholders = [ ad_app_id:"AD_APP_ID_TEST" ]
-              buildConfigField "String", "ads_inter_turn_on", "\"AD_ID_INTERSTIAL_TEST\""
-              buildConfigField "String", "ads_inter_turn_off", "\"AD_ID_INTERSTIAL_TEST\""
-	      buildConfigField "Boolean", "build_debug", "true"
+             	manifestPlaceholders = [ad_app_id: "ca-app-pub-3940256099942544~3347511713"]
+            	buildConfigField "String", "inter", "\"ca-app-pub-3940256099942544/1033173712\""
+            	buildConfigField "String", "banner", "\"ca-app-pub-3940256099942544/6300978111\""
+            	buildConfigField "String", "native", "\"ca-app-pub-3940256099942544/2247696110\""
+            	buildConfigField "String", "open_resume", "\"ca-app-pub-3940256099942544/3419835294\""
+		buildConfigField "String", "RewardedAd", "\"ca-app-pub-3940256099942544/5224354917\""
+            	buildConfigField "Boolean", "build_debug", "true"
            }
        appProd {
             // ADS CONFIG BEGIN (required)
-               manifestPlaceholders = [ ad_app_id:"AD_APP_ID" ]
-               buildConfigField "String", "ads_inter_splash", "\"AD_ID_INTERSTIAL\""
-               buildConfigField "String", "ads_inter_turn_on", "\"AD_ID_INTERSTIAL\""
-	       buildConfigField "Boolean", "build_debug", "false"
+                manifestPlaceholders = [ad_app_id: "ca-app-pub-3940256099942544~3347511713"]
+            	buildConfigField "String", "inter", "\"ca-app-pub-3940256099942544/1033173712\""
+            	buildConfigField "String", "banner", "\"ca-app-pub-3940256099942544/6300978111\""
+            	buildConfigField "String", "native", "\"ca-app-pub-3940256099942544/2247696110\""
+            	buildConfigField "String", "open_resume", "\"ca-app-pub-3940256099942544/3419835294\""
+		buildConfigField "String", "RewardedAd", "\"ca-app-pub-3940256099942544/5224354917\""
+	        buildConfigField "Boolean", "build_debug", "false"
             // ADS CONFIG END (required)
            }
       }
