@@ -101,8 +101,8 @@ class App : AdsMultiDexApplication(){
         AppsflyerConfig appsflyerConfig = new AppsflyerConfig(true,APPSFLYER_TOKEN);
         aperoAdConfig.setAppsflyerConfig(appsflyerConfig);
 	
-	   // Optional: setup client token SDK Facebook
-	   aperoAdConfig.setFacebookClientToken(FACEBOOK_CLIENT_TOKEN)
+	// Optional: setup client token SDK Facebook
+	aperoAdConfig.setFacebookClientToken(FACEBOOK_CLIENT_TOKEN)
 
         // Optional: enable ads resume
         aperoAdConfig.setIdAdResume(BuildConfig.ads_open_app);
@@ -117,7 +117,7 @@ class App : AdsMultiDexApplication(){
         Admob.getInstance().setDisableAdResumeWhenClickAds(true);
         // If true -> onNextAction() is called right after Ad Interstitial showed
         Admob.getInstance().setOpenActivityAfterShowInterAds(true);
-	    AppOpenManager.getInstance().disableAppResumeWithActivity(SplashActivity.class);
+	AppOpenManager.getInstance().disableAppResumeWithActivity(SplashActivity.class);
 	}
 }
 ~~~
