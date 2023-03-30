@@ -87,7 +87,7 @@ Configure your mediation here. using PROVIDER_ADMOB or PROVIDER_MAX
 
 *** Note:Cannot use id ad test for production enviroment 
 ~~~
-class App : AdsMultiDexApplication(){
+class App extends AdsMultiDexApplication(){
     @Override
     public void onCreate() {
         super.onCreate();
