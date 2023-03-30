@@ -150,6 +150,7 @@ SplashActivity
             }
         });
 ~~~
+SplashActivity
 ### Ad Splash App Open High and Interstitial
 ~~~ 
     AppOpenManager.getInstance().loadSplashOpenAndInter(SplashActivity.class,SplashActivity.this, BuildConfig.open_lunch_high,BuildConfig.inter_splash,25000, new AdCallback(){
