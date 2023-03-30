@@ -59,6 +59,22 @@ AndroidManiafest.xml
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${ad_app_id}" />
+
+        // Config SDK Facebook
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+
+        <meta-data android:name="com.facebook.sdk.AutoInitEnabled"
+            android:value="true"/>
+        <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="true"/>
+
+        <meta-data android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled"
+            android:value="true"/>
 ~~~
 ## <a id="config_ads"></a>Config ads
 Create class Application
@@ -85,8 +101,8 @@ class App : AdsMultiDexApplication(){
         AppsflyerConfig appsflyerConfig = new AppsflyerConfig(true,APPSFLYER_TOKEN);
         aperoAdConfig.setAppsflyerConfig(appsflyerConfig);
 	
-	// Optional: setup client token SDK Facebook
-	aperoAdConfig.setFacebookClientToken(FACEBOOK_CLIENT_TOKEN)
+	   // Optional: setup client token SDK Facebook
+	   aperoAdConfig.setFacebookClientToken(FACEBOOK_CLIENT_TOKEN)
 
         // Optional: enable ads resume
         aperoAdConfig.setIdAdResume(BuildConfig.ads_open_app);
@@ -101,7 +117,7 @@ class App : AdsMultiDexApplication(){
         Admob.getInstance().setDisableAdResumeWhenClickAds(true);
         // If true -> onNextAction() is called right after Ad Interstitial showed
         Admob.getInstance().setOpenActivityAfterShowInterAds(true);
-	AppOpenManager.getInstance().disableAppResumeWithActivity(SplashActivity.class);
+	    AppOpenManager.getInstance().disableAppResumeWithActivity(SplashActivity.class);
 	}
 }
 ~~~
@@ -114,8 +130,8 @@ android:name=".App"
 ~~~
 
 ## <a id="ads_formats"></a>Ads formats
-### Ad Splash Interstitial
 SplashActivity
+### Ad Splash Interstitial
 ~~~ 
     AperoAdCallback adCallback = new AperoAdCallback() {
         @Override
@@ -134,8 +150,22 @@ SplashActivity
             }
         });
 ~~~
+### Ad Splash App Open High and Interstitial
+~~~ 
+    AppOpenManager.getInstance().loadSplashOpenAndInter(SplashActivity.class,SplashActivity.this, BuildConfig.open_lunch_high,BuildConfig.inter_splash,25000, new AdCallback(){
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                
+                // startMain();
+            
+            }
+        });
+
+~~~ 
+
 ### Interstitial
-Load ad interstital before show
+Load ad interstital before show // Check null when Load Inter
 ~~~
   private fun loadInterCreate() {
 	ApInterstitialAd mInterstitialAd = AperoAd.getInstance().getInterstitialAds(this, idInter);
