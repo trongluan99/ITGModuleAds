@@ -38,7 +38,7 @@ We recommend you to setup 2 environments for your project, and only use test id 
                 buildConfigField "String", "banner", "\"ca-app-pub-3940256099942544/6300978111\""
                 buildConfigField "String", "native", "\"ca-app-pub-3940256099942544/2247696110\""
                 buildConfigField "String", "open_resume", "\"ca-app-pub-3940256099942544/3419835294\""
-        buildConfigField "String", "RewardedAd", "\"ca-app-pub-3940256099942544/5224354917\""
+                buildConfigField "String", "RewardedAd", "\"ca-app-pub-3940256099942544/5224354917\""
                 buildConfigField "Boolean", "build_debug", "true"
            }
        appProd {
@@ -48,8 +48,8 @@ We recommend you to setup 2 environments for your project, and only use test id 
                 buildConfigField "String", "banner", "\"ca-app-pub-3940256099942544/6300978111\""
                 buildConfigField "String", "native", "\"ca-app-pub-3940256099942544/2247696110\""
                 buildConfigField "String", "open_resume", "\"ca-app-pub-3940256099942544/3419835294\""
-        buildConfigField "String", "RewardedAd", "\"ca-app-pub-3940256099942544/5224354917\""
-            buildConfigField "Boolean", "build_debug", "false"
+                buildConfigField "String", "RewardedAd", "\"ca-app-pub-3940256099942544/5224354917\""
+                buildConfigField "Boolean", "build_debug", "false"
             // ADS CONFIG END (required)
            }
       }
