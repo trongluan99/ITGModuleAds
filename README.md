@@ -105,8 +105,8 @@ class App : AdsMultiDexApplication(){
         AppsflyerConfig appsflyerConfig = new AppsflyerConfig(true,APPSFLYER_TOKEN);
         itgAdConfig.setAppsflyerConfig(appsflyerConfig);
     
-    // Optional: setup client token SDK Facebook
-    itgAdConfig.setFacebookClientToken(FACEBOOK_CLIENT_TOKEN)
+        // Optional: setup client token SDK Facebook
+        itgAdConfig.setFacebookClientToken(FACEBOOK_CLIENT_TOKEN)
 
         // Optional: enable ads resume
         itgAdConfig.setIdAdResume(BuildConfig.ads_open_app);
