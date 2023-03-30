@@ -166,7 +166,8 @@ SplashActivity
 ~~~ 
 
 ### Interstitial
-Load ad interstital before show // Check null when Load Inter
+Load ad interstital before show 
+Check null when Load Inter
 ~~~
   private fun loadInterCreate() {
 	ApInterstitialAd mInterstitialAd = AperoAd.getInstance().getInterstitialAds(this, idInter);
@@ -308,7 +309,7 @@ Application
                 public void onInitBillingListener(int code) {
                          loadAdsPlash();
                 }
-            },5000);
+            },7000);
         }
 ~~~
 ## Check purchase status
