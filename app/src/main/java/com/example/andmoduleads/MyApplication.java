@@ -49,27 +49,27 @@ public class MyApplication extends AdsMultiDexApplication {
 
     private void initAds() {
         String environment = BuildConfig.env_dev ? ITGAdConfig.ENVIRONMENT_DEVELOP : ITGAdConfig.ENVIRONMENT_PRODUCTION;
-        ITGAdConfig = new ITGAdConfig(this, ITGAdConfig.PROVIDER_ADMOB, environment);
+        itgAdConfig = new ITGAdConfig(this, ITGAdConfig.PROVIDER_ADMOB, environment);
 
         // Optional: setup Adjust event
         AdjustConfig adjustConfig = new AdjustConfig(true,ADJUST_TOKEN);
         adjustConfig.setEventAdImpression(EVENT_AD_IMPRESSION_ADJUST);
         adjustConfig.setEventNamePurchase(EVENT_PURCHASE_ADJUST);
-        ITGAdConfig.setAdjustConfig(adjustConfig);
+        itgAdConfig.setAdjustConfig(adjustConfig);
 
         // Optional: setup Appsflyer event
 //        AppsflyerConfig appsflyerConfig = new AppsflyerConfig(true,APPSFLYER_TOKEN);
 //        ITGAdConfig.setAppsflyerConfig(appsflyerConfig);
 
         // Optional: enable ads resume
-        ITGAdConfig.setIdAdResume(BuildConfig.ads_open_app);
+        itgAdConfig.setIdAdResume(BuildConfig.ads_open_app);
 
         // Optional: setup list device test - recommended to use
         listTestDevice.add("EC25F576DA9B6CE74778B268CB87E431");
-        ITGAdConfig.setListDeviceTest(listTestDevice);
-        ITGAdConfig.setIntervalInterstitialAd(15);
+        itgAdConfig.setListDeviceTest(listTestDevice);
+        itgAdConfig.setIntervalInterstitialAd(15);
 
-        ITGAd.getInstance().init(this, ITGAdConfig, false);
+        ITGAd.getInstance().init(this, itgAdConfig, false);
 
         // Auto disable ad resume after user click ads and back to app
         Admob.getInstance().setDisableAdResumeWhenClickAds(true);
