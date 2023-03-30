@@ -77,13 +77,16 @@ class App : AdsMultiDexApplication(){
 
         // Optional: setup Adjust event
         AdjustConfig adjustConfig = new AdjustConfig(true,ADJUST_TOKEN);
-        adjustConfig.setEventAdImpression(EVENT_AD_IMPRESSION_ADJUST);
-        adjustConfig.setEventNamePurchase(EVENT_PURCHASE_ADJUST);
+        // adjustConfig.setEventAdImpression(EVENT_AD_IMPRESSION_ADJUST);
+        // adjustConfig.setEventNamePurchase(EVENT_PURCHASE_ADJUST);
         aperoAdConfig.setAdjustConfig(adjustConfig);
 
         // Optional: setup Appsflyer event
         AppsflyerConfig appsflyerConfig = new AppsflyerConfig(true,APPSFLYER_TOKEN);
         aperoAdConfig.setAppsflyerConfig(appsflyerConfig);
+	
+	// Optional: setup client token SDK Facebook
+	aperoAdConfig.setFacebookClientToken(FACEBOOK_CLIENT_TOKEN)
 
         // Optional: enable ads resume
         aperoAdConfig.setIdAdResume(BuildConfig.ads_open_app);
@@ -97,7 +100,8 @@ class App : AdsMultiDexApplication(){
         // Auto disable ad resume after user click ads and back to app
         Admob.getInstance().setDisableAdResumeWhenClickAds(true);
         // If true -> onNextAction() is called right after Ad Interstitial showed
-        Admob.getInstance().setOpenActivityAfterShowInterAds(false);
+        Admob.getInstance().setOpenActivityAfterShowInterAds(true);
+	AppOpenManager.getInstance().disableAppResumeWithActivity(SplashActivity.class);
 	}
 }
 ~~~
