@@ -11,6 +11,10 @@
 ~~~
     maven { url 'https://jitpack.io' }
     implementation 'com.github.trongluan99:ITGModuleAds:1.0.8'
+    implementation 'com.google.android.play:core:1.10.3'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 ~~~  
 # Summary
 * [Setup ITGAd](#setup_ITGad)
