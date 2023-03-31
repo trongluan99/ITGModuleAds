@@ -1039,6 +1039,14 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             adListener.onAdLoadedHigh();
                         }
 
+                        appOpenAd.setOnPaidEventListener(adValue -> {
+                            ITGLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
+                                    adValue,
+                                    splashAdOpen.getAdUnitId(),
+                                    splashAdOpen.getResponseInfo()
+                                            .getMediationAdapterClassName(), AdType.APP_OPEN);
+                        });
+
                         splashAdOpen = appOpenAd;
                         splashAdOpen.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
@@ -1109,13 +1117,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             }
                         });
                         splashLoadTime = new Date().getTime();
-                        appOpenAd.setOnPaidEventListener(adValue -> {
-                            ITGLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
-                                    adValue,
-                                    splashAdOpen.getAdUnitId(),
-                                    splashAdOpen.getResponseInfo()
-                                            .getMediationAdapterClassName(), AdType.APP_OPEN);
-                        });
 
                         if (!isAppOpenShowed) {
                             splashAdOpen.show(currentActivity);
@@ -1172,7 +1173,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             adListener.onInterstitialLoad(interstitialAd);
 
                         statusInter = Type_Load_Success;
-                        splashAdInter = interstitialAd;
 
                         interstitialAd.setOnPaidEventListener(adValue -> {
                             ITGLogEventManager.logPaidAdImpression(activity,
@@ -1181,6 +1181,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     interstitialAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.INTERSTITIAL);
                         });
+
+                        splashAdInter = interstitialAd;
                     }
 
                     @Override
