@@ -963,48 +963,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         AppOpenAd.load(myApplication, idOpenAll, request2, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackAll);
     }
 
-    public void adCallBackShowAppOpen(AppCompatActivity activity, AdCallback adListener, AppOpenAd adAppOpen) {
-        adAppOpen.setFullScreenContentCallback(new FullScreenContentCallback() {
-            @Override
-            public void onAdClicked() {
-                super.onAdClicked();
-                disableAdResumeByClickAction = true;
-
-                if (adListener != null) {
-                    adListener.onAdClicked();
-                }
-            }
-
-            @Override
-            public void onAdDismissedFullScreenContent() {
-                super.onAdDismissedFullScreenContent();
-                if (adListener != null) {
-                    adListener.onNextAction();
-                }
-            }
-
-            @Override
-            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                super.onAdFailedToShowFullScreenContent(adError);
-                if (adListener != null) {
-                    adListener.onNextAction();
-                }
-            }
-
-            @Override
-            public void onAdImpression() {
-                super.onAdImpression();
-                isAppOpenShowed = true;
-            }
-
-            @Override
-            public void onAdShowedFullScreenContent() {
-                super.onAdShowedFullScreenContent();
-            }
-        });
-        adAppOpen.show(activity);
-    }
-
     public void loadSplashOpenAndInter(Class splashActivity, AppCompatActivity activity, String idOpen, String idInter, int timeOutOpen, AdCallback adListener) {
         isAppOpenShowed = false;
         isTimeDelay = false;
