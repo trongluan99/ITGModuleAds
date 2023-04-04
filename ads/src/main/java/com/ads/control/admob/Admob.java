@@ -1069,6 +1069,7 @@ public class Admob {
                 dialog = new PrepareLoadingAdsDialog(activity);
                 try {
                     dialog.show();
+                    AppOpenManager.getInstance().setInterstitialShowing(true);
                 } catch (Exception e) {
                     adListener.onNextAction();
                     return;
@@ -1206,6 +1207,7 @@ public class Admob {
                 dialog = new PrepareLoadingAdsDialog(activity);
                 try {
                     dialog.show();
+                    AppOpenManager.getInstance().setInterstitialShowing(true);
                 } catch (Exception e) {
                     adListener.onNextAction();
                     return;
@@ -1344,6 +1346,7 @@ public class Admob {
                 dialog = new PrepareLoadingAdsDialog(activity);
                 try {
                     dialog.show();
+                    AppOpenManager.getInstance().setInterstitialShowing(true);
                 } catch (Exception e) {
                     adListener.onNextAction();
                     return;
@@ -1671,6 +1674,7 @@ public class Admob {
                     try {
                         callback.onInterstitialShow();
                         dialog.show();
+                        AppOpenManager.getInstance().setInterstitialShowing(true);
                     } catch (Exception e) {
                         callback.onNextAction();
                         return;
