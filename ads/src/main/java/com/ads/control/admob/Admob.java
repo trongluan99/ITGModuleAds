@@ -77,6 +77,9 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.jirbo.adcolony.AdColonyAdapter;
 import com.jirbo.adcolony.AdColonyBundleBuilder;
+import com.vungle.mediation.VungleAdapter;
+import com.vungle.mediation.VungleExtrasBuilder;
+import com.vungle.mediation.VungleInterstitialAdapter;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -104,6 +107,8 @@ public class Admob {
     private boolean isFan;
     private boolean isAdcolony;
     private boolean isAppLovin;
+    private boolean isVungle;
+
     boolean isTimeDelay = false; //xử lý delay time show ads, = true mới show ads
     private boolean openActivityAfterShowInterAds = false;
     private Context context;
@@ -133,7 +138,10 @@ public class Admob {
 
     public void setAppLovin(boolean appLovin) {
         isAppLovin = appLovin;
+    }
 
+    public void setVungle(boolean vungle) {
+        isAppLovin = vungle;
     }
 
     /**
@@ -271,6 +279,15 @@ public class Admob {
                     .build();
             builder.addNetworkExtrasBundle(ApplovinAdapter.class, extras);
         }
+
+        if (isVungle) {
+            Bundle extras = new VungleExtrasBuilder(null)
+                    .setSoundEnabled(false)
+                    .build();
+            builder.addNetworkExtrasBundle(VungleAdapter.class, extras); // Reward
+            builder.addNetworkExtrasBundle(VungleInterstitialAdapter.class, extras); // Interstitial
+        }
+
 //        builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
         return builder.build();
     }
