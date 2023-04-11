@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.control.admob.AppOpenManager;
+import com.ads.control.ads.ITGAd;
 import com.ads.control.funtion.AdCallback;
 import com.example.andmoduleads.R;
 
@@ -27,5 +28,7 @@ public class TestSplash extends AppCompatActivity {
                         startActivity(new Intent(TestSplash.this, MainActivity.class));
                     }
                 });*/
+
+        ITGAd.getInstance().loadSmartBanner(this, getString(R.string.admod_banner_id));
     }
 }
