@@ -947,7 +947,7 @@ public class AppLovin {
                 .setAdvertiserTextViewId(R.id.ad_advertiser)
                 .setIconImageViewId(R.id.ad_app_icon)
                 .setMediaContentViewGroupId(R.id.ad_media)
-                .setOptionsContentViewGroupId(R.id.options_view)
+                .setOptionsContentViewGroupId(R.id.ad_options_view)
                 .setCallToActionButtonId(R.id.ad_call_to_action)
                 .build();
 
