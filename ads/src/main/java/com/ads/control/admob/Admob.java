@@ -125,6 +125,9 @@ public class Admob {
     InterstitialAd mInterSplashHighFloor;
     InterstitialAd mInterSplashAll;
 
+    InterstitialAd mInterHighFloor;
+    InterstitialAd mInterAllPrice;
+
     public Thread threadHighFloor;
     public Thread threadAll;
 
@@ -1545,6 +1548,101 @@ public class Admob {
 
     }
 
+    /**
+     * Trả về 2 InterstitialAd: High Floor & All Price và request Ads
+     *
+     * @param context
+     * @param idHighFloor
+     * @param idAllPrice
+     * @return
+     */
+    public void getInterstitialAds(Context context, String idHighFloor, String idAllPrice, AdCallback adCallback) {
+        if (Arrays.asList(context.getResources().getStringArray(R.array.list_id_test)).contains(idHighFloor)) {
+            showTestIdAlert(context, INTERS_ADS, idHighFloor);
+        }
+
+        if (Arrays.asList(context.getResources().getStringArray(R.array.list_id_test)).contains(idAllPrice)) {
+            showTestIdAlert(context, INTERS_ADS, idHighFloor);
+        }
+
+        if (AppPurchase.getInstance().isPurchased(context) || AdmodHelper.getNumClickAdsPerDay(context, idHighFloor) >= maxClickAds) {
+            adCallback.onInterstitialLoad(null);
+            return;
+        }
+
+        if (AppPurchase.getInstance().isPurchased(context) || AdmodHelper.getNumClickAdsPerDay(context, idAllPrice) >= maxClickAds) {
+            adCallback.onInterstitialLoad(null);
+            return;
+        }
+
+
+        InterstitialAd.load(context, idHighFloor, getAdRequest(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        if (adCallback != null) {
+                            adCallback.onInterstitialLoad(interstitialAd, mInterAllPrice);
+                        }
+
+                        //tracking adjust
+                        interstitialAd.setOnPaidEventListener(adValue -> {
+                            Log.d(TAG, "OnPaidEvent getInterstitialAds:" + adValue.getValueMicros());
+
+                            ITGLogEventManager.logPaidAdImpression(context,
+                                    adValue,
+                                    interstitialAd.getAdUnitId(),
+                                    interstitialAd.getResponseInfo()
+                                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                        });
+                        Log.i(TAG, "InterstitialAds High Floor onAdLoaded");
+
+                        mInterHighFloor = interstitialAd;
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i(TAG, loadAdError.getMessage());
+                        if (adCallback != null)
+                            adCallback.onAdFailedToLoad(loadAdError);
+                    }
+
+                });
+
+        InterstitialAd.load(context, idAllPrice, getAdRequest(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        if (adCallback != null){
+                            adCallback.onInterstitialLoad(mInterHighFloor, interstitialAd);
+                        }
+
+                        //tracking adjust
+                        interstitialAd.setOnPaidEventListener(adValue -> {
+                            Log.d(TAG, "OnPaidEvent getInterstitialAds:" + adValue.getValueMicros());
+
+                            ITGLogEventManager.logPaidAdImpression(context,
+                                    adValue,
+                                    interstitialAd.getAdUnitId(),
+                                    interstitialAd.getResponseInfo()
+                                            .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+                        });
+                        Log.i(TAG, "InterstitialAds All Price onAdLoaded");
+                        mInterAllPrice = interstitialAd;
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i(TAG, loadAdError.getMessage());
+                        if (adCallback != null)
+                            adCallback.onAdFailedToLoad(loadAdError);
+                    }
+
+                });
+
+    }
+
 
     /**
      * Hiển thị ads  timeout
@@ -1937,8 +2035,8 @@ public class Admob {
     }
 
     private void loadSmartBanner(final Activity mActivity, String id,
-                            final FrameLayout adContainer, final ShimmerFrameLayout containerShimmer,
-                            final AdCallback callback) {
+                                 final FrameLayout adContainer, final ShimmerFrameLayout containerShimmer,
+                                 final AdCallback callback) {
         if (Arrays.asList(mActivity.getResources().getStringArray(R.array.list_id_test)).contains(id)) {
             showTestIdAlert(mActivity, BANNER_ADS, id);
         }

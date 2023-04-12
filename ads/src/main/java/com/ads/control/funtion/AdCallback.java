@@ -57,6 +57,10 @@ public class AdCallback {
 
     }
 
+    public void onInterstitialLoad(@Nullable InterstitialAd interstitialAdHighFloor, @Nullable InterstitialAd interstitialAdAllPrice) {
+
+    }
+
     public void onAdClicked() {
     }
 
