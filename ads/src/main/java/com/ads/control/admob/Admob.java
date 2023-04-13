@@ -1613,7 +1613,7 @@ public class Admob {
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        if (adCallback != null){
+                        if (adCallback != null) {
                             adCallback.onInterstitialLoad(mInterHighFloor, interstitialAd);
                         }
 
@@ -2059,6 +2059,10 @@ public class Admob {
                     containerShimmer.stopShimmer();
                     adContainer.setVisibility(View.GONE);
                     containerShimmer.setVisibility(View.GONE);
+
+                    if (callback != null) {
+                        callback.onAdFailedToLoad(loadAdError);
+                    }
                 }
 
 
@@ -2078,6 +2082,10 @@ public class Admob {
                                     adView.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.BANNER);
                         });
+                    }
+
+                    if (callback != null) {
+                        callback.onAdLoaded();
                     }
                 }
 
@@ -2141,6 +2149,10 @@ public class Admob {
                     containerShimmer.stopShimmer();
                     adContainer.setVisibility(View.GONE);
                     containerShimmer.setVisibility(View.GONE);
+
+                    if (callback != null) {
+                        callback.onAdFailedToLoad(loadAdError);
+                    }
                 }
 
 
@@ -2160,6 +2172,10 @@ public class Admob {
                                     adView.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.BANNER);
                         });
+                    }
+
+                    if (callback != null) {
+                        callback.onAdLoaded();
                     }
                 }
 

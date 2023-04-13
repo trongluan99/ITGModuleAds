@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.control.admob.Admob;
 import com.ads.control.ads.ITGAd;
+import com.ads.control.ads.ITGAdCallback;
+import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.funtion.AdCallback;
 import com.example.andmoduleads.R;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
@@ -33,7 +35,19 @@ public class TestSplash extends AppCompatActivity {
                     }
                 });*/
 
-        ITGAd.getInstance().loadSmartBanner(this, getString(R.string.admod_banner_id));
+        ITGAd.getInstance().loadBanner(this, getString(R.string.admod_banner_id), new ITGAdCallback(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Log.e("TAG", "onAdLoaded: " );
+            }
+
+            @Override
+            public void onAdFailedToLoad(@Nullable ApAdError adError) {
+                super.onAdFailedToLoad(adError);
+                Log.e("TAG", "onAdFailedToLoad: " );
+            }
+        });
 
         Admob.getInstance().getInterstitialAds(this,
                 "ca-app-pub-3940256099942544/1033173712",
