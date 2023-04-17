@@ -7,15 +7,40 @@
 - Appsflyer
 - Firebase auto log tracking event, tROAS
 
+# Import Adjust trong My Application
+~~~
+    AdjustConfig adjustConfig = new AdjustConfig(true, ADJUST_TOKEN);
+    itgAdConfig.setAdjustConfig(adjustConfig);
+~~~
 # Import Module
 ~~~
     maven { url 'https://jitpack.io' }
-    implementation 'com.github.trongluan99:ITGModuleAds:1.0.8'
+    implementation 'com.github.trongluan99:ITGModuleAds:1.0.17'
     implementation 'com.google.android.play:core:1.10.3'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.android.gms:play-services-ads:22.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
 ~~~  
+# Import Mediation Admob
+~~~
+    maven {url 'https://android-sdk.is.com/'}
+    maven {url 'https://artifact.bytedance.com/repository/pangle/'}
+    maven {url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'}
+    
+    // Mediation
+    implementation 'com.google.ads.mediation:applovin:11.8.2.0'
+    implementation 'com.google.ads.mediation:pangle:5.0.1.0.0'
+    implementation 'com.google.ads.mediation:facebook:6.13.7.0'
+    implementation 'com.google.ads.mediation:ironsource:7.3.0.0'
+    implementation 'com.unity3d.ads:unity-ads:4.6.0'
+    implementation 'com.google.ads.mediation:unity:4.6.1.0'
+    implementation 'com.google.ads.mediation:vungle:6.12.1.0'
+    implementation 'com.google.ads.mediation:mintegral:16.4.21.0'
+    
+    // Setup trong MyApplication
+    MBridgeSDK sdk = MBridgeSDKFactory.getMBridgeSDK();
+    sdk.setConsentStatus(this, MBridgeConstans.IS_SWITCH_ON);
+~~~
 # Summary
 * [Setup ITGAd](#setup_ITGad)
     * [Setup id ads](#set_up_ads)
