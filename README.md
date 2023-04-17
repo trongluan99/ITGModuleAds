@@ -40,6 +40,11 @@
     // Setup trong MyApplication
     MBridgeSDK sdk = MBridgeSDKFactory.getMBridgeSDK();
     sdk.setConsentStatus(this, MBridgeConstans.IS_SWITCH_ON);
+    
+     Admob.getInstance().setAppLovin(true)
+     Admob.getInstance().setColony(true)
+     Admob.getInstance().setFan(true)
+     Admob.getInstance().setVungle(true)
 ~~~
 # Summary
 * [Setup ITGAd](#setup_ITGad)
