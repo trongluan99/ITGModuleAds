@@ -8,7 +8,7 @@
 - Firebase auto log tracking event, tROAS
 # Import Ironsource
 ~~~
-    // **Init IS trong SplashActivity**
+    // Init IS trong SplashActivity
     String keyIS = "85460dcd" (Key Test)
     AppIronSource.getInstance().init(TestSplash.this, keyIS , true);
     
