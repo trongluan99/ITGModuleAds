@@ -21,14 +21,17 @@
         }
     }, 30000);
 ~~~  
+~~~  
     // Load Banner
     AppIronSource.getInstance().loadBanner(this);
 ~~~ 
+~~~  
     // Load Inter
     if(!AppIronSource.getInstance().isInterstitialReady()){
         AppIronSource.getInstance().loadInterstitial(this, new AdCallback());
     }
 ~~~ 
+~~~  
     // Show Inter
     if(AppIronSource.getInstance().isInterstitialReady()){
             AppIronSource.getInstance().showInterstitial(this, new AdCallback(){
