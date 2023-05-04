@@ -7,6 +7,7 @@
 - Appsflyer
 - Firebase auto log tracking event, tROAS
 # Import Ironsource
+~~~
 - Init IS trong SplashActivity
     String keyIS = "85460dcd" (Key Test)
     AppIronSource.getInstance().init(TestSplash.this, keyIS , true);
@@ -19,7 +20,7 @@
             startActivity(new Intent(this, MainActivity.class));
         }
     }, 30000);
-        
+~~~  
     // Load Banner
     AppIronSource.getInstance().loadBanner(this);
     
