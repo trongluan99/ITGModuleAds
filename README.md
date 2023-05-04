@@ -6,6 +6,40 @@
 - Adjust
 - Appsflyer
 - Firebase auto log tracking event, tROAS
+# Import Ironsource
+- Init IS trong SplashActivity
+    String keyIS = "85460dcd" (Key Test)
+    AppIronSource.getInstance().init(TestSplash.this, keyIS , true);
+    
+    // Load Inter Splash
+    AppIronSource.getInstance().loadSplashInterstitial(this, new AdCallback() {
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                startActivity(new Intent(this, MainActivity.class));
+            }
+        }, 30000);
+        
+    // Load Banner
+    AppIronSource.getInstance().loadBanner(this);
+    
+    // Load Inter
+    if(!AppIronSource.getInstance().isInterstitialReady()){
+            AppIronSource.getInstance().loadInterstitial(this, new AdCallback());
+    }
+    
+    // Show Inter
+    if(AppIronSource.getInstance().isInterstitialReady()){
+            AppIronSource.getInstance().showInterstitial(this, new AdCallback(){
+                @Override
+                public void onNextAction() {
+                    super.onNextAction();
+                    startActivity(new Intent(this, MainActivity.class));
+                }
+            });
+        }else{
+            startActivity(new Intent(this, MainActivity.class));
+        }
 
 # Import Adjust trong My Application
 ~~~
