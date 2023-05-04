@@ -13,19 +13,19 @@
     
     // Load Inter Splash
     AppIronSource.getInstance().loadSplashInterstitial(this, new AdCallback() {
-            @Override
-            public void onNextAction() {
-                super.onNextAction();
-                startActivity(new Intent(this, MainActivity.class));
-            }
-        }, 30000);
+        @Override
+        public void onNextAction() {
+            super.onNextAction();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }, 30000);
         
     // Load Banner
     AppIronSource.getInstance().loadBanner(this);
     
     // Load Inter
     if(!AppIronSource.getInstance().isInterstitialReady()){
-            AppIronSource.getInstance().loadInterstitial(this, new AdCallback());
+        AppIronSource.getInstance().loadInterstitial(this, new AdCallback());
     }
     
     // Show Inter
