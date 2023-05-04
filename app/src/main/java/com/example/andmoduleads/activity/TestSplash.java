@@ -1,16 +1,13 @@
 package com.example.andmoduleads.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ads.control.admob.Admob;
-import com.ads.control.ads.ITGAd;
-import com.ads.control.ads.ITGAdCallback;
-import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.funtion.AdCallback;
+import com.ads.control.ironsource.AppIronSource;
 import com.example.andmoduleads.R;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 
@@ -35,7 +32,17 @@ public class TestSplash extends AppCompatActivity {
                     }
                 });*/
 
-        ITGAd.getInstance().loadBanner(this, getString(R.string.admod_banner_id), new ITGAdCallback(){
+        AppIronSource.getInstance().init(TestSplash.this, "85460dcd", true);
+        AppIronSource.getInstance().loadBanner(this);
+        AppIronSource.getInstance().loadSplashInterstitial(this, new AdCallback() {
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                startActivity(new Intent(TestSplash.this, MainActivity.class));
+            }
+        }, 30000);
+
+        /*ITGAd.getInstance().loadBanner(this, getString(R.string.admod_banner_id), new ITGAdCallback(){
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
@@ -67,6 +74,6 @@ public class TestSplash extends AppCompatActivity {
                         }
 
                     }
-                });
+                });*/
     }
 }
