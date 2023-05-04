@@ -23,12 +23,12 @@
 ~~~  
     // Load Banner
     AppIronSource.getInstance().loadBanner(this);
-    
+~~~ 
     // Load Inter
     if(!AppIronSource.getInstance().isInterstitialReady()){
         AppIronSource.getInstance().loadInterstitial(this, new AdCallback());
     }
-    
+~~~ 
     // Show Inter
     if(AppIronSource.getInstance().isInterstitialReady()){
             AppIronSource.getInstance().showInterstitial(this, new AdCallback(){
@@ -41,7 +41,7 @@
         }else{
             startActivity(new Intent(this, MainActivity.class));
         }
-
+~~~ 
 # Import Adjust trong My Application
 ~~~
     AdjustConfig adjustConfig = new AdjustConfig(true, ADJUST_TOKEN);
