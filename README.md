@@ -34,16 +34,16 @@
 ~~~  
     // Show Inter
     if(AppIronSource.getInstance().isInterstitialReady()){
-            AppIronSource.getInstance().showInterstitial(this, new AdCallback(){
-                @Override
-                public void onNextAction() {
-                    super.onNextAction();
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-            });
-        }else{
-            startActivity(new Intent(this, MainActivity.class));
-        }
+        AppIronSource.getInstance().showInterstitial(this, new AdCallback(){
+            @Override
+            public void onNextAction() {
+                super.onNextAction();
+                startActivity(new Intent(this, MainActivity.class));
+            }
+        });
+    }else{
+        startActivity(new Intent(this, MainActivity.class));
+    }
 ~~~ 
 # Import Adjust trong My Application
 ~~~
