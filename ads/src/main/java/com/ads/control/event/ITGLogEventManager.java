@@ -10,6 +10,7 @@ import com.ads.control.util.AppUtil;
 import com.ads.control.util.SharePreferenceUtils;
 import com.applovin.mediation.MaxAd;
 import com.google.android.gms.ads.AdValue;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class ITGLogEventManager {
 
@@ -22,9 +23,23 @@ public class ITGLogEventManager {
     }
 
     public static void logPaidAdImpression(Context context, MaxAd adValue, AdType adType) {
-        logEventWithAds(context, (float) adValue.getRevenue(), 0, adValue.getAdUnitId(), adValue.getNetworkName(), ITGAdConfig.PROVIDER_MAX);
+//        logEventWithAds(context, (float) adValue.getRevenue(), 0, adValue.getAdUnitId(), adValue.getNetworkName(), ITGAdConfig.PROVIDER_MAX);
+        logEventWithMaxAds(context, adValue);
         ITGAdjust.pushTrackEventApplovin(adValue, context);
         ITGAppsflyer.getInstance().pushTrackEventApplovin(adValue, adType);
+    }
+
+    private static void logEventWithMaxAds(Context context, MaxAd impressionData) {
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        double revenue = impressionData.getRevenue(); // In USD
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.AD_PLATFORM, "AppLovin");
+        params.putString(FirebaseAnalytics.Param.AD_SOURCE, impressionData.getNetworkName());
+        params.putString(FirebaseAnalytics.Param.AD_FORMAT, impressionData.getFormat().getLabel());
+        params.putString(FirebaseAnalytics.Param.AD_UNIT_NAME, impressionData.getAdUnitId());
+        params.putDouble(FirebaseAnalytics.Param.VALUE, revenue);
+        params.putString(FirebaseAnalytics.Param.CURRENCY, "USD"); // All Applovin revenue is sent in USD
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.AD_IMPRESSION, params);
     }
 
     private static void logEventWithAds(Context context, float revenue, int precision, String adUnitId, String network, int mediationProvider) {

@@ -25,6 +25,7 @@ import com.ads.control.funtion.AdType;
 import com.ads.control.util.SharePreferenceUtils;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxAdRevenueListener;
 import com.applovin.mediation.MaxAdViewAdListener;
 import com.applovin.mediation.MaxError;
 import com.applovin.mediation.MaxReward;
