@@ -68,6 +68,18 @@ android {
     }
 }*/
 
+// 10-05
+repositories {
+    maven { url 'https://jitpack.io' }
+    maven {
+        url 'https://artifact.bytedance.com/repository/pangle/'
+    }
+    maven { url 'https://android-sdk.is.com/' }
+    /*maven {
+        url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'
+    }*/
+}
+
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -89,6 +101,13 @@ dependencies {
     implementation 'com.google.ads.mediation:adcolony:4.8.0.0'
     implementation 'com.google.ads.mediation:applovin:11.5.1.0'
     implementation 'com.google.ads.mediation:vungle:6.12.0.0'
+
+    // 10-5
+    implementation 'com.google.ads.mediation:pangle:4.9.0.8.0'
+    implementation 'com.google.ads.mediation:ironsource:7.2.7.0'
+    implementation 'com.unity3d.ads:unity-ads:4.5.0'
+    implementation 'com.google.ads.mediation:unity:4.5.0.0'
+//    implementation 'com.google.ads.mediation:mintegral:16.4.21.0'
 
 
     def lifecycle_version = "2.0.0"
@@ -126,6 +145,9 @@ dependencies {
     // appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.8.2'
     implementation 'com.appsflyer:adrevenue:6.4.3'
+
+    // 10-05
+    implementation 'com.ironsource.sdk:mediationsdk:7.3.0'
 }
 
 afterEvaluate {

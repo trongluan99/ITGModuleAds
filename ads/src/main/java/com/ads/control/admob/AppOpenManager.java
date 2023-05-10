@@ -1039,12 +1039,11 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             adListener.onAdLoadedHigh();
                         }
 
-                        // Log paid App Open High Floor
                         appOpenAd.setOnPaidEventListener(adValue -> {
                             AperoLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
                                     adValue,
-                                    appOpenAd.getAdUnitId(),
-                                    appOpenAd.getResponseInfo()
+                                    splashAdOpen.getAdUnitId(),
+                                    splashAdOpen.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
                         });
 
@@ -1118,6 +1117,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             }
                         });
                         splashLoadTime = new Date().getTime();
+
                         if (!isAppOpenShowed) {
                             splashAdOpen.show(currentActivity);
                         }
@@ -1174,7 +1174,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
                         statusInter = Type_Load_Success;
 
-                        // Log paid Ads Interstitial
                         interstitialAd.setOnPaidEventListener(adValue -> {
                             AperoLogEventManager.logPaidAdImpression(activity,
                                     adValue,
@@ -1205,6 +1204,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         AppOpenAd.load(myApplication, idOpen, getAdRequest(), AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackOpen);
         currentTime = System.currentTimeMillis();
     }
+
 
     public void loadAndShowSplashAds(final String aId) {
         loadAndShowSplashAds(aId, 0);
