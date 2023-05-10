@@ -3,7 +3,7 @@ package com.ads.control.event;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.ads.control.config.AperoAdConfig;
+import com.ads.control.config.ITGAdConfig;
 import com.facebook.appevents.AppEventsLogger;
 
 public class FacebookEventUtils {
@@ -12,7 +12,7 @@ public class FacebookEventUtils {
     }
 
     static void logPaidAdImpressionValue(Context context, Bundle bundle, int mediationProvider) {
-        if (mediationProvider == AperoAdConfig.PROVIDER_MAX)
+        if (mediationProvider == ITGAdConfig.PROVIDER_MAX)
             AppEventsLogger.newLogger(context).logEvent("max_paid_ad_impression_value", bundle);
         else
             AppEventsLogger.newLogger(context).logEvent("paid_ad_impression_value", bundle);

@@ -1660,7 +1660,7 @@ public class ITGAd {
      * @return
      */
     public ITGAdAdapter getNativeRepeatAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
-                                                 ITGAdPlacer.Listener listener, int repeatingInterval) {
+                                               ITGAdPlacer.Listener listener, int repeatingInterval) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_MAX:
                 MaxAdPlacer.Listener maxListener = new MaxAdPlacer.Listener() {
@@ -1710,7 +1710,7 @@ public class ITGAd {
      * @return
      */
     public ITGAdAdapter getNativeFixedPositionAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
-                                                        ITGAdPlacer.Listener listener, int position) {
+                                                      ITGAdPlacer.Listener listener, int position) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_MAX:
                 MaxAdPlacer.Listener maxListener = new MaxAdPlacer.Listener() {

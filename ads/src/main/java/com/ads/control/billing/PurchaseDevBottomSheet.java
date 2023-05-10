@@ -13,9 +13,6 @@ import com.ads.control.funtion.PurchaseListener;
 import com.android.billingclient.api.ProductDetails;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-/**
- * Created by lamlt on 17/01/2023.
- */
 public class PurchaseDevBottomSheet extends BottomSheetDialog {
     private ProductDetails productDetails;
     private int typeIap;

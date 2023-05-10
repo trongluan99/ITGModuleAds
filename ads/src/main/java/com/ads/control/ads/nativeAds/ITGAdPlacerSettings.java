@@ -1,7 +1,5 @@
 package com.ads.control.ads.nativeAds;
 
-import android.util.Log;
-
 public class ITGAdPlacerSettings {
 
     private String adUnitId;
@@ -15,7 +13,7 @@ public class ITGAdPlacerSettings {
         this.layoutCustomAd = layoutCustomAd;
         this.layoutAdPlaceHolder = layoutPlaceHolderAd;
     }
-    public ITGAdPlacerSettings(  int layoutCustomAd, int layoutPlaceHolderAd) {
+    public ITGAdPlacerSettings(int layoutCustomAd, int layoutPlaceHolderAd) {
         this.adUnitId = adUnitId;
         this.layoutCustomAd = layoutCustomAd;
         this.layoutAdPlaceHolder = layoutPlaceHolderAd;

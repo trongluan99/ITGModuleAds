@@ -20,8 +20,7 @@ import com.ads.control.R;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.dialog.PrepareLoadingAdsDialog;
 import com.ads.control.funtion.AdCallback;
-import com.ads.control.event.AperoAdjust;
-import com.ads.control.event.AperoLogEventManager;
+import com.ads.control.event.ITGLogEventManager;
 import com.ads.control.funtion.AdType;
 import com.ads.control.util.SharePreferenceUtils;
 import com.applovin.mediation.MaxAd;
@@ -222,7 +221,7 @@ public class AppLovin {
             public void onAdClicked(MaxAd ad) {
                 if (disableAdResumeWhenClickAds)
                     AppOpenMax.getInstance().disableAdResumeByClickAction();
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
             }
 
             @Override
@@ -338,7 +337,7 @@ public class AppLovin {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                 if (adListener != null) {
                     adListener.onAdClicked();
                 }
@@ -381,7 +380,7 @@ public class AppLovin {
             adListener.onAdClosed();
             return;
         }
-        interstitialSplash.setRevenueListener(ad ->AperoLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
+        interstitialSplash.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
         interstitialSplash.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -413,7 +412,7 @@ public class AppLovin {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                AperoLogEventManager.logClickAdsEvent(context, interstitialSplash.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, interstitialSplash.getAdUnitId());
                 if (adListener != null) {
                     adListener.onAdClicked();
                 }
@@ -513,7 +512,7 @@ public class AppLovin {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                 if (disableAdResumeWhenClickAds)
                     AppOpenMax.getInstance().disableAdResumeByClickAction();
             }
@@ -573,7 +572,7 @@ public class AppLovin {
             return;
         }
 
-        interstitialAd.setRevenueListener(ad ->AperoLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
+        interstitialAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
         interstitialAd.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -604,7 +603,7 @@ public class AppLovin {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                 if (callback != null) {
                     callback.onAdClicked();
                 }
@@ -720,7 +719,7 @@ public class AppLovin {
         containerShimmer.setVisibility(View.VISIBLE);
         containerShimmer.startShimmer();
         MaxAdView adView = new MaxAdView(id, mActivity);
-        adView.setRevenueListener(ad -> AperoLogEventManager.logPaidAdImpression( mActivity,ad, AdType.BANNER));
+        adView.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( mActivity,ad, AdType.BANNER));
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         // Banner height on phones and tablets is 50 and 90, respectively
         int heightPx = mActivity.getResources().getDimensionPixelSize(R.dimen.banner_height);
@@ -757,7 +756,7 @@ public class AppLovin {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                 if (disableAdResumeWhenClickAds)
                     AppOpenMax.getInstance().disableAdResumeByClickAction();
             }
@@ -786,7 +785,7 @@ public class AppLovin {
         containerShimmer.setVisibility(View.VISIBLE);
         containerShimmer.startShimmer();
         MaxAdView adView = new MaxAdView(id, mActivity);
-        adView.setRevenueListener(ad -> AperoLogEventManager.logPaidAdImpression(mActivity,ad, AdType.BANNER));
+        adView.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(mActivity,ad, AdType.BANNER));
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         // Banner height on phones and tablets is 50 and 90, respectively
         int heightPx = mActivity.getResources().getDimensionPixelSize(R.dimen.banner_height);
@@ -825,7 +824,7 @@ public class AppLovin {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                 if (adCallback != null) {
                     adCallback.onAdClicked();
                 }
@@ -898,7 +897,7 @@ public class AppLovin {
         nativeAdView = new MaxNativeAdView(binder, activity);
 
         MaxNativeAdLoader nativeAdLoader = new MaxNativeAdLoader(id, activity);
-        nativeAdLoader.setRevenueListener(ad -> AperoLogEventManager.logPaidAdImpression( activity,ad, AdType.NATIVE));
+        nativeAdLoader.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.NATIVE));
         nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
@@ -955,7 +954,7 @@ public class AppLovin {
         nativeAdView = new MaxNativeAdView(binder, activity);
 
         MaxNativeAdLoader nativeAdLoader = new MaxNativeAdLoader(id, activity);
-        nativeAdLoader.setRevenueListener(ad -> AperoLogEventManager.logPaidAdImpression( activity,ad, AdType.NATIVE));
+        nativeAdLoader.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.NATIVE));
         nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
@@ -972,7 +971,7 @@ public class AppLovin {
             @Override
             public void onNativeAdClicked(final MaxAd ad) {
                 Log.e(TAG, "onNativeAdClicked: ");
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                 callback.onAdClicked();
                 if (disableAdResumeWhenClickAds)
                     AppOpenMax.getInstance().disableAdResumeByClickAction();
@@ -1070,7 +1069,7 @@ public class AppLovin {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                 callback.onAdClicked();
                 if (disableAdResumeWhenClickAds)
                     AppOpenMax.getInstance().disableAdResumeByClickAction();
@@ -1100,7 +1099,7 @@ public class AppLovin {
 
     public void showRewardAd(Activity activity, MaxRewardedAd maxRewardedAd, AppLovinCallback callback) {
         if (maxRewardedAd.isReady()) {
-            maxRewardedAd.setRevenueListener(ad -> AperoLogEventManager.logPaidAdImpression( activity,ad, AdType.REWARDED));
+            maxRewardedAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.REWARDED));
             maxRewardedAd.setListener(new MaxRewardedAdListener() {
                 @Override
                 public void onRewardedVideoStarted(MaxAd ad) {
@@ -1137,7 +1136,7 @@ public class AppLovin {
 
                 @Override
                 public void onAdClicked(MaxAd ad) {
-                    AperoLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
+                    ITGLogEventManager.logClickAdsEvent(context, ad.getAdUnitId());
                     callback.onAdClicked();
                     if (disableAdResumeWhenClickAds)
                         AppOpenMax.getInstance().disableAdResumeByClickAction();
@@ -1164,7 +1163,7 @@ public class AppLovin {
 
     public void showRewardAd(Activity activity, MaxRewardedAd maxRewardedAd) {
         if (maxRewardedAd.isReady()) {
-            maxRewardedAd.setRevenueListener(ad -> AperoLogEventManager.logPaidAdImpression( activity,ad, AdType.REWARDED));
+            maxRewardedAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.REWARDED));
             maxRewardedAd.showAd();
         } else {
             Log.e(TAG, "showRewardAd error -  reward ad not ready");

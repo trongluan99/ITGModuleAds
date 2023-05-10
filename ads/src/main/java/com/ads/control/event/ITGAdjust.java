@@ -1,22 +1,16 @@
 package com.ads.control.event;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustAdRevenue;
 import com.adjust.sdk.AdjustConfig;
 import com.adjust.sdk.AdjustEvent;
-import com.ads.control.admob.AppOpenManager;
 import com.ads.control.ads.ITGAd;
-import com.ads.control.config.ITGAdConfig;
 import com.applovin.mediation.MaxAd;
 import com.google.android.gms.ads.AdValue;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class ITGAdjust {
-
-
     public static boolean enableAdjust = false;
     private static String eventNamePurchase = "";
 
