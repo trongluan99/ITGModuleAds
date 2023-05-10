@@ -8,10 +8,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.ads.control.ads.AperoAd;
-import com.ads.control.config.AperoAdConfig;
-import com.ads.control.ads.nativeAds.AperoAdPlacer;
-import com.ads.control.ads.nativeAds.AperoAdAdapter;
+import com.ads.control.ads.ITGAd;
+import com.ads.control.config.ITGAdConfig;
+import com.ads.control.ads.nativeAds.ITGAdPlacer;
+import com.ads.control.ads.nativeAds.ITGAdAdapter;
 import com.ads.control.ads.wrapper.ApAdValue;
 import com.example.andmoduleads.R;
 import com.example.andmoduleads.adapter.ListSimpleAdapter;
@@ -21,13 +21,13 @@ import java.util.List;
 
 public class SimpleListActivity extends AppCompatActivity {
     private static final String TAG = "SimpleListActivity";
-    AperoAdAdapter adAdapter;
+    ITGAdAdapter adAdapter;
     int layoutCustomNative = com.ads.control.R.layout.custom_native_admod_medium;
     String idNative = "";
     SwipeRefreshLayout swRefresh;
     ListSimpleAdapter originalAdapter;
     RecyclerView recyclerView;
-    AperoAdPlacer.Listener listener = new AperoAdPlacer.Listener() {
+    ITGAdPlacer.Listener listener = new ITGAdPlacer.Listener() {
         @Override
         public void onAdLoaded(int i) {
             Log.i(TAG, "onAdLoaded native list: " + i);
@@ -76,7 +76,7 @@ public class SimpleListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvListSimple);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (AperoAd.getInstance().getMediationProvider() == AperoAdConfig.PROVIDER_ADMOB) {
+        if (ITGAd.getInstance().getMediationProvider() == ITGAdConfig.PROVIDER_ADMOB) {
             layoutCustomNative = com.ads.control.R.layout.custom_native_admod_medium;
             idNative = getString(R.string.admod_native_id);
         } else {
@@ -93,7 +93,7 @@ public class SimpleListActivity extends AppCompatActivity {
     }
 
     private void setupAdAdapter() {
-        adAdapter = AperoAd.getInstance().getNativeRepeatAdapter(this, idNative, layoutCustomNative, com.ads.control.R.layout.layout_native_medium,
+        adAdapter = ITGAd.getInstance().getNativeRepeatAdapter(this, idNative, layoutCustomNative, com.ads.control.R.layout.layout_native_medium,
                 originalAdapter, listener, 5);
 
         recyclerView.setAdapter(adAdapter.getAdapter());

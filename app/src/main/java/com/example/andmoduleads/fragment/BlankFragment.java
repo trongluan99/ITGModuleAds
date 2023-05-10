@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ads.control.admob.Admob;
-import com.ads.control.ads.AperoAd;
-import com.ads.control.config.AperoAdConfig;
+import com.ads.control.ads.ITGAd;
+import com.ads.control.config.ITGAdConfig;
 import com.ads.control.funtion.AdCallback;
 import com.example.andmoduleads.R;
 import com.example.andmoduleads.activity.ContentActivity;
@@ -56,13 +56,13 @@ public class BlankFragment extends Fragment {
 //        });
         View view1 = view.findViewById(R.id.include).getRootView();
         String idBanner;
-        if (AperoAd.getInstance().getMediationProvider() == AperoAdConfig.PROVIDER_ADMOB) {
+        if (ITGAd.getInstance().getMediationProvider() == ITGAdConfig.PROVIDER_ADMOB) {
             idBanner = getString(R.string.admod_banner_id);
         } else {
             idBanner = getString(R.string.applovin_test_banner);
         }
 
-        AperoAd.getInstance().loadBannerFragment(requireActivity(), idBanner, view1, new AdCallback() {
+        ITGAd.getInstance().loadBannerFragment(requireActivity(), idBanner, view1, new AdCallback() {
             @Override
             public void onAdClicked() {
                 super.onAdClicked();
@@ -82,6 +82,6 @@ public class BlankFragment extends Fragment {
 //        Admob.getInstance().loadNativeFragment(getActivity(),getString(R.string.admod_native_id),view);
         FrameLayout flPlaceHolder = view.findViewById(R.id.fl_adplaceholder);
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_container_native);
-        AperoAd.getInstance().loadNativeAd(requireActivity(), getString(R.string.admod_native_id), com.ads.control.R.layout.custom_native_admob_free_size, flPlaceHolder, shimmerFrameLayout);
+        ITGAd.getInstance().loadNativeAd(requireActivity(), getString(R.string.admod_native_id), com.ads.control.R.layout.custom_native_admob_free_size, flPlaceHolder, shimmerFrameLayout);
     }
 }
