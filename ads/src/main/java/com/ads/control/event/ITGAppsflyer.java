@@ -2,15 +2,10 @@ package com.ads.control.event;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.adjust.sdk.Adjust;
-import com.adjust.sdk.AdjustAdRevenue;
-import com.adjust.sdk.AdjustConfig;
-import com.adjust.sdk.AdjustEvent;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.funtion.AdType;
 import com.applovin.mediation.MaxAd;
@@ -18,7 +13,6 @@ import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AFInAppEventType;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adrevenue.AppsFlyerAdRevenue;
-import com.appsflyer.adrevenue.adnetworks.AppsFlyerAdNetworkEventType;
 import com.appsflyer.adrevenue.adnetworks.generic.MediationNetwork;
 import com.appsflyer.adrevenue.adnetworks.generic.Scheme;
 import com.appsflyer.attribution.AppsFlyerRequestListener;
@@ -32,19 +26,19 @@ import java.util.Map;
 /**
  * Created by lamlt on 13/09/2022.
  */
-public class AperoAppsflyer {
+public class ITGAppsflyer {
     private static final String TAG = "AperoAppsflyer";
     private Context context;
-    private static AperoAppsflyer aperoAppsflyer;
+    private static ITGAppsflyer ITGAppsflyer;
     public static boolean enableAppsflyer = false;
 
-    public AperoAppsflyer() {
+    public ITGAppsflyer() {
     }
 
-    public static AperoAppsflyer getInstance(){
-        if (aperoAppsflyer==null)
-            aperoAppsflyer = new AperoAppsflyer();
-        return aperoAppsflyer;
+    public static ITGAppsflyer getInstance(){
+        if (ITGAppsflyer ==null)
+            ITGAppsflyer = new ITGAppsflyer();
+        return ITGAppsflyer;
     }
 
     public void init(Application context, String devKey) {

@@ -12,24 +12,21 @@ import com.applovin.mediation.MaxAd;
 import com.google.android.gms.ads.AdValue;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-/**
- * Created by lamlt on 12/09/2022.
- */
-public class AperoLogEventManager {
+public class ITGLogEventManager {
 
-    private static final String TAG = "AperoLogEventManager";
+    private static final String TAG = "ITGLogEventManager";
 
     public static void logPaidAdImpression(Context context, AdValue adValue, String adUnitId, String mediationAdapterClassName, AdType adType) {
         logEventWithAds(context, (float) adValue.getValueMicros(), adValue.getPrecisionType(), adUnitId, mediationAdapterClassName, ITGAdConfig.PROVIDER_ADMOB);
         ITGAdjust.pushTrackEventAdmob(adValue);
-        AperoAppsflyer.getInstance().pushTrackEventAdmob(adValue, adUnitId, adType);
+        ITGAppsflyer.getInstance().pushTrackEventAdmob(adValue, adUnitId, adType);
     }
 
     public static void logPaidAdImpression(Context context, MaxAd adValue, AdType adType) {
-//        logEventWithAds(context, (float) adValue.getRevenue(), 0, adValue.getAdUnitId(), adValue.getNetworkName(), AperoAdConfig.PROVIDER_MAX);
+//        logEventWithAds(context, (float) adValue.getRevenue(), 0, adValue.getAdUnitId(), adValue.getNetworkName(), ITGAdConfig.PROVIDER_MAX);
         logEventWithMaxAds(context, adValue);
         ITGAdjust.pushTrackEventApplovin(adValue, context);
-        AperoAppsflyer.getInstance().pushTrackEventApplovin(adValue, adType);
+        ITGAppsflyer.getInstance().pushTrackEventApplovin(adValue, adType);
     }
 
     private static void logEventWithMaxAds(Context context, MaxAd impressionData) {
@@ -171,7 +168,7 @@ public class AperoLogEventManager {
 
     public static void onTrackRevenuePurchase(float revenue, String currency, String idPurchase, int typeIAP) {
         ITGAdjust.onTrackRevenuePurchase(revenue, currency);
-        AperoAppsflyer.getInstance().onTrackRevenuePurchase(revenue, currency, idPurchase, typeIAP);
+        ITGAppsflyer.getInstance().onTrackRevenuePurchase(revenue, currency, idPurchase, typeIAP);
     }
 
     public static void pushTrackEventAdmob(AdValue adValue) {

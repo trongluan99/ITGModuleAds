@@ -1,27 +1,23 @@
 package com.ads.control.event;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustAdRevenue;
 import com.adjust.sdk.AdjustConfig;
 import com.adjust.sdk.AdjustEvent;
-import com.ads.control.admob.AppOpenManager;
-import com.ads.control.ads.AperoAd;
-import com.ads.control.config.AperoAdConfig;
+import com.ads.control.ads.ITGAd;
 import com.applovin.mediation.MaxAd;
 import com.google.android.gms.ads.AdValue;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
-public class AperoAdjust {
+public class ITGAdjust {
 
 
     public static boolean enableAdjust = false;
     private static String eventNamePurchase = "";
 
     public static void setEventNamePurchase(String eventNamePurchase) {
-        AperoAdjust.eventNamePurchase = eventNamePurchase;
+        ITGAdjust.eventNamePurchase = eventNamePurchase;
     }
 
     public static void trackAdRevenue(String id) {
@@ -49,14 +45,14 @@ public class AperoAdjust {
     }
 
     public static void onTrackRevenuePurchase(float revenue, String currency) {
-        if (AperoAdjust.enableAdjust) {
+        if (ITGAdjust.enableAdjust) {
             onTrackRevenue(eventNamePurchase, revenue, currency);
         }
 
     }
 
     public static void pushTrackEventAdmob(AdValue adValue) {
-        if (AperoAdjust.enableAdjust) {
+        if (ITGAdjust.enableAdjust) {
             AdjustAdRevenue adRevenue = new AdjustAdRevenue(AdjustConfig.AD_REVENUE_ADMOB);
             adRevenue.setRevenue(adValue.getValueMicros() / 1000000.0, adValue.getCurrencyCode());
 
@@ -65,7 +61,7 @@ public class AperoAdjust {
     }
 
     public static void pushTrackEventApplovin(MaxAd ad, Context context) {
-        if (AperoAdjust.enableAdjust) {
+        if (ITGAdjust.enableAdjust) {
             AdjustAdRevenue adjustAdRevenue = new AdjustAdRevenue(AdjustConfig.AD_REVENUE_APPLOVIN_MAX);
             adjustAdRevenue.setRevenue(ad.getRevenue(), "USD");
             adjustAdRevenue.setAdRevenueNetwork(ad.getNetworkName());
@@ -78,8 +74,8 @@ public class AperoAdjust {
     }
 
     static void logPaidAdImpressionValue(double revenue, String currency) {
-        if (AperoAd.getInstance().getAdConfig().getAdjustConfig() != null && AperoAd.getInstance().getAdConfig().getAdjustConfig().isEnableAdjust()) {
-            AdjustEvent event = new AdjustEvent(AperoAd.getInstance().getAdConfig().getAdjustConfig().getEventAdImpression());
+        if (ITGAd.getInstance().getAdConfig().getAdjustConfig() != null && ITGAd.getInstance().getAdConfig().getAdjustConfig().isEnableAdjust()) {
+            AdjustEvent event = new AdjustEvent(ITGAd.getInstance().getAdConfig().getAdjustConfig().getEventAdImpression());
             event.setRevenue(revenue, currency);
             Adjust.trackEvent(event);
         }

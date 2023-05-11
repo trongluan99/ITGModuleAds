@@ -37,11 +37,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ads.control.R;
 import com.ads.control.ads.nativeAds.AdmobRecyclerAdapter;
-import com.ads.control.ads.nativeAds.AperoAdPlacer;
-import com.ads.control.ads.nativeAds.AperoAdPlacerSettings;
+import com.ads.control.ads.nativeAds.ITGAdPlacer;
+import com.ads.control.ads.nativeAds.ITGAdPlacerSettings;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.dialog.PrepareLoadingAdsDialog;
-import com.ads.control.event.AperoLogEventManager;
+import com.ads.control.event.ITGLogEventManager;
 import com.ads.control.funtion.AdCallback;
 import com.ads.control.funtion.AdType;
 import com.ads.control.funtion.AdmodHelper;
@@ -987,7 +987,7 @@ public class Admob {
         mInterstitialSplash.setOnPaidEventListener(adValue -> {
             Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
 
-            AperoLogEventManager.logPaidAdImpression(context,
+            ITGLogEventManager.logPaidAdImpression(context,
                     adValue,
                     mInterstitialSplash.getAdUnitId(),
                     mInterstitialSplash.getResponseInfo()
@@ -1050,7 +1050,7 @@ public class Admob {
                 super.onAdClicked();
                 if (disableAdResumeWhenClickAds)
                     AppOpenManager.getInstance().disableAdResumeByClickAction();
-                AperoLogEventManager.logClickAdsEvent(context, mInterstitialSplash.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, mInterstitialSplash.getAdUnitId());
             }
 
             @Override
@@ -1069,6 +1069,7 @@ public class Admob {
                 dialog = new PrepareLoadingAdsDialog(activity);
                 try {
                     dialog.show();
+                    AppOpenManager.getInstance().setInterstitialShowing(true);
                 } catch (Exception e) {
                     adListener.onNextAction();
                     return;
@@ -1124,7 +1125,7 @@ public class Admob {
         mInterstitialSplash.setOnPaidEventListener(adValue -> {
             Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
 
-            AperoLogEventManager.logPaidAdImpression(context,
+            ITGLogEventManager.logPaidAdImpression(context,
                     adValue,
                     mInterstitialSplash.getAdUnitId(),
                     mInterstitialSplash.getResponseInfo()
@@ -1187,7 +1188,7 @@ public class Admob {
                 super.onAdClicked();
                 if (disableAdResumeWhenClickAds)
                     AppOpenManager.getInstance().disableAdResumeByClickAction();
-                AperoLogEventManager.logClickAdsEvent(context, mInterstitialSplash.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, mInterstitialSplash.getAdUnitId());
             }
 
             @Override
@@ -1206,6 +1207,7 @@ public class Admob {
                 dialog = new PrepareLoadingAdsDialog(activity);
                 try {
                     dialog.show();
+                    AppOpenManager.getInstance().setInterstitialShowing(true);
                 } catch (Exception e) {
                     adListener.onNextAction();
                     return;
@@ -1262,7 +1264,7 @@ public class Admob {
         mInterstitialSplash.setOnPaidEventListener(adValue -> {
             Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
 
-            AperoLogEventManager.logPaidAdImpression(context,
+            ITGLogEventManager.logPaidAdImpression(context,
                     adValue,
                     mInterstitialSplash.getAdUnitId(),
                     mInterstitialSplash.getResponseInfo()
@@ -1325,7 +1327,7 @@ public class Admob {
                 super.onAdClicked();
                 if (disableAdResumeWhenClickAds)
                     AppOpenManager.getInstance().disableAdResumeByClickAction();
-                AperoLogEventManager.logClickAdsEvent(context, mInterstitialSplash.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, mInterstitialSplash.getAdUnitId());
             }
 
             @Override
@@ -1344,6 +1346,7 @@ public class Admob {
                 dialog = new PrepareLoadingAdsDialog(activity);
                 try {
                     dialog.show();
+                    AppOpenManager.getInstance().setInterstitialShowing(true);
                 } catch (Exception e) {
                     adListener.onNextAction();
                     return;
@@ -1436,7 +1439,7 @@ public class Admob {
                     interstitialAd.setOnPaidEventListener(adValue -> {
 
                         Log.d(TAG, "OnPaidEvent loadInterstitialAds:" + adValue.getValueMicros());
-                        AperoLogEventManager.logPaidAdImpression(context,
+                        ITGLogEventManager.logPaidAdImpression(context,
                                 adValue,
                                 interstitialAd.getAdUnitId(),
                                 interstitialAd.getResponseInfo()
@@ -1504,7 +1507,7 @@ public class Admob {
                         interstitialAd.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent getInterstitialAds:" + adValue.getValueMicros());
 
-                            AperoLogEventManager.logPaidAdImpression(context,
+                            ITGLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     interstitialAd.getAdUnitId(),
                                     interstitialAd.getResponseInfo()
@@ -1626,7 +1629,7 @@ public class Admob {
                 if (callback != null) {
                     callback.onAdClicked();
                 }
-                AperoLogEventManager.logClickAdsEvent(context, mInterstitialAd.getAdUnitId());
+                ITGLogEventManager.logClickAdsEvent(context, mInterstitialAd.getAdUnitId());
             }
         });
 
@@ -1671,6 +1674,7 @@ public class Admob {
                     try {
                         callback.onInterstitialShow();
                         dialog.show();
+                        AppOpenManager.getInstance().setInterstitialShowing(true);
                     } catch (Exception e) {
                         callback.onNextAction();
                         return;
@@ -1936,6 +1940,10 @@ public class Admob {
                     containerShimmer.stopShimmer();
                     adContainer.setVisibility(View.GONE);
                     containerShimmer.setVisibility(View.GONE);
+
+                    if(callback != null){
+                        callback.onAdFailedToLoad(loadAdError);
+                    }
                 }
 
 
@@ -1949,12 +1957,16 @@ public class Admob {
                         adView.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent banner:" + adValue.getValueMicros());
 
-                            AperoLogEventManager.logPaidAdImpression(context,
+                            ITGLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     adView.getAdUnitId(),
                                     adView.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.BANNER);
                         });
+                    }
+
+                    if(callback != null){
+                        callback.onAdLoaded();
                     }
                 }
 
@@ -1967,7 +1979,7 @@ public class Admob {
                         callback.onAdClicked();
                         Log.d(TAG, "onAdClicked");
                     }
-                    AperoLogEventManager.logClickAdsEvent(context, id);
+                    ITGLogEventManager.logClickAdsEvent(context, id);
                 }
 
                 @Override
@@ -2028,7 +2040,7 @@ public class Admob {
                     adView.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent banner:" + adValue.getValueMicros());
 
-                        AperoLogEventManager.logPaidAdImpression(context,
+                        ITGLogEventManager.logPaidAdImpression(context,
                                 adValue,
                                 adView.getAdUnitId(),
                                 adView.getResponseInfo()
@@ -2044,7 +2056,7 @@ public class Admob {
                     super.onAdClicked();
                     if (disableAdResumeWhenClickAds)
                         AppOpenManager.getInstance().disableAdResumeByClickAction();
-                    AperoLogEventManager.logClickAdsEvent(context, id);
+                    ITGLogEventManager.logClickAdsEvent(context, id);
                     if (callback != null) {
                         callback.onAdClicked();
                     }
@@ -2161,7 +2173,7 @@ public class Admob {
                         nativeAd.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
 
-                            AperoLogEventManager.logPaidAdImpression(context,
+                            ITGLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
                                     nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
@@ -2193,7 +2205,7 @@ public class Admob {
                             callback.onAdClicked();
                             Log.d(TAG, "onAdClicked");
                         }
-                        AperoLogEventManager.logClickAdsEvent(context, id);
+                        ITGLogEventManager.logClickAdsEvent(context, id);
                     }
                 })
                 .withNativeAdOptions(adOptions)
@@ -2225,7 +2237,7 @@ public class Admob {
                         nativeAd.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
 
-                            AperoLogEventManager.logPaidAdImpression(context,
+                            ITGLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
                                     nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
@@ -2248,7 +2260,7 @@ public class Admob {
                             callback.onAdClicked();
                             Log.d(TAG, "onAdClicked");
                         }
-                        AperoLogEventManager.logClickAdsEvent(context, id);
+                        ITGLogEventManager.logClickAdsEvent(context, id);
                     }
                 })
                 .withNativeAdOptions(adOptions)
@@ -2291,7 +2303,7 @@ public class Admob {
                         nativeAd.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent native:" + adValue.getValueMicros());
 
-                            AperoLogEventManager.logPaidAdImpression(context,
+                            ITGLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
                                     nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
@@ -2317,7 +2329,7 @@ public class Admob {
                         super.onAdClicked();
                         if (disableAdResumeWhenClickAds)
                             AppOpenManager.getInstance().disableAdResumeByClickAction();
-                        AperoLogEventManager.logClickAdsEvent(context, id);
+                        ITGLogEventManager.logClickAdsEvent(context, id);
                     }
                 })
                 .withNativeAdOptions(adOptions)
@@ -2361,7 +2373,7 @@ public class Admob {
                         nativeAd.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent Native:" + adValue.getValueMicros());
 
-                            AperoLogEventManager.logPaidAdImpression(context,
+                            ITGLogEventManager.logPaidAdImpression(context,
                                     adValue,
                                     id,
                                     nativeAd.getResponseInfo().getMediationAdapterClassName(), AdType.NATIVE);
@@ -2391,7 +2403,7 @@ public class Admob {
                             callback.onAdClicked();
                             Log.d(TAG, "onAdClicked");
                         }
-                        AperoLogEventManager.logClickAdsEvent(context, id);
+                        ITGLogEventManager.logClickAdsEvent(context, id);
                     }
                 })
                 .withNativeAdOptions(adOptions)
@@ -2558,7 +2570,7 @@ public class Admob {
 
                     Log.d(TAG, "OnPaidEvent Reward:" + adValue.getValueMicros());
 
-                    AperoLogEventManager.logPaidAdImpression(context,
+                    ITGLogEventManager.logPaidAdImpression(context,
                             adValue,
                             rewardedAd.getAdUnitId(), Admob.this.rewardedAd.getResponseInfo().getMediationAdapterClassName()
                             , AdType.REWARDED);
@@ -2598,7 +2610,7 @@ public class Admob {
                 Admob.this.rewardedAd.setOnPaidEventListener(adValue -> {
                     Log.d(TAG, "OnPaidEvent Reward:" + adValue.getValueMicros());
 
-                    AperoLogEventManager.logPaidAdImpression(context,
+                    ITGLogEventManager.logPaidAdImpression(context,
                             adValue,
                             rewardedAd.getAdUnitId(),
                             Admob.this.rewardedAd.getResponseInfo().getMediationAdapterClassName()
@@ -2640,7 +2652,7 @@ public class Admob {
                 Log.i(TAG, "RewardInterstitial onAdLoaded ");
                 rewardedAd.setOnPaidEventListener(adValue -> {
                     Log.d(TAG, "OnPaidEvent Reward:" + adValue.getValueMicros());
-                    AperoLogEventManager.logPaidAdImpression(context,
+                    ITGLogEventManager.logPaidAdImpression(context,
                             adValue,
                             rewardedAd.getAdUnitId(),
                             rewardedAd.getResponseInfo().getMediationAdapterClassName()
@@ -2708,7 +2720,7 @@ public class Admob {
                     super.onAdClicked();
                     if (disableAdResumeWhenClickAds)
                         AppOpenManager.getInstance().disableAdResumeByClickAction();
-                    AperoLogEventManager.logClickAdsEvent(context, rewardedAd.getAdUnitId());
+                    ITGLogEventManager.logClickAdsEvent(context, rewardedAd.getAdUnitId());
                 }
             });
             rewardedAd.show(context, new OnUserEarnedRewardListener() {
@@ -2769,7 +2781,7 @@ public class Admob {
 
                 public void onAdClicked() {
                     super.onAdClicked();
-                    AperoLogEventManager.logClickAdsEvent(activity, rewardedAd.getAdUnitId());
+                    ITGLogEventManager.logClickAdsEvent(activity, rewardedAd.getAdUnitId());
                     if (disableAdResumeWhenClickAds)
                         AppOpenManager.getInstance().disableAdResumeByClickAction();
                 }
@@ -2837,7 +2849,7 @@ public class Admob {
                     if (adCallback != null) {
                         adCallback.onAdClicked();
                     }
-                    AperoLogEventManager.logClickAdsEvent(context, rewardedAd.getAdUnitId());
+                    ITGLogEventManager.logClickAdsEvent(context, rewardedAd.getAdUnitId());
                 }
             });
             rewardedAd.show(context, new OnUserEarnedRewardListener() {
@@ -2854,8 +2866,8 @@ public class Admob {
 
 
     public AdmobRecyclerAdapter getNativeRepeatAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
-                                                       AperoAdPlacer.Listener listener, int repeatingInterval) {
-        AperoAdPlacerSettings settings = new AperoAdPlacerSettings(layoutCustomNative, layoutAdPlaceHolder);
+                                                       ITGAdPlacer.Listener listener, int repeatingInterval) {
+        ITGAdPlacerSettings settings = new ITGAdPlacerSettings(layoutCustomNative, layoutAdPlaceHolder);
         settings.setAdUnitId(id);
         settings.setListener(listener);
         settings.setRepeatingInterval(repeatingInterval);
@@ -2864,9 +2876,9 @@ public class Admob {
     }
 
     public AdmobRecyclerAdapter getNativeFixedPositionAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
-                                                              AperoAdPlacer.Listener listener, int position) {
+                                                              ITGAdPlacer.Listener listener, int position) {
 
-        AperoAdPlacerSettings settings = new AperoAdPlacerSettings(layoutCustomNative, layoutAdPlaceHolder);
+        ITGAdPlacerSettings settings = new ITGAdPlacerSettings(layoutCustomNative, layoutAdPlaceHolder);
         settings.setAdUnitId(id);
         settings.setListener(listener);
         settings.setFixedPosition(position);

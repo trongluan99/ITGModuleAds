@@ -1,6 +1,6 @@
 package com.ads.control.ads.nativeAds;
 
-public class AperoAdPlacerSettings {
+public class ITGAdPlacerSettings {
 
     private String adUnitId;
     private int positionFixAd = -1;
@@ -8,12 +8,12 @@ public class AperoAdPlacerSettings {
     private int layoutCustomAd = -1;
     private int layoutAdPlaceHolder = -1;
     private ITGAdPlacer.Listener listener;
-    public AperoAdPlacerSettings(String adUnitId, int layoutCustomAd, int layoutPlaceHolderAd) {
+    public ITGAdPlacerSettings(String adUnitId, int layoutCustomAd, int layoutPlaceHolderAd) {
         this.adUnitId = adUnitId;
         this.layoutCustomAd = layoutCustomAd;
         this.layoutAdPlaceHolder = layoutPlaceHolderAd;
     }
-    public AperoAdPlacerSettings(  int layoutCustomAd, int layoutPlaceHolderAd) {
+    public ITGAdPlacerSettings(int layoutCustomAd, int layoutPlaceHolderAd) {
         this.adUnitId = adUnitId;
         this.layoutCustomAd = layoutCustomAd;
         this.layoutAdPlaceHolder = layoutPlaceHolderAd;

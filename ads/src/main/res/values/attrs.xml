@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="banner_height">50dp</dimen>
-    <declare-styleable name="AperoNativeAdView">
+    <declare-styleable name="ITGNativeAdView">
         <attr name="layoutCustomNativeAd" format="integer"/>
         <attr name="layoutLoading" format="integer"/>
         <attr name="layoutPlaceHolder" format="integer"/>
     </declare-styleable>
-    <declare-styleable name="AperoBannerAdView">
+    <declare-styleable name="ITGBannerAdView">
         <attr name="idBanner" format="string"/>
     </declare-styleable>
 
