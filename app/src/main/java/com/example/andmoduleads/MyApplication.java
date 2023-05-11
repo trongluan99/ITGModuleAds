@@ -1,15 +1,14 @@
 package com.example.andmoduleads;
 
-import com.ads.control.ads.AperoAd;
+import com.ads.control.ads.ITGAd;
 import com.ads.control.config.AdjustConfig;
-import com.ads.control.config.AperoAdConfig;
+import com.ads.control.config.ITGAdConfig;
 import com.ads.control.application.AdsMultiDexApplication;
 import com.ads.control.applovin.AppLovin;
 import com.ads.control.applovin.AppOpenMax;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
-import com.ads.control.config.AppsflyerConfig;
 import com.example.andmoduleads.activity.MainActivity;
 import com.example.andmoduleads.activity.SplashActivity;
 
@@ -49,28 +48,27 @@ public class MyApplication extends AdsMultiDexApplication {
     }
 
     private void initAds() {
-        String environment = BuildConfig.env_dev ? AperoAdConfig.ENVIRONMENT_DEVELOP : AperoAdConfig.ENVIRONMENT_PRODUCTION;
-        aperoAdConfig = new AperoAdConfig(this, AperoAdConfig.PROVIDER_ADMOB, environment);
+        String environment = BuildConfig.env_dev ? ITGAdConfig.ENVIRONMENT_DEVELOP : ITGAdConfig.ENVIRONMENT_PRODUCTION;
+        itgAdConfig = new ITGAdConfig(this, ITGAdConfig.PROVIDER_ADMOB, environment);
 
         // Optional: setup Adjust event
         AdjustConfig adjustConfig = new AdjustConfig(true,ADJUST_TOKEN);
         adjustConfig.setEventAdImpression(EVENT_AD_IMPRESSION_ADJUST);
         adjustConfig.setEventNamePurchase(EVENT_PURCHASE_ADJUST);
-        aperoAdConfig.setAdjustConfig(adjustConfig);
+        itgAdConfig.setAdjustConfig(adjustConfig);
 
         // Optional: setup Appsflyer event
 //        AppsflyerConfig appsflyerConfig = new AppsflyerConfig(true,APPSFLYER_TOKEN);
-//        aperoAdConfig.setAppsflyerConfig(appsflyerConfig);
 
         // Optional: enable ads resume
-        aperoAdConfig.setIdAdResume(BuildConfig.ads_open_app);
+        itgAdConfig.setIdAdResume(BuildConfig.ads_open_app);
 
         // Optional: setup list device test - recommended to use
         listTestDevice.add("EC25F576DA9B6CE74778B268CB87E431");
-        aperoAdConfig.setListDeviceTest(listTestDevice);
-        aperoAdConfig.setIntervalInterstitialAd(15);
+        itgAdConfig.setListDeviceTest(listTestDevice);
+        itgAdConfig.setIntervalInterstitialAd(15);
 
-        AperoAd.getInstance().init(this, aperoAdConfig, false);
+        ITGAd.getInstance().init(this, itgAdConfig, false);
 
         // Auto disable ad resume after user click ads and back to app
         Admob.getInstance().setDisableAdResumeWhenClickAds(true);
@@ -78,7 +76,7 @@ public class MyApplication extends AdsMultiDexApplication {
         // If true -> onNextAction() is called right after Ad Interstitial showed
         Admob.getInstance().setOpenActivityAfterShowInterAds(true);
 
-        if (AperoAd.getInstance().getMediationProvider() == AperoAdConfig.PROVIDER_ADMOB) {
+        if (ITGAd.getInstance().getMediationProvider() == ITGAdConfig.PROVIDER_ADMOB) {
             AppOpenManager.getInstance().disableAppResumeWithActivity(SplashActivity.class);
         } else {
             AppOpenMax.getInstance().disableAppResumeWithActivity(SplashActivity.class);

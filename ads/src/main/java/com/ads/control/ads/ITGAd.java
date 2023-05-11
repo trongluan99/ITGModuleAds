@@ -32,8 +32,8 @@ import com.adjust.sdk.OnSessionTrackingSucceededListener;
 import com.ads.control.R;
 import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
-import com.ads.control.ads.nativeAds.AperoAdAdapter;
-import com.ads.control.ads.nativeAds.AperoAdPlacer;
+import com.ads.control.ads.nativeAds.ITGAdAdapter;
+import com.ads.control.ads.nativeAds.ITGAdPlacer;
 import com.ads.control.ads.wrapper.ApAdError;
 import com.ads.control.ads.wrapper.ApAdValue;
 import com.ads.control.ads.wrapper.ApInterstitialAd;
@@ -1659,8 +1659,8 @@ public class AperoAd {
      * @param repeatingInterval
      * @return
      */
-    public AperoAdAdapter getNativeRepeatAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
-                                                 AperoAdPlacer.Listener listener, int repeatingInterval) {
+    public ITGAdAdapter getNativeRepeatAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
+                                               ITGAdPlacer.Listener listener, int repeatingInterval) {
         switch (adConfig.getMediationProvider()) {
             case AperoAdConfig.PROVIDER_MAX:
                 MaxAdPlacer.Listener maxListener = new MaxAdPlacer.Listener() {
@@ -1689,9 +1689,9 @@ public class AperoAd {
                 MaxRecyclerAdapter adAdapter = AppLovin.getInstance().getNativeRepeatAdapter(activity, id, layoutCustomNative,
                         originalAdapter, maxListener, repeatingInterval);
 
-                return new AperoAdAdapter(adAdapter);
+                return new ITGAdAdapter(adAdapter);
             default:
-                return new AperoAdAdapter(Admob.getInstance().getNativeRepeatAdapter(activity, id, layoutCustomNative, layoutAdPlaceHolder,
+                return new ITGAdAdapter(Admob.getInstance().getNativeRepeatAdapter(activity, id, layoutCustomNative, layoutAdPlaceHolder,
                         originalAdapter, listener, repeatingInterval));
         }
 
@@ -1709,8 +1709,8 @@ public class AperoAd {
      * @param position
      * @return
      */
-    public AperoAdAdapter getNativeFixedPositionAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
-                                                        AperoAdPlacer.Listener listener, int position) {
+    public ITGAdAdapter getNativeFixedPositionAdapter(Activity activity, String id, int layoutCustomNative, int layoutAdPlaceHolder, RecyclerView.Adapter originalAdapter,
+                                                      ITGAdPlacer.Listener listener, int position) {
         switch (adConfig.getMediationProvider()) {
             case AperoAdConfig.PROVIDER_MAX:
                 MaxAdPlacer.Listener maxListener = new MaxAdPlacer.Listener() {
@@ -1739,9 +1739,9 @@ public class AperoAd {
                 MaxRecyclerAdapter adAdapter = AppLovin.getInstance().getNativeFixedPositionAdapter(activity, id, layoutCustomNative,
                         originalAdapter, maxListener, position);
                 adAdapter.loadAds();
-                return new AperoAdAdapter(adAdapter);
+                return new ITGAdAdapter(adAdapter);
             default:
-                return new AperoAdAdapter(Admob.getInstance().getNativeFixedPositionAdapter(activity, id, layoutCustomNative, layoutAdPlaceHolder,
+                return new ITGAdAdapter(Admob.getInstance().getNativeFixedPositionAdapter(activity, id, layoutCustomNative, layoutAdPlaceHolder,
                         originalAdapter, listener, position));
         }
     }

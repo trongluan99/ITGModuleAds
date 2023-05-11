@@ -4,12 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.ads.control.config.AperoAdConfig;
+import com.ads.control.config.ITGAdConfig;
 import com.ads.control.funtion.AdType;
 import com.ads.control.util.AppUtil;
 import com.ads.control.util.SharePreferenceUtils;
 import com.applovin.mediation.MaxAd;
 import com.google.android.gms.ads.AdValue;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Created by lamlt on 12/09/2022.
@@ -19,15 +20,29 @@ public class AperoLogEventManager {
     private static final String TAG = "AperoLogEventManager";
 
     public static void logPaidAdImpression(Context context, AdValue adValue, String adUnitId, String mediationAdapterClassName, AdType adType) {
-        logEventWithAds(context, (float) adValue.getValueMicros(), adValue.getPrecisionType(), adUnitId, mediationAdapterClassName, AperoAdConfig.PROVIDER_ADMOB);
-        AperoAdjust.pushTrackEventAdmob(adValue);
+        logEventWithAds(context, (float) adValue.getValueMicros(), adValue.getPrecisionType(), adUnitId, mediationAdapterClassName, ITGAdConfig.PROVIDER_ADMOB);
+        ITGAdjust.pushTrackEventAdmob(adValue);
         AperoAppsflyer.getInstance().pushTrackEventAdmob(adValue, adUnitId, adType);
     }
 
     public static void logPaidAdImpression(Context context, MaxAd adValue, AdType adType) {
-        logEventWithAds(context, (float) adValue.getRevenue(), 0, adValue.getAdUnitId(), adValue.getNetworkName(), AperoAdConfig.PROVIDER_MAX);
-        AperoAdjust.pushTrackEventApplovin(adValue, context);
+//        logEventWithAds(context, (float) adValue.getRevenue(), 0, adValue.getAdUnitId(), adValue.getNetworkName(), AperoAdConfig.PROVIDER_MAX);
+        logEventWithMaxAds(context, adValue);
+        ITGAdjust.pushTrackEventApplovin(adValue, context);
         AperoAppsflyer.getInstance().pushTrackEventApplovin(adValue, adType);
+    }
+
+    private static void logEventWithMaxAds(Context context, MaxAd impressionData) {
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        double revenue = impressionData.getRevenue(); // In USD
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.AD_PLATFORM, "AppLovin");
+        params.putString(FirebaseAnalytics.Param.AD_SOURCE, impressionData.getNetworkName());
+        params.putString(FirebaseAnalytics.Param.AD_FORMAT, impressionData.getFormat().getLabel());
+        params.putString(FirebaseAnalytics.Param.AD_UNIT_NAME, impressionData.getAdUnitId());
+        params.putDouble(FirebaseAnalytics.Param.VALUE, revenue);
+        params.putString(FirebaseAnalytics.Param.CURRENCY, "USD"); // All Applovin revenue is sent in USD
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.AD_IMPRESSION, params);
     }
 
     private static void logEventWithAds(Context context, float revenue, int precision, String adUnitId, String network, int mediationProvider) {
@@ -74,7 +89,7 @@ public class AperoLogEventManager {
         params.putString("network", network);
 
 
-        AperoAdjust.logPaidAdImpressionValue(value, "USD");
+        ITGAdjust.logPaidAdImpressionValue(value, "USD");
         FirebaseAnalyticsUtil.logPaidAdImpressionValue(context, params, mediationProvider);
 
         FacebookEventUtils.logPaidAdImpressionValue(context, params, mediationProvider);
@@ -135,35 +150,35 @@ public class AperoLogEventManager {
 
 
     public static void setEventNamePurchaseAdjust(String eventNamePurchase) {
-        AperoAdjust.setEventNamePurchase(eventNamePurchase);
+        ITGAdjust.setEventNamePurchase(eventNamePurchase);
     }
 
     public static void trackAdRevenue(String id) {
-        AperoAdjust.trackAdRevenue(id);
+        ITGAdjust.trackAdRevenue(id);
     }
 
     public static void onTrackEvent(String eventName) {
-        AperoAdjust.onTrackEvent(eventName);
+        ITGAdjust.onTrackEvent(eventName);
     }
 
     public static void onTrackEvent(String eventName, String id) {
-        AperoAdjust.onTrackEvent(eventName, id);
+        ITGAdjust.onTrackEvent(eventName, id);
     }
 
     public static void onTrackRevenue(String eventName, float revenue, String currency) {
-        AperoAdjust.onTrackRevenue(eventName, revenue, currency);
+        ITGAdjust.onTrackRevenue(eventName, revenue, currency);
     }
 
     public static void onTrackRevenuePurchase(float revenue, String currency, String idPurchase, int typeIAP) {
-        AperoAdjust.onTrackRevenuePurchase(revenue, currency);
+        ITGAdjust.onTrackRevenuePurchase(revenue, currency);
         AperoAppsflyer.getInstance().onTrackRevenuePurchase(revenue, currency, idPurchase, typeIAP);
     }
 
     public static void pushTrackEventAdmob(AdValue adValue) {
-        AperoAdjust.pushTrackEventAdmob(adValue);
+        ITGAdjust.pushTrackEventAdmob(adValue);
     }
 
     public static void pushTrackEventApplovin(MaxAd ad, Context context) {
-        AperoAdjust.pushTrackEventApplovin(ad, context);
+        ITGAdjust.pushTrackEventApplovin(ad, context);
     }
 }
