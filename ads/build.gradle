@@ -68,6 +68,14 @@ android {
     }
 }*/
 
+repositories {
+    maven {
+        //IronSource
+        url "https://android-sdk.is.com/"
+    }
+}
+
+
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -126,6 +134,8 @@ dependencies {
     // appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.8.2'
     implementation 'com.appsflyer:adrevenue:6.4.3'
+
+    implementation 'com.ironsource.sdk:mediationsdk:7.3.0'
 }
 
 afterEvaluate {

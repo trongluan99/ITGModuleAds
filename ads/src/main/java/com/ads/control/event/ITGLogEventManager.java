@@ -11,6 +11,7 @@ import com.ads.control.util.SharePreferenceUtils;
 import com.applovin.mediation.MaxAd;
 import com.google.android.gms.ads.AdValue;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.ironsource.mediationsdk.impressionData.ImpressionData;
 
 public class ITGLogEventManager {
 
@@ -27,6 +28,21 @@ public class ITGLogEventManager {
         logEventWithMaxAds(context, adValue);
         ITGAdjust.pushTrackEventApplovin(adValue, context);
         ITGAppsflyer.getInstance().pushTrackEventApplovin(adValue, adType);
+    }
+
+    public static void logEventWithIronSourceAds(Context context, ImpressionData impressionData) {
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        if (impressionData != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.AD_PLATFORM, "ironSource");
+            bundle.putString(FirebaseAnalytics.Param.AD_SOURCE, impressionData.getAdNetwork());
+            bundle.putString(FirebaseAnalytics.Param.AD_FORMAT, impressionData.getAdUnit());
+            bundle.putString(FirebaseAnalytics.Param.AD_UNIT_NAME, impressionData.getInstanceName());
+            bundle.putString(FirebaseAnalytics.Param.CURRENCY, "USD");
+            bundle.putDouble(FirebaseAnalytics.Param.VALUE, impressionData.getRevenue());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.AD_IMPRESSION, bundle);
+        }
     }
 
     private static void logEventWithMaxAds(Context context, MaxAd impressionData) {
