@@ -628,6 +628,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                     }
                 });
                 appResumeAd.show(currentActivity);
+            }else{
+                dismissDialogLoading();
             }
 //            }, 1000);
         }
