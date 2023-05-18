@@ -282,16 +282,6 @@ public class ITGAd {
         }
     }
 
-    public void loadSmartBanner(final Activity mActivity, String id) {
-        switch (adConfig.getMediationProvider()) {
-            case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadSmartBanner(mActivity, id);
-                break;
-            case ITGAdConfig.PROVIDER_MAX:
-                AppLovin.getInstance().loadBanner(mActivity, id);
-        }
-    }
-
     public void loadBanner(final Activity mActivity, String id, final ITGAdCallback adCallback) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:

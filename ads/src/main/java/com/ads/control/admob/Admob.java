@@ -2150,7 +2150,7 @@ public class Admob {
                     adContainer.setVisibility(View.GONE);
                     containerShimmer.setVisibility(View.GONE);
 
-                    if (callback != null) {
+                    if(callback != null){
                         callback.onAdFailedToLoad(loadAdError);
                     }
                 }
@@ -2174,7 +2174,7 @@ public class Admob {
                         });
                     }
 
-                    if (callback != null) {
+                    if(callback != null){
                         callback.onAdLoaded();
                     }
                 }

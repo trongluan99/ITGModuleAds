@@ -20,6 +20,7 @@ import com.ads.control.R;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.dialog.PrepareLoadingAdsDialog;
 import com.ads.control.funtion.AdCallback;
+import com.ads.control.event.ITGAdjust;
 import com.ads.control.event.ITGLogEventManager;
 import com.ads.control.funtion.AdType;
 import com.ads.control.util.SharePreferenceUtils;
@@ -381,7 +382,7 @@ public class AppLovin {
             adListener.onAdClosed();
             return;
         }
-        interstitialSplash.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
+        interstitialSplash.setRevenueListener(ad ->ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
         interstitialSplash.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -573,7 +574,7 @@ public class AppLovin {
             return;
         }
 
-        interstitialAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
+        interstitialAd.setRevenueListener(ad ->ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
         interstitialAd.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {

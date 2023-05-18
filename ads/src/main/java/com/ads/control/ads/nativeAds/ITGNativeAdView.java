@@ -93,7 +93,7 @@ public class ITGNativeAdView extends RelativeLayout {
             layoutCustomNativeAd = R.layout.custom_native_admod_medium_rate;
             setLayoutCustomNativeAd(layoutCustomNativeAd);
         }
-        ITGAd.getInstance().loadNativeAd(activity, idAd, layoutCustomNativeAd, layoutPlaceHolder, layoutLoading, ITGAdCallback);
+        ITGAd.getInstance().loadNativeAd(activity, idAd, layoutCustomNativeAd, layoutPlaceHolder, layoutLoading,ITGAdCallback);
     }
 
     public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading) {
@@ -105,6 +105,6 @@ public class ITGNativeAdView extends RelativeLayout {
     public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading, ITGAdCallback ITGAdCallback) {
         setLayoutLoading(idLayoutLoading);
         setLayoutCustomNativeAd(layoutCustomNativeAd);
-        loadNativeAd(activity,idAd, ITGAdCallback);
+        loadNativeAd(activity,idAd,ITGAdCallback);
     }
 }

@@ -8,7 +8,6 @@ public class ITGAdPlacerSettings {
     private int layoutCustomAd = -1;
     private int layoutAdPlaceHolder = -1;
     private ITGAdPlacer.Listener listener;
-
     public ITGAdPlacerSettings(String adUnitId, int layoutCustomAd, int layoutPlaceHolderAd) {
         this.adUnitId = adUnitId;
         this.layoutCustomAd = layoutCustomAd;

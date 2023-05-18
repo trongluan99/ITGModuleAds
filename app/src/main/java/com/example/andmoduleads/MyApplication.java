@@ -57,10 +57,6 @@ public class MyApplication extends AdsMultiDexApplication {
         adjustConfig.setEventNamePurchase(EVENT_PURCHASE_ADJUST);
         itgAdConfig.setAdjustConfig(adjustConfig);
 
-        // Optional: setup Appsflyer event
-//        AppsflyerConfig appsflyerConfig = new AppsflyerConfig(true,APPSFLYER_TOKEN);
-//        ITGAdConfig.setAppsflyerConfig(appsflyerConfig);
-
         // Optional: enable ads resume
         itgAdConfig.setIdAdResume(BuildConfig.ads_open_app);
 

@@ -54,14 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private String idInter = "";
 
     private int layoutNativeCustom;
-    private ITGNativeAdView ITGNativeAdView;
+
+    private ITGNativeAdView itgNativeAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ITGNativeAdView = findViewById(R.id.ITGNativeAds);
 
+        itgNativeAdView = findViewById(R.id.itgNativeAds);
 
         configMediationProvider();
         ITGAd.getInstance().setCountClickToShowAds(3);
@@ -78,13 +79,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * Sample integration native ads
          */
-        /*
-        ITGAd.getInstance().loadNativeAd(this, idNative, layoutNativeCustom);
-        ITGNativeAdView.setLayoutLoading(R.layout.loading_native_medium);
-        ITGNativeAdView.setLayoutCustomNativeAd(layoutNativeCustom);
-        ITGNativeAdView.loadNativeAd(this, idNative,layoutNativeCustom,R.layout.loading_native_medium);
-        */
-        ITGNativeAdView.loadNativeAd(this, idNative, new ITGAdCallback() {
+        itgNativeAdView.loadNativeAd(this, idNative, new ITGAdCallback() {
             @Override
             public void onAdImpression() {
                 super.onAdImpression();
@@ -112,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        ITGAd.getInstance().loadBanner(this, idBanner);
         ITGBannerAdView bannerAdView = findViewById(R.id.bannerView);
         bannerAdView.loadBanner(this, idBanner, new ITGAdCallback() {
             @Override

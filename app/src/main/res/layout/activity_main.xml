@@ -6,7 +6,7 @@
     android:background="#FDA6A6">
 
     <com.ads.control.ads.nativeAds.ITGNativeAdView
-        android:id="@+id/ITGNativeAds"
+        android:id="@+id/itgNativeAds"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_150sdp"
         android:background="@drawable/bg_card_ads"
@@ -27,7 +27,7 @@
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ITGNativeAds">
+        app:layout_constraintTop_toBottomOf="@+id/itgNativeAds">
 
 
         <Button
