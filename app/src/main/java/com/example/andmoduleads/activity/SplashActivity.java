@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
 import com.ads.control.ads.ITGAd;
 import com.ads.control.ads.ITGAdCallback;
@@ -29,6 +28,14 @@ public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
     private List<String> list = new ArrayList<>();
     private String idAdSplash;
+
+    private boolean isBackgroundRunning = false;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isBackgroundRunning = true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,30 +61,17 @@ public class SplashActivity extends AppCompatActivity {
 //        loadSplash();
 //        AppPurchase.getInstance().setEventConsumePurchaseTest(findViewById(R.id.txtLoading));
 
-        /*AppOpenManager.getInstance().loadSplashOpenHighFloor(SplashActivity.class, this,
-                "ca-app-pub-3940256099942544/3419835295",
-                "ca-app-pub-3940256099942544/3419835295",
-                "ca-app-pub-3940256099942544/3419835294", 25000, new AdCallback() {
-                    @Override
-                    public void onNextAction() {
-                        super.onNextAction();
-                        Log.e("loadSplashOpenHighFloor", "onNextAction: ");
-                        startMain();
-                    }
-                });*/
-
-        AppOpenManager.getInstance().loadSplashOpenAndInter(SplashActivity.class, this,
+        AppOpenManager.getInstance().loadAdOpenSplash2id(SplashActivity.class, this,
                 "ca-app-pub-3940256099942544/3419835294",
-                "ca-app-pub-3940256099942544/1033173712",
-                25000, new AdCallback() {
+                "ca-app-pub-3940256099942544/3419835294", 25000, new AdCallback() {
                     @Override
                     public void onNextAction() {
                         super.onNextAction();
                         startMain();
                     }
                 });
-    }
 
+    }
 
     ITGAdCallback adCallback = new ITGAdCallback() {
         @Override
@@ -138,10 +132,9 @@ public class SplashActivity extends AppCompatActivity {
             }
         });*/
 
-        loadAdmobAd();
+//        loadAdmobAd();
 
     }
-
 
     private void loadAdmobAd() {
         AppOpenManager.getInstance().setSplashActivity(SplashActivity.class, getString(R.string.admod_app_open_ad_id), 30000);
@@ -184,11 +177,16 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "Splash onPause: ");
-        Admob.getInstance().onCheckShowSplashWhenFail(this, new AdCallback() {
+        AppOpenManager.getInstance().onCheckShowAppOpenSplashWhenFail(this, new AdCallback() {
             @Override
             public void onNextAction() {
                 super.onNextAction();
+                startMain();
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
                 startMain();
             }
         }, 1000);
@@ -204,6 +202,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.e(TAG, "Splash onStop: ");
+        isBackgroundRunning = false;
     }
 
     @Override

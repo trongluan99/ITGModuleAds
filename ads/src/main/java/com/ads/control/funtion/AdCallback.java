@@ -18,8 +18,20 @@ public class AdCallback {
     public void onAdClosed() {
     }
 
+    public void onAdFailedSplash() {
+    }
+
 
     public void onAdFailedToLoad(@Nullable LoadAdError i) {
+    }
+
+    public void onAdFailedToLoadHigh(@Nullable LoadAdError i) {
+    }
+
+    public void onAdFailedToLoadHighMedium(@Nullable LoadAdError i) {
+    }
+
+    public void onAdFailedToLoadAll(@Nullable LoadAdError i) {
     }
 
     public void onAdFailedToShow(@Nullable AdError adError) {
