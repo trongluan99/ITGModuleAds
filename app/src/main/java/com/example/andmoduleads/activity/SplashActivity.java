@@ -6,7 +6,6 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ads.control.admob.Admob;
 import com.ads.control.admob.AppOpenManager;
 import com.ads.control.ads.ITGAd;
 import com.ads.control.config.ITGAdConfig;
@@ -23,13 +22,6 @@ public class SplashActivity extends AppCompatActivity {
     private List<String> list = new ArrayList<>();
     private String idAdSplash;
 
-    private boolean isBackgroundRunning = false;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        isBackgroundRunning = true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +41,6 @@ public class SplashActivity extends AppCompatActivity {
                         startMain();
                     }
                 });
-
-        /*Admob.getInstance().loadSplashInterstitialAds(this, "ca-app-pub-3940256099942544/1033173712", 25000, 5000, new AdCallback() {
-            @Override
-            public void onNextAction() {
-                super.onNextAction();
-                startMain();
-            }
-        });*/
-
     }
 
     private void startMain() {
@@ -75,14 +58,6 @@ public class SplashActivity extends AppCompatActivity {
                 startMain();
             }
         }, 1000);
-
-        /*Admob.getInstance().onCheckShowSplashWhenFail(this, new AdCallback() {
-            @Override
-            public void onNextAction() {
-                super.onNextAction();
-                startMain();
-            }
-        }, 1000);*/
     }
 
     @Override
@@ -95,7 +70,6 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.e(TAG, "Splash onStop: ");
-        isBackgroundRunning = false;
     }
 
     @Override
