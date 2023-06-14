@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -116,6 +115,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private boolean isTimeDelay = false;
     private CountDownTimer timerListenInter = null;
     private long currentTime = 0;
+    private long timeRemaining = 0;
 
 
     private Handler timeoutHandler;
@@ -1279,7 +1279,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         isAppOpenShowed = false;
 
         Runnable actionTimeOut = () -> {
-            Log.d(TAG, "getAdSplash time out");
+            Log.d("AppOpenSplash", "getAdSplash time out");
             adListener.onNextAction();
             isShowingAd = false;
         };
@@ -1293,9 +1293,17 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 super.onAdFailedToLoad(loadAdError);
                 statusHigh = Type_Load_Fail;
                 if (statusAll == Type_Load_Success && !isAppOpenShowed && splashAdAll != null) {
-                    Log.d(TAG, "onAdFailedToLoad: High");
+                    Log.d("AppOpenSplash", "onAdFailedToLoad: High");
                     AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenAll, timeOutOpen);
                     splashAdAll.show(activity);
+                }
+
+                if (statusAll == Type_Load_Fail || statusAll == Type_Show_Fail) {
+                    Log.d("AppOpenSplash", "onAdFailedToHigh: High");
+                    if (adListener != null && !isAppOpenShowed) {
+                        adListener.onNextAction();
+                    }
+                    handleTimeOut.removeCallbacks(actionTimeOut);
                 }
             }
 
@@ -1337,6 +1345,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         super.onAdDismissedFullScreenContent();
                         if (adListener != null) {
                             adListener.onNextAction();
+                            Log.d("AppOpenSplash", "onAdDismissedFullScreenContent: vao 1");
                         }
                     }
 
@@ -1349,6 +1358,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenAll, timeOutOpen);
                             splashAdAll.show(activity);
                         }
+
+                        timeRemaining = timeOutOpen - (System.currentTimeMillis() - currentTime);
 
                     }
 
@@ -1375,11 +1386,11 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 super.onAdFailedToLoad(loadAdError);
                 statusAll = Type_Load_Fail;
                 if (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail) {
-                    Log.d(TAG, "onAdFailedToLoad: All");
+                    Log.d("AppOpenSplash", "onAdFailedToLoad: All");
                     if (adListener != null && !isAppOpenShowed) {
                         adListener.onNextAction();
                     }
-                    handleTimeOut.removeCallbacks(runnableTimeout);
+                    handleTimeOut.removeCallbacks(actionTimeOut);
                 }
             }
 
@@ -1422,24 +1433,43 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         super.onAdDismissedFullScreenContent();
                         if (adListener != null) {
                             adListener.onNextAction();
+                            Log.d("AppOpenSplash", "onAdDismissedFullScreenContent: vao 2");
                         }
                     }
 
                     @Override
                     public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                         super.onAdFailedToShowFullScreenContent(adError);
-                        statusAll = Type_Show_Fail;
                         if (statusHigh == Type_Load_Fail) {
-                            if (adListener != null && !isAppOpenShowed) {
-                                adListener.onNextAction();
+                            if (timerListenInter == null) {
+                                timerListenInter = new CountDownTimer(timeRemaining, 1000) {
+                                    @Override
+                                    public void onTick(long l) {
+                                        if (isAppOpenShowed) {
+                                            cancel();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        if (adListener != null && !isAppOpenShowed) {
+                                            if (statusAll != Type_Load_Success && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
+                                                adListener.onNextAction();
+                                                Log.d("AppOpenSplash", "onAdFailedToShowFullScreenContentAll: vao 2");
+                                            }
+                                        }
+                                    }
+                                }.start();
                             }
                         }
+                        statusAll = Type_Show_Fail;
                     }
 
                     @Override
                     public void onAdImpression() {
                         super.onAdImpression();
                         isAppOpenShowed = true;
+                        statusAll = Type_Load_Success;
                     }
 
                     @Override
@@ -1451,9 +1481,26 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         });
     }
 
+    public void onCheckShowAppOpenSplashWhenFail(AppCompatActivity activity, AdCallback callback, int timeDelay) {
+        new Handler(activity.getMainLooper()).postDelayed(() -> {
+            if (!isAppOpenShowed) {
+                if (splashAdHigh != null && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
+                    splashAd = splashAdHigh;
+                    showAppOpenSplash(activity, callback);
+                    Log.d(TAG, "onCheckShowAppOpenSplashWhenFail: vao 1");
+                } else if (splashAdAll != null && (statusAll == Type_Load_Fail || statusAll == Type_Show_Fail)) {
+                    splashAd = splashAdAll;
+                    showAppOpenSplash(activity, callback);
+                    Log.d(TAG, "onCheckShowAppOpenSplashWhenFail: vao 2");
+                }
+            }
+        }, timeDelay);
+    }
+
     public void showAppOpenSplash(Context context, AdCallback adCallback) {
         if (splashAd == null) {
             adCallback.onNextAction();
+            Log.d("AppOpenSplash Failed", "splashAd null: vao 2");
             return;
         }
         new Handler().postDelayed(() -> {
@@ -1461,8 +1508,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                     new FullScreenContentCallback() {
                         @Override
                         public void onAdDismissedFullScreenContent() {
-                            adCallback.onAdClosed();
+                            adCallback.onNextAction();
                             isAppOpenShowed = false;
+                            Log.d("AppOpenSplash Failed", "onAdDismissedFullScreenContent: vao 1");
                         }
 
                         @Override
@@ -1487,24 +1535,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                     });
             splashAd.show(currentActivity);
         }, 800);
-    }
-
-    public void onCheckShowAppOpenSplashWhenFail(AppCompatActivity activity, AdCallback callback, int timeDelay) {
-        new Handler(activity.getMainLooper()).postDelayed(() -> {
-            if (!isAppOpenShowed) {
-                if (splashAdHigh != null && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
-                    splashAd = splashAdHigh;
-                    showAppOpenSplash(activity, callback);
-                    Log.d(TAG, "onCheckShowAppOpenSplashWhenFail: vao 1");
-                } else if (splashAdAll != null && (statusAll == Type_Load_Fail || statusAll == Type_Show_Fail)) {
-                    splashAd = splashAdAll;
-                    showAppOpenSplash(activity, callback);
-                    Log.d(TAG, "onCheckShowAppOpenSplashWhenFail: vao 2");
-                }
-            } else {
-                callback.onNextAction();
-            }
-        }, timeDelay);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
