@@ -1328,6 +1328,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
                 if (!isAppOpenShowed) {
                     splashAdHigh.show(activity);
+                    Log.d("AppOpenSplash", "show High");
                 }
 
                 splashAdHigh.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -1352,15 +1353,13 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                     @Override
                     public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                         super.onAdFailedToShowFullScreenContent(adError);
-                        statusHigh = Type_Show_Fail;
-
-                        if (statusAll == Type_Load_Success && splashAdAll != null) {
+                        if (statusAll == Type_Load_Success && splashAdAll != null && statusHigh != Type_Load_Success) {
                             AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenAll, timeOutOpen);
                             splashAdAll.show(activity);
+                            Log.d("AppOpenSplash", "onAdFailedToShowFullScreenContent show All");
                         }
-
                         timeRemaining = timeOutOpen - (System.currentTimeMillis() - currentTime);
-
+                        statusHigh = Type_Show_Fail;
                     }
 
                     @Override
@@ -1380,105 +1379,108 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             }
         });
 
-        AppOpenAd.load(activity, idOpenAll, getAdRequest(), AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, new AppOpenAd.AppOpenAdLoadCallback() {
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-                statusAll = Type_Load_Fail;
-                if (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail) {
-                    Log.d("AppOpenSplash", "onAdFailedToLoad: All");
-                    if (adListener != null && !isAppOpenShowed) {
-                        adListener.onNextAction();
-                    }
-                    handleTimeOut.removeCallbacks(actionTimeOut);
-                }
-            }
+        AppOpenAd.load(activity, idOpenAll,
 
-            @Override
-            public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
-                super.onAdLoaded(appOpenAd);
-                handleTimeOut.removeCallbacks(actionTimeOut);
-                if (adListener != null) {
-                    adListener.onAdLoadedAll();
-                }
-
-                appOpenAd.setOnPaidEventListener(adValue -> {
-                    ITGLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
-                            adValue,
-                            appOpenAd.getAdUnitId(),
-                            appOpenAd.getResponseInfo()
-                                    .getMediationAdapterClassName(), AdType.APP_OPEN);
-                });
-
-                splashAdAll = appOpenAd;
-                statusAll = Type_Load_Success;
-
-                if (!isAppOpenShowed && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
-                    AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenAll, timeOutOpen);
-                    splashAdAll.show(activity);
-                }
-
-                splashAdAll.setFullScreenContentCallback(new FullScreenContentCallback() {
+                getAdRequest(), AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, new AppOpenAd.AppOpenAdLoadCallback() {
                     @Override
-                    public void onAdClicked() {
-                        super.onAdClicked();
-                        disableAdResumeByClickAction = true;
-                        if (adListener != null) {
-                            adListener.onAdClickedAll();
-                        }
-                    }
-
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                        if (adListener != null) {
-                            adListener.onNextAction();
-                            Log.d("AppOpenSplash", "onAdDismissedFullScreenContent: vao 2");
-                        }
-                    }
-
-                    @Override
-                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                        super.onAdFailedToShowFullScreenContent(adError);
-                        if (statusHigh == Type_Load_Fail) {
-                            if (timerListenInter == null) {
-                                timerListenInter = new CountDownTimer(timeRemaining, 1000) {
-                                    @Override
-                                    public void onTick(long l) {
-                                        if (isAppOpenShowed) {
-                                            cancel();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        if (adListener != null && !isAppOpenShowed) {
-                                            if (statusAll != Type_Load_Success && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
-                                                adListener.onNextAction();
-                                                Log.d("AppOpenSplash", "onAdFailedToShowFullScreenContentAll: vao 2");
-                                            }
-                                        }
-                                    }
-                                }.start();
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        statusAll = Type_Load_Fail;
+                        if (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail) {
+                            Log.d("AppOpenSplash", "onAdFailedToLoad: All");
+                            if (adListener != null && !isAppOpenShowed) {
+                                adListener.onNextAction();
                             }
+                            handleTimeOut.removeCallbacks(actionTimeOut);
                         }
-                        statusAll = Type_Show_Fail;
                     }
 
                     @Override
-                    public void onAdImpression() {
-                        super.onAdImpression();
-                        isAppOpenShowed = true;
+                    public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
+                        super.onAdLoaded(appOpenAd);
+                        handleTimeOut.removeCallbacks(actionTimeOut);
+                        if (adListener != null) {
+                            adListener.onAdLoadedAll();
+                        }
+
+                        appOpenAd.setOnPaidEventListener(adValue -> {
+                            ITGLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
+                                    adValue,
+                                    appOpenAd.getAdUnitId(),
+                                    appOpenAd.getResponseInfo()
+                                            .getMediationAdapterClassName(), AdType.APP_OPEN);
+                        });
+
+                        splashAdAll = appOpenAd;
                         statusAll = Type_Load_Success;
-                    }
 
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        super.onAdShowedFullScreenContent();
+                        if (!isAppOpenShowed && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
+                            AppOpenManager.getInstance().setSplashActivity(splashActivity, idOpenAll, timeOutOpen);
+                            splashAdAll.show(activity);
+                            Log.d("AppOpenSplash", "show All");
+                        }
+
+                        splashAdAll.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                                disableAdResumeByClickAction = true;
+                                if (adListener != null) {
+                                    adListener.onAdClickedAll();
+                                }
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                if (adListener != null) {
+                                    adListener.onNextAction();
+                                    Log.d("AppOpenSplash", "onAdDismissedFullScreenContent: vao 2");
+                                }
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                if (statusHigh == Type_Load_Fail) {
+                                    if (timerListenInter == null) {
+                                        timerListenInter = new CountDownTimer(timeRemaining, 1000) {
+                                            @Override
+                                            public void onTick(long l) {
+                                                if (isAppOpenShowed) {
+                                                    cancel();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFinish() {
+                                                if (adListener != null && !isAppOpenShowed) {
+                                                    if (statusAll != Type_Load_Success && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
+                                                        adListener.onNextAction();
+                                                        Log.d("AppOpenSplash", "onAdFailedToShowFullScreenContentAll: vao 2");
+                                                    }
+                                                }
+                                            }
+                                        }.start();
+                                    }
+                                }
+                                statusAll = Type_Show_Fail;
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                                isAppOpenShowed = true;
+                                statusAll = Type_Load_Success;
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     public void onCheckShowAppOpenSplashWhenFail(AppCompatActivity activity, AdCallback callback, int timeDelay) {
@@ -1487,11 +1489,11 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 if (splashAdHigh != null && (statusHigh == Type_Load_Fail || statusHigh == Type_Show_Fail)) {
                     splashAd = splashAdHigh;
                     showAppOpenSplash(activity, callback);
-                    Log.d(TAG, "onCheckShowAppOpenSplashWhenFail: vao 1");
+                    Log.d("AppOpenSplash", "onCheckShowAppOpenSplashWhenFail: vao 1");
                 } else if (splashAdAll != null && (statusAll == Type_Load_Fail || statusAll == Type_Show_Fail)) {
                     splashAd = splashAdAll;
                     showAppOpenSplash(activity, callback);
-                    Log.d(TAG, "onCheckShowAppOpenSplashWhenFail: vao 2");
+                    Log.d("AppOpenSplash", "onCheckShowAppOpenSplashWhenFail: vao 2");
                 }
             }
         }, timeDelay);
