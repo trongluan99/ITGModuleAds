@@ -64,6 +64,7 @@ import com.applovin.mediation.nativeAds.adPlacer.MaxRecyclerAdapter;
 import com.facebook.FacebookSdk;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.nativead.NativeAd;
@@ -342,6 +343,10 @@ public class ITGAd {
 
     public void loadCollapsibleBanner(final Activity activity, String id, String gravity, AdCallback adCallback) {
         Admob.getInstance().loadCollapsibleBanner(activity, id, gravity, adCallback);
+    }
+
+    public void loadCollapsibleBannerSizeMedium(final Activity activity, String id, String gravity, AdSize sizeBanner, AdCallback adCallback) {
+        Admob.getInstance().loadCollapsibleBannerSizeMedium(activity, id, gravity, sizeBanner, adCallback);
     }
 
     public void loadBannerFragment(final Activity mActivity, String id, final View rootView) {

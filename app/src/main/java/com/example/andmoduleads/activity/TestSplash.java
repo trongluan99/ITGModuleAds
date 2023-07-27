@@ -1,14 +1,15 @@
 package com.example.andmoduleads.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ads.control.admob.AppOpenManager;
+import com.ads.control.ads.ITGAd;
 import com.ads.control.funtion.AdCallback;
+import com.ads.control.util.AppConstant;
 import com.example.andmoduleads.R;
+import com.google.android.gms.ads.AdSize;
 
 public class TestSplash extends AppCompatActivity {
     @Override
@@ -27,5 +28,7 @@ public class TestSplash extends AppCompatActivity {
                         startActivity(new Intent(TestSplash.this, MainActivity.class));
                     }
                 });*/
+
+        ITGAd.getInstance().loadCollapsibleBannerSizeMedium(this, getString(R.string.admod_banner_id), AppConstant.CollapsibleGravity.BOTTOM, AdSize.MEDIUM_RECTANGLE, new AdCallback());
     }
 }

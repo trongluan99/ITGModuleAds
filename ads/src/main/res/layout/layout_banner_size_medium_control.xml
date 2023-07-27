@@ -17,6 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/load_fb_banner" />
+        <include layout="@layout/load_fb_banner_size_medium" />
     </FrameLayout>
 </RelativeLayout>

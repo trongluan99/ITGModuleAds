@@ -9,4 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="loading...k" />
+
+    <include
+        layout="@layout/layout_banner_size_medium_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

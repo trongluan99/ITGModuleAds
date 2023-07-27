@@ -1806,6 +1806,18 @@ public class Admob {
     }
 
     /**
+     * Load quảng cáo Collapsible Banner Size Medium Trong Activity
+     *
+     * @param mActivity
+     * @param id
+     */
+    public void loadCollapsibleBannerSizeMedium(final Activity mActivity, String id, String gravity, AdSize sizeBanner, final AdCallback callback) {
+        final FrameLayout adContainer = mActivity.findViewById(R.id.banner_container);
+        final ShimmerFrameLayout containerShimmer = mActivity.findViewById(R.id.shimmer_container_banner);
+        loadCollapsibleAutoSizeMedium(mActivity, id, gravity, sizeBanner, adContainer, containerShimmer, callback);
+    }
+
+    /**
      * Load Quảng Cáo Banner Trong Fragment
      *
      * @param mActivity
@@ -1941,7 +1953,7 @@ public class Admob {
                     adContainer.setVisibility(View.GONE);
                     containerShimmer.setVisibility(View.GONE);
 
-                    if(callback != null){
+                    if (callback != null) {
                         callback.onAdFailedToLoad(loadAdError);
                     }
                 }
@@ -1965,7 +1977,7 @@ public class Admob {
                         });
                     }
 
-                    if(callback != null){
+                    if (callback != null) {
                         callback.onAdLoaded();
                     }
                 }
@@ -2013,7 +2025,78 @@ public class Admob {
             AdView adView = new AdView(mActivity);
             adView.setAdUnitId(id);
             adContainer.addView(adView);
-            AdSize adSize = getAdSize(mActivity, false, "");
+//            AdSize adSize = getAdSize(mActivity, false, "");
+            AdSize adSize = AdSize.MEDIUM_RECTANGLE;
+            containerShimmer.getLayoutParams().height = (int) (adSize.getHeight() * Resources.getSystem().getDisplayMetrics().density + 0.5f);
+            adView.setAdSize(adSize);
+            adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            adView.loadAd(getAdRequestForCollapsibleBanner(gravity));
+            adView.setAdListener(new AdListener() {
+
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    containerShimmer.stopShimmer();
+                    adContainer.setVisibility(View.GONE);
+                    containerShimmer.setVisibility(View.GONE);
+                    if (callback != null) {
+                        callback.onAdFailedToLoad(loadAdError);
+                    }
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    Log.d(TAG, "Banner adapter class name: " + adView.getResponseInfo().getMediationAdapterClassName());
+                    containerShimmer.stopShimmer();
+                    containerShimmer.setVisibility(View.GONE);
+                    adContainer.setVisibility(View.VISIBLE);
+                    adView.setOnPaidEventListener(adValue -> {
+                        Log.d(TAG, "OnPaidEvent banner:" + adValue.getValueMicros());
+
+                        ITGLogEventManager.logPaidAdImpression(context,
+                                adValue,
+                                adView.getAdUnitId(),
+                                adView.getResponseInfo()
+                                        .getMediationAdapterClassName(), AdType.BANNER);
+                    });
+                    if (callback != null) {
+                        callback.onAdLoaded();
+                    }
+                }
+
+                @Override
+                public void onAdClicked() {
+                    super.onAdClicked();
+                    if (disableAdResumeWhenClickAds)
+                        AppOpenManager.getInstance().disableAdResumeByClickAction();
+                    ITGLogEventManager.logClickAdsEvent(context, id);
+                    if (callback != null) {
+                        callback.onAdClicked();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCollapsibleAutoSizeMedium(final Activity mActivity, String id, String gravity, AdSize sizeBanner, final FrameLayout adContainer,
+                                               final ShimmerFrameLayout containerShimmer, final AdCallback callback) {
+        if (Arrays.asList(mActivity.getResources().getStringArray(R.array.list_id_test)).contains(id)) {
+            showTestIdAlert(mActivity, BANNER_ADS, id);
+        }
+        if (AppPurchase.getInstance().isPurchased(mActivity)) {
+            containerShimmer.setVisibility(View.GONE);
+            return;
+        }
+
+        containerShimmer.setVisibility(View.VISIBLE);
+        containerShimmer.startShimmer();
+        try {
+            AdView adView = new AdView(mActivity);
+            adView.setAdUnitId(id);
+            adContainer.addView(adView);
+            AdSize adSize = sizeBanner;
             containerShimmer.getLayoutParams().height = (int) (adSize.getHeight() * Resources.getSystem().getDisplayMetrics().density + 0.5f);
             adView.setAdSize(adSize);
             adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
