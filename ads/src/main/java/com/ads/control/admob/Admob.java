@@ -2025,8 +2025,7 @@ public class Admob {
             AdView adView = new AdView(mActivity);
             adView.setAdUnitId(id);
             adContainer.addView(adView);
-//            AdSize adSize = getAdSize(mActivity, false, "");
-            AdSize adSize = AdSize.MEDIUM_RECTANGLE;
+            AdSize adSize = getAdSize(mActivity, false, "");
             containerShimmer.getLayoutParams().height = (int) (adSize.getHeight() * Resources.getSystem().getDisplayMetrics().density + 0.5f);
             adView.setAdSize(adSize);
             adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
