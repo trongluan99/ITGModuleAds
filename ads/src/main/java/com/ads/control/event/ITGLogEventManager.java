@@ -9,8 +9,12 @@ import com.ads.control.funtion.AdType;
 import com.ads.control.util.AppUtil;
 import com.ads.control.util.SharePreferenceUtils;
 import com.applovin.mediation.MaxAd;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.ads.AdValue;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.math.BigDecimal;
+import java.util.Currency;
 
 public class ITGLogEventManager {
 
@@ -20,6 +24,8 @@ public class ITGLogEventManager {
         logEventWithAds(context, (float) adValue.getValueMicros(), adValue.getPrecisionType(), adUnitId, mediationAdapterClassName, ITGAdConfig.PROVIDER_ADMOB);
         ITGAdjust.pushTrackEventAdmob(adValue);
         ITGAppsflyer.getInstance().pushTrackEventAdmob(adValue, adUnitId, adType);
+        // Log revenue Facebook 30/08
+        AppEventsLogger.newLogger(context).logPurchase(BigDecimal.valueOf((adValue.getValueMicros() / 1000000) * 23500), Currency.getInstance("VND"));
     }
 
     public static void logPaidAdImpression(Context context, MaxAd adValue, AdType adType) {
