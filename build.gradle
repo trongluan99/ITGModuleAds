@@ -4,9 +4,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea"
-        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
@@ -22,9 +19,6 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven {
-            url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea"
-        }
         maven {url 'https://android-sdk.is.com/'}
         maven {
             url 'https://artifact.bytedance.com/repository/pangle'

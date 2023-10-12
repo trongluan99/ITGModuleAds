@@ -75,8 +75,6 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
-import com.jirbo.adcolony.AdColonyAdapter;
-import com.jirbo.adcolony.AdColonyBundleBuilder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -88,7 +86,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Admob {
-    private static final String TAG = "AperoAdmob";
+    private static final String TAG = "ITGAdmob";
     private static Admob instance;
     private int currentClicked = 0;
     private String nativeId;
@@ -102,7 +100,6 @@ public class Admob {
     private boolean disableAdResumeWhenClickAds = false;
     private boolean isShowLoadingSplash = false;  //kiểm tra trạng thái ad splash, ko cho load, show khi đang show loading ads splash
     private boolean isFan;
-    private boolean isAdcolony;
     private boolean isAppLovin;
     boolean isTimeDelay = false; //xử lý delay time show ads, = true mới show ads
     private boolean openActivityAfterShowInterAds = false;
@@ -125,10 +122,6 @@ public class Admob {
 
     public void setFan(boolean fan) {
         isFan = fan;
-    }
-
-    public void setColony(boolean adcolony) {
-        isAdcolony = adcolony;
     }
 
     public void setAppLovin(boolean appLovin) {
@@ -258,12 +251,6 @@ public class Admob {
 
             builder.addNetworkExtrasBundle(FacebookAdapter.class, extras);
         }*/
-
-        if (isAdcolony) {
-            AdColonyBundleBuilder.setShowPrePopup(true);
-            AdColonyBundleBuilder.setShowPostPopup(true);
-            builder.addNetworkExtrasBundle(AdColonyAdapter.class, AdColonyBundleBuilder.build());
-        }
 
         if (isAppLovin) {
             Bundle extras = new AppLovinExtras.Builder()
@@ -2186,12 +2173,6 @@ public class Admob {
 
             builder.addNetworkExtrasBundle(FacebookAdapter.class, extras);
         }*/
-
-        if (isAdcolony) {
-            AdColonyBundleBuilder.setShowPrePopup(true);
-            AdColonyBundleBuilder.setShowPostPopup(true);
-            builder.addNetworkExtrasBundle(AdColonyAdapter.class, AdColonyBundleBuilder.build());
-        }
 
         if (isAppLovin) {
             Bundle extras = new AppLovinExtras.Builder()
