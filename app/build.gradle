@@ -18,14 +18,6 @@ android {
         archivesBaseName = "ITGModuleAds_v${versionName}(${versionCode})_${formattedDate}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-//    signingConfigs {
-//        release {
-//            storeFile file("key/release.jks")
-//            storePassword "trustedapp@123"
-//            keyAlias "key0"
-//            keyPassword "trustedapp@123"
-//        }
-//    }
     buildTypes {
         release {
             minifyEnabled false
