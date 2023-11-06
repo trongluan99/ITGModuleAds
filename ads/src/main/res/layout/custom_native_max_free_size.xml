@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -47,18 +46,17 @@
                     android:textSize="@dimen/_14sdp" />
 
 
-
-                    <TextView
-                        android:id="@+id/ad_advertiser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="bottom"
-                        android:lines="1"
-                        android:text="@string/bottom_sheet_behavior"
-                        android:textColor="@color/colorAds"
-                        android:textSize="@dimen/_8sdp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/ad_advertiser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:lines="1"
+                    android:text="@string/bottom_sheet_behavior"
+                    android:textColor="@color/colorAds"
+                    android:textSize="@dimen/_8sdp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </LinearLayout>
@@ -116,6 +114,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/ad_headline"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/textView3"
             style="@style/AppTheme.Ads"

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -64,6 +63,7 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
                 <com.ads.control.util.CustomRatingBar
                     android:id="@+id/ad_stars"
                     android:layout_width="wrap_content"
@@ -72,14 +72,14 @@
                     android:numStars="5"
                     android:progressDrawable="@drawable/ratingbar_full"
                     android:rating="3.5"
-                    android:stepSize="0.01"
-                    />
+                    android:stepSize="0.01" />
+
                 <TextView
                     android:id="@+id/ad_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_10sdp"
-                    android:textColor="@color/gntBlack"/>
+                    android:textColor="@color/gntBlack"
+                    android:textSize="@dimen/_10sdp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -118,9 +118,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 
 </com.google.android.gms.ads.nativead.NativeAdView>
