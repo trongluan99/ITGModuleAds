@@ -30,6 +30,6 @@ public class TestSplash extends AppCompatActivity {
                 });*/
 
 //        ITGAd.getInstance().loadCollapsibleBannerSizeMedium(this, getString(R.string.admod_banner_id), AppConstant.CollapsibleGravity.BOTTOM, AdSize.MEDIUM_RECTANGLE, new AdCallback());
-        ITGAd.getInstance().loadCollapsibleBanner(this, getString(R.string.admod_banner_id), AppConstant.CollapsibleGravity.BOTTOM, new AdCallback());
+        ITGAd.getInstance().loadCollapsibleBanner(this, getString(R.string.admod_banner_id), AppConstant.CollapsibleGravity.BOTTOM, new AdCallback(), null);
     }
 }

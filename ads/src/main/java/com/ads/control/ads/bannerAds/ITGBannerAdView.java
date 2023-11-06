@@ -47,35 +47,35 @@ public class ITGBannerAdView extends RelativeLayout {
         inflate(getContext(), R.layout.layout_banner_control, this);
     }
 
-    public void loadBanner(Activity activity, String idBanner) {
-        loadBanner(activity, idBanner, new ITGAdCallback());
+    public void loadBanner(Activity activity, String idBanner, String tokenAdjust) {
+        loadBanner(activity, idBanner, new ITGAdCallback(), tokenAdjust);
     }
 
-    public void loadBanner(Activity activity, String idBanner, ITGAdCallback ITGAdCallback) {
-        ITGAd.getInstance().loadBanner(activity, idBanner, ITGAdCallback);
+    public void loadBanner(Activity activity, String idBanner, ITGAdCallback ITGAdCallback, String tokenAdjust) {
+        ITGAd.getInstance().loadBanner(activity, idBanner, ITGAdCallback, tokenAdjust);
     }
 
-    public void loadInlineBanner(Activity activity, String idBanner, String inlineStyle) {
-        Admob.getInstance().loadInlineBanner(activity, idBanner, inlineStyle);
+    public void loadInlineBanner(Activity activity, String idBanner, String inlineStyle, String tokenAdjust) {
+        Admob.getInstance().loadInlineBanner(activity, idBanner, inlineStyle, tokenAdjust);
     }
 
-    public void loadInlineBanner(Activity activity, String idBanner, String inlineStyle, AdCallback adCallback) {
-        Admob.getInstance().loadInlineBanner(activity, idBanner, inlineStyle, adCallback);
+    public void loadInlineBanner(Activity activity, String idBanner, String inlineStyle, AdCallback adCallback, String tokenAdjust) {
+        Admob.getInstance().loadInlineBanner(activity, idBanner, inlineStyle, adCallback, tokenAdjust);
     }
 
-    public void loadBannerFragment(Activity activity, String idBanner) {
-        ITGAd.getInstance().loadBannerFragment(activity, idBanner, getRootView());
+    public void loadBannerFragment(Activity activity, String idBanner, String tokenAdjust) {
+        ITGAd.getInstance().loadBannerFragment(activity, idBanner, getRootView(), tokenAdjust);
     }
 
-    public void loadBannerFragment(Activity activity, String idBanner, AdCallback adCallback) {
-        ITGAd.getInstance().loadBannerFragment(activity, idBanner, getRootView(), adCallback);
+    public void loadBannerFragment(Activity activity, String idBanner, AdCallback adCallback, String tokenAdjust) {
+        ITGAd.getInstance().loadBannerFragment(activity, idBanner, getRootView(), adCallback, tokenAdjust);
     }
 
-    public void loadInlineBannerFragment(Activity activity, String idBanner, String inlineStyle) {
-        Admob.getInstance().loadInlineBannerFragment(activity, idBanner, getRootView(), inlineStyle);
+    public void loadInlineBannerFragment(Activity activity, String idBanner, String inlineStyle, String tokenAdjust) {
+        Admob.getInstance().loadInlineBannerFragment(activity, idBanner, getRootView(), inlineStyle, tokenAdjust);
     }
 
-    public void loadInlineBannerFragment(Activity activity, String idBanner, String inlineStyle, AdCallback adCallback) {
-        Admob.getInstance().loadInlineBannerFragment(activity, idBanner, getRootView(), inlineStyle, adCallback);
+    public void loadInlineBannerFragment(Activity activity, String idBanner, String inlineStyle, AdCallback adCallback, String tokenAdjust) {
+        Admob.getInstance().loadInlineBannerFragment(activity, idBanner, getRootView(), inlineStyle, adCallback, tokenAdjust);
     }
 }

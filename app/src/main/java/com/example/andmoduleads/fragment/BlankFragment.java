@@ -68,7 +68,7 @@ public class BlankFragment extends Fragment {
                 super.onAdClicked();
                 Log.e("TAG", "onAdClicked: BannerFragment");
             }
-        });
+        }, null);
 
         button.setOnClickListener(v -> {
             Admob.getInstance().forceShowInterstitial(getActivity(), mInterstitialAd, new AdCallback() {
@@ -82,6 +82,6 @@ public class BlankFragment extends Fragment {
 //        Admob.getInstance().loadNativeFragment(getActivity(),getString(R.string.admod_native_id),view);
         FrameLayout flPlaceHolder = view.findViewById(R.id.fl_adplaceholder);
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_container_native);
-        ITGAd.getInstance().loadNativeAd(requireActivity(), getString(R.string.admod_native_id), com.ads.control.R.layout.custom_native_admob_free_size, flPlaceHolder, shimmerFrameLayout);
+        ITGAd.getInstance().loadNativeAd(requireActivity(), getString(R.string.admod_native_id), com.ads.control.R.layout.custom_native_admob_free_size, flPlaceHolder, shimmerFrameLayout, null);
     }
 }

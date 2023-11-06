@@ -5,11 +5,6 @@ Import Module
 	maven { url 'https://jitpack.io' }
 
 	// for targetSdkVersion >31 and admob sdk 20.5.0
-	implementation 'com.github.AperoVN:AperoModuleAds:3.0.2'
-	// for targetSdkVersion <31 and admob sdk 20.4.0
-	implementation 'com.github.AperoVN:AperoModuleAds:2.6.0-rc.3'
-	// integrate max mediation 
-	implementation 'com.github.AperoVN:AperoModuleAds:2.6.10-max'
 ~~~	 
 # Summary
 * [Setup Admob](#example-admob)

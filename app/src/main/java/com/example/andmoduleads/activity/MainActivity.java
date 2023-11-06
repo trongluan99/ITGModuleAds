@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAdImpression() {
                 super.onAdImpression();
             }
-        });
+        }, null);
 
 
         AppPurchase.getInstance().setPurchaseListener(new PurchaseListener() {
@@ -112,13 +112,13 @@ public class MainActivity extends AppCompatActivity {
             public void onAdImpression() {
                 super.onAdImpression();
             }
-        });
+        }, null);
         loadAdInterstitial();
 
         findViewById(R.id.btShowAds).setOnClickListener(v -> {
             if (mInterstitialAd.isReady()) {
 
-                ApInterstitialAd inter = ITGAd.getInstance().getInterstitialAds(this, idInter);
+                ApInterstitialAd inter = ITGAd.getInstance().getInterstitialAds(this, idInter, null);
 
                 ITGAd.getInstance().showInterstitialAdByTimes(this, mInterstitialAd, new ITGAdCallback() {
                     @Override
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         super.onInterstitialShow();
                         Log.d(TAG, "onInterstitialShow");
                     }
-                }, true);
+                }, true, null);
             } else {
                 Toast.makeText(this, "start loading ads", Toast.LENGTH_SHORT).show();
                 loadAdInterstitial();
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                         super.onInterstitialShow();
                         Log.d(TAG, "onInterstitialShow");
                     }
-                }, true);
+                }, true, null);
             } else {
                 loadAdInterstitial();
             }
@@ -174,10 +174,10 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnShowReward).setOnClickListener(v -> {
             if (rewardAd != null && rewardAd.isReady()) {
-                ITGAd.getInstance().forceShowRewardAd(this, rewardAd, new ITGAdCallback());
+                ITGAd.getInstance().forceShowRewardAd(this, rewardAd, new ITGAdCallback(), null);
                 return;
             }
-            rewardAd = ITGAd.getInstance().getRewardAd(this,  BuildConfig.ad_reward);
+            rewardAd = ITGAd.getInstance().getRewardAd(this,  BuildConfig.ad_reward, null);
         });
 
         Button btnIAP = findViewById(R.id.btIap);
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadAdInterstitial() {
 
-        mInterstitialAd = ITGAd.getInstance().getInterstitialAds(this, idInter);
+        mInterstitialAd = ITGAd.getInstance().getInterstitialAds(this, idInter, null);
     }
 
 
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAdImpression() {
                 super.onAdImpression();
             }
-        });
+        }, null);
     }
 
     @Override

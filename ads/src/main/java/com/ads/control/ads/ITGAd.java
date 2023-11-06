@@ -273,17 +273,17 @@ public class ITGAd {
         return adConfig;
     }
 
-    public void loadBanner(final Activity mActivity, String id) {
+    public void loadBanner(final Activity mActivity, String id, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadBanner(mActivity, id);
+                Admob.getInstance().loadBanner(mActivity, id, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBanner(mActivity, id);
         }
     }
 
-    public void loadBanner(final Activity mActivity, String id, final ITGAdCallback adCallback) {
+    public void loadBanner(final Activity mActivity, String id, final ITGAdCallback adCallback, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadBanner(mActivity, id, new AdCallback() {
@@ -310,7 +310,7 @@ public class ITGAd {
                         super.onAdImpression();
                         adCallback.onAdImpression();
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBanner(mActivity, id, new AdCallback() {
@@ -341,36 +341,36 @@ public class ITGAd {
         }
     }
 
-    public void loadCollapsibleBanner(final Activity activity, String id, String gravity, AdCallback adCallback) {
-        Admob.getInstance().loadCollapsibleBanner(activity, id, gravity, adCallback);
+    public void loadCollapsibleBanner(final Activity activity, String id, String gravity, AdCallback adCallback, String tokenAdjust) {
+        Admob.getInstance().loadCollapsibleBanner(activity, id, gravity, adCallback, tokenAdjust);
     }
 
-    public void loadCollapsibleBannerSizeMedium(final Activity activity, String id, String gravity, AdSize sizeBanner, AdCallback adCallback) {
-        Admob.getInstance().loadCollapsibleBannerSizeMedium(activity, id, gravity, sizeBanner, adCallback);
+    public void loadCollapsibleBannerSizeMedium(final Activity activity, String id, String gravity, AdSize sizeBanner, AdCallback adCallback, String tokenAdjust) {
+        Admob.getInstance().loadCollapsibleBannerSizeMedium(activity, id, gravity, sizeBanner, adCallback, tokenAdjust);
     }
 
-    public void loadBannerFragment(final Activity mActivity, String id, final View rootView) {
+    public void loadBannerFragment(final Activity mActivity, String id, final View rootView, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadBannerFragment(mActivity, id, rootView);
+                Admob.getInstance().loadBannerFragment(mActivity, id, rootView, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBannerFragment(mActivity, id, rootView);
         }
     }
 
-    public void loadBannerFragment(final Activity mActivity, String id, final View rootView, final AdCallback adCallback) {
+    public void loadBannerFragment(final Activity mActivity, String id, final View rootView, final AdCallback adCallback, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadBannerFragment(mActivity, id, rootView, adCallback);
+                Admob.getInstance().loadBannerFragment(mActivity, id, rootView, adCallback, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBannerFragment(mActivity, id, rootView, adCallback);
         }
     }
 
-    public void loadCollapsibleBannerFragment(final Activity mActivity, String id, final View rootView, String gravity, AdCallback adCallback) {
-        Admob.getInstance().loadCollapsibleBannerFragment(mActivity, id, rootView, gravity, adCallback);
+    public void loadCollapsibleBannerFragment(final Activity mActivity, String id, final View rootView, String gravity, AdCallback adCallback, String tokenAdjust) {
+        Admob.getInstance().loadCollapsibleBannerFragment(mActivity, id, rootView, gravity, adCallback, tokenAdjust);
     }
 
 //    public void loadBanner(final Activity mActivity, String id, final ITGAdCallback callback) {
@@ -391,110 +391,11 @@ public class ITGAd {
 //        }
 //    }
 
-    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, ITGAdCallback adListener) {
-        loadSplashInterstitialAds(context, id, timeOut, timeDelay, true, adListener);
+    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, ITGAdCallback adListener, String tokenAdjust) {
+        loadSplashInterstitialAds(context, id, timeOut, timeDelay, true, adListener, tokenAdjust);
     }
 
-    public void loadSplashInterstitialAdsHighFloor(Activity activity, String idHighFloor, String idAll, long timeOut, long timeDelay, ITGAdCallback adListener) {
-        switch (adConfig.getMediationProvider()) {
-            case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadSplashInterstitialAdsHighFloor(activity, idHighFloor, idAll, timeOut, timeDelay, new AdCallback() {
-                    @Override
-                    public void onAdClosed() {
-                        super.onAdClosed();
-                        adListener.onAdClosed();
-                    }
-
-                    @Override
-                    public void onNextAction() {
-                        super.onNextAction();
-                        adListener.onNextAction();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@Nullable LoadAdError i) {
-                        super.onAdFailedToLoad(i);
-                        adListener.onAdFailedToLoad(new ApAdError(i));
-
-                    }
-
-                    @Override
-                    public void onAdFailedToShow(@Nullable AdError adError) {
-                        super.onAdFailedToShow(adError);
-                        adListener.onAdFailedToShow(new ApAdError(adError));
-
-                    }
-
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                        adListener.onAdLoaded();
-                    }
-
-                    @Override
-                    public void onAdSplashReady() {
-                        super.onAdSplashReady();
-                        adListener.onAdSplashReady();
-                    }
-
-
-                    @Override
-                    public void onAdClicked() {
-                        super.onAdClicked();
-                        if (adListener != null) {
-                            adListener.onAdClicked();
-                        }
-                    }
-                });
-                break;
-
-            case ITGAdConfig.PROVIDER_MAX:
-                AppLovin.getInstance().loadSplashInterstitialAds(activity, idAll, timeOut, timeDelay, true, new AppLovinCallback() {
-                    @Override
-                    public void onAdClosed() {
-                        super.onAdClosed();
-                        adListener.onAdClosed();
-                        adListener.onNextAction();
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@Nullable MaxError i) {
-                        super.onAdFailedToLoad(i);
-                        adListener.onAdFailedToLoad(new ApAdError(i));
-                        adListener.onNextAction();
-                    }
-
-                    @Override
-                    public void onAdFailedToShow(@Nullable MaxError adError) {
-                        super.onAdFailedToShow(adError);
-                        adListener.onAdFailedToShow(new ApAdError(adError));
-                        adListener.onNextAction();
-                    }
-
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                        adListener.onAdLoaded();
-                    }
-
-                    @Override
-                    public void onAdSplashReady() {
-                        super.onAdSplashReady();
-                        adListener.onAdSplashReady();
-                    }
-
-                    @Override
-                    public void onAdClicked() {
-                        super.onAdClicked();
-                        if (adListener != null) {
-                            adListener.onAdClicked();
-                        }
-                    }
-                });
-        }
-    }
-
-    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, boolean showSplashIfReady, ITGAdCallback adListener) {
+    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, boolean showSplashIfReady, ITGAdCallback adListener, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadSplashInterstitialAds(context, id, timeOut, timeDelay, showSplashIfReady, new AdCallback() {
@@ -544,7 +445,7 @@ public class ITGAd {
                             adListener.onAdClicked();
                         }
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadSplashInterstitialAds(context, id, timeOut, timeDelay, showSplashIfReady, new AppLovinCallback() {
@@ -593,7 +494,7 @@ public class ITGAd {
     }
 
 
-    public void onShowSplash(AppCompatActivity activity, ITGAdCallback adListener) {
+    public void onShowSplash(AppCompatActivity activity, ITGAdCallback adListener, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().onShowSplash(activity, new AdCallback() {
@@ -616,7 +517,7 @@ public class ITGAd {
                             }
 
 
-                        }
+                        }, tokenAdjust
                 );
                 break;
             case ITGAdConfig.PROVIDER_MAX:
@@ -648,7 +549,7 @@ public class ITGAd {
      * @param timeDelay time delay before call show ad splash (ms)
      */
     public void onCheckShowSplashWhenFail(AppCompatActivity activity, ITGAdCallback callback,
-                                          int timeDelay) {
+                                          int timeDelay, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().onCheckShowSplashWhenFail(activity, new AdCallback() {
@@ -676,7 +577,7 @@ public class ITGAd {
                         super.onAdFailedToShow(adError);
                         callback.onAdFailedToShow(new ApAdError(adError));
                     }
-                }, timeDelay);
+                }, timeDelay, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().onCheckShowSplashWhenFail(activity, new AppLovinCallback() {
@@ -715,7 +616,7 @@ public class ITGAd {
      * @param id         admob or max mediation
      * @param adListener
      */
-    public ApInterstitialAd getInterstitialAds(Context context, String id, ITGAdCallback adListener) {
+    public ApInterstitialAd getInterstitialAds(Context context, String id, ITGAdCallback adListener, String tokenAdjust) {
         ApInterstitialAd apInterstitialAd = new ApInterstitialAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -740,7 +641,7 @@ public class ITGAd {
                         adListener.onAdFailedToShow(new ApAdError(adError));
                     }
 
-                });
+                }, tokenAdjust);
                 return apInterstitialAd;
 
             case ITGAdConfig.PROVIDER_MAX:
@@ -792,7 +693,7 @@ public class ITGAd {
      * @param context
      * @param id      admob or max mediation
      */
-    public ApInterstitialAd getInterstitialAds(Context context, String id) {
+    public ApInterstitialAd getInterstitialAds(Context context, String id, String tokenAdjust) {
         ApInterstitialAd apInterstitialAd = new ApInterstitialAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -814,7 +715,7 @@ public class ITGAd {
                         super.onAdFailedToShow(adError);
                     }
 
-                });
+                }, tokenAdjust);
                 return apInterstitialAd;
 
             case ITGAdConfig.PROVIDER_MAX:
@@ -863,8 +764,8 @@ public class ITGAd {
      * @param callback
      */
     public void forceShowInterstitial(Context context, ApInterstitialAd mInterstitialAd,
-                                      final ITGAdCallback callback) {
-        forceShowInterstitial(context, mInterstitialAd, callback, false);
+                                      final ITGAdCallback callback, String tokenAdjust) {
+        forceShowInterstitial(context, mInterstitialAd, callback, false, tokenAdjust);
     }
 
     /**
@@ -876,7 +777,7 @@ public class ITGAd {
      * @param shouldReloadAds auto reload ad when ad close
      */
     public void forceShowInterstitial(@NonNull Context context, ApInterstitialAd mInterstitialAd,
-                                      @NonNull final ITGAdCallback callback, boolean shouldReloadAds) {
+                                      @NonNull final ITGAdCallback callback, boolean shouldReloadAds, String tokenAdjust) {
         if (System.currentTimeMillis() - SharePreferenceUtils.getLastImpressionInterstitialTime(context)
                 < ITGAd.getInstance().adConfig.getIntervalInterstitialAd() * 1000L
         ) {
@@ -920,7 +821,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            });
+                            }, tokenAdjust);
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -960,7 +861,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            });
+                            }, tokenAdjust);
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -1030,7 +931,7 @@ public class ITGAd {
      * @param shouldReloadAds auto reload ad when ad close
      */
     public void showInterstitialAdByTimes(Context context, ApInterstitialAd mInterstitialAd,
-                                          final ITGAdCallback callback, boolean shouldReloadAds) {
+                                          final ITGAdCallback callback, boolean shouldReloadAds, String tokenAdjust) {
         if (mInterstitialAd.isNotReady()) {
             Log.e(TAG, "forceShowInterstitial: ApInterstitialAd is not ready");
             callback.onAdFailedToShow(new ApAdError("ApInterstitialAd is not ready"));
@@ -1067,7 +968,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            });
+                            }, tokenAdjust);
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -1107,7 +1008,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            });
+                            }, tokenAdjust);
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -1184,7 +1085,7 @@ public class ITGAd {
      * @param layoutCustomNative
      */
     public void loadNativeAd(final Activity activity, String id,
-                             int layoutCustomNative) {
+                             int layoutCustomNative, String tokenAdjust) {
         FrameLayout adPlaceHolder = activity.findViewById(R.id.fl_adplaceholder);
         ShimmerFrameLayout containerShimmerLoading = activity.findViewById(R.id.shimmer_container_native);
 
@@ -1209,7 +1110,7 @@ public class ITGAd {
                         super.onAdFailedToLoad(i);
                         Log.e(TAG, "onAdFailedToLoad : NativeAd");
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1240,7 +1141,7 @@ public class ITGAd {
      */
     public void loadNativeAd(final Activity activity, String id,
                              int layoutCustomNative, FrameLayout adPlaceHolder, ShimmerFrameLayout
-                                     containerShimmerLoading) {
+                                     containerShimmerLoading, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
@@ -1255,7 +1156,7 @@ public class ITGAd {
                         super.onAdFailedToLoad(i);
                         Log.e(TAG, "onAdFailedToLoad : NativeAd");
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1286,7 +1187,7 @@ public class ITGAd {
      */
     public void loadNativeAd(final Activity activity, String id,
                              int layoutCustomNative, FrameLayout adPlaceHolder, ShimmerFrameLayout
-                                     containerShimmerLoading, ITGAdCallback callback) {
+                                     containerShimmerLoading, ITGAdCallback callback, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
@@ -1320,7 +1221,7 @@ public class ITGAd {
                         super.onAdClicked();
                         callback.onAdClicked();
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1357,7 +1258,7 @@ public class ITGAd {
      * @param callback
      */
     public void loadNativeAdResultCallback(final Activity activity, String id,
-                                           int layoutCustomNative, ITGAdCallback callback) {
+                                           int layoutCustomNative, ITGAdCallback callback, String tokenAdjust) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
@@ -1384,7 +1285,7 @@ public class ITGAd {
                         super.onAdClicked();
                         callback.onAdClicked();
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1448,7 +1349,7 @@ public class ITGAd {
     }
 
 
-    public ApRewardAd getRewardAd(Activity activity, String id) {
+    public ApRewardAd getRewardAd(Activity activity, String id, String tokenAdjust) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1460,7 +1361,7 @@ public class ITGAd {
                         Log.i(TAG, "getRewardAd AdLoaded: ");
                         apRewardAd.setAdmobReward(rewardedAd);
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1474,7 +1375,7 @@ public class ITGAd {
         return apRewardAd;
     }
 
-    public ApRewardAd getRewardAdInterstitial(Activity activity, String id) {
+    public ApRewardAd getRewardAdInterstitial(Activity activity, String id, String tokenAdjust) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1486,7 +1387,7 @@ public class ITGAd {
                         Log.i(TAG, "getRewardAdInterstitial AdLoaded: ");
                         apRewardAd.setAdmobReward(rewardedAd);
                     }
-                });
+                }, tokenAdjust);
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1500,7 +1401,7 @@ public class ITGAd {
         return apRewardAd;
     }
 
-    public ApRewardAd getRewardAd(Activity activity, String id, ITGAdCallback callback) {
+    public ApRewardAd getRewardAd(Activity activity, String id, ITGAdCallback callback, String tokenAdjust) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1511,7 +1412,7 @@ public class ITGAd {
                         apRewardAd.setAdmobReward(rewardedAd);
                         callback.onAdLoaded();
                     }
-                });
+                }, tokenAdjust);
                 return apRewardAd;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1527,7 +1428,7 @@ public class ITGAd {
         return apRewardAd;
     }
 
-    public ApRewardAd getRewardInterstitialAd(Activity activity, String id, ITGAdCallback callback) {
+    public ApRewardAd getRewardInterstitialAd(Activity activity, String id, ITGAdCallback callback, String tokenAdjust) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1538,7 +1439,7 @@ public class ITGAd {
                         apRewardAd.setAdmobReward(rewardedAd);
                         callback.onAdLoaded();
                     }
-                });
+                }, tokenAdjust);
                 return apRewardAd;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1555,7 +1456,7 @@ public class ITGAd {
     }
 
     public void forceShowRewardAd(Activity activity, ApRewardAd apRewardAd, ITGAdCallback
-            callback) {
+            callback, String tokenAdjust) {
         if (!apRewardAd.isReady()) {
             Log.e(TAG, "forceShowRewardAd fail: reward ad not ready");
             callback.onNextAction();
@@ -1589,7 +1490,7 @@ public class ITGAd {
                                 callback.onAdClicked();
                             }
                         }
-                    });
+                    }, tokenAdjust);
                 } else {
                     Admob.getInstance().showRewardAds(activity, apRewardAd.getAdmobReward(), new RewardCallback() {
 
@@ -1616,7 +1517,7 @@ public class ITGAd {
                                 callback.onAdClicked();
                             }
                         }
-                    });
+                    }, tokenAdjust);
                 }
                 break;
             case ITGAdConfig.PROVIDER_MAX:

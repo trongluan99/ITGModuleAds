@@ -27,7 +27,7 @@ import java.util.Map;
  * Created by lamlt on 13/09/2022.
  */
 public class ITGAppsflyer {
-    private static final String TAG = "AperoAppsflyer";
+    private static final String TAG = "ITGAppsflyer";
     private Context context;
     private static ITGAppsflyer ITGAppsflyer;
     public static boolean enableAppsflyer = false;

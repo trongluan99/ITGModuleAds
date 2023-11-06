@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharePreferenceUtils {
-    private final static String PREF_NAME = "apero_ad_pref";
+    private final static String PREF_NAME = "itg_ad_pref";
 
     private final static String KEY_INSTALL_TIME = "KEY_INSTALL_TIME";
 

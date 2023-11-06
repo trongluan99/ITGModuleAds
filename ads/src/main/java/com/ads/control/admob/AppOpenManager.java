@@ -117,7 +117,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private long currentTime = 0;
     private long timeRemaining = 0;
 
-
     private Handler timeoutHandler;
 //            = new Handler(msg -> {
 //        if (msg.what == TIMEOUT_MSG) {
@@ -286,6 +285,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                         ad.getAdUnitId(),
                                         ad.getResponseInfo()
                                                 .getMediationAdapterClassName(), AdType.APP_OPEN);
+
                             });
                             AppOpenManager.this.appResumeLoadTime = (new Date()).getTime();
                         } else {
@@ -300,6 +300,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                         ad.getAdUnitId(),
                                         ad.getResponseInfo()
                                                 .getMediationAdapterClassName(), AdType.APP_OPEN);
+
                             });
                             AppOpenManager.this.splashLoadTime = (new Date()).getTime();
                         }
@@ -639,7 +640,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         }
     }
 
-    public void loadSplashOpenHighFloor(Class splashActivity, Activity activity, String idOpenHigh, String idOpenMedium, String idOpenAll, int timeOutOpen, AdCallback adListener) {
+    public void loadSplashOpenHighFloor(Class splashActivity, Activity activity, String idOpenHigh, String idOpenMedium, String idOpenAll, int timeOutOpen, AdCallback adListener, String tokenAdjust) {
         isAppOpenShowed = false;
         isTimeDelay = false;
 
@@ -737,6 +738,10 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
+
+                            if (tokenAdjust != null) {
+                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
+                            }
                         });
 
                         if (!isAppOpenShowed) {
@@ -845,6 +850,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
+                            if (tokenAdjust != null) {
+                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
+                            }
                         });
                     }
 
@@ -941,6 +949,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
+                            if (tokenAdjust != null) {
+                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
+                            }
                         });
                     }
 
@@ -969,7 +980,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         AppOpenAd.load(myApplication, idOpenAll, request2, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackAll);
     }
 
-    public void loadSplashOpenAndInter(Class splashActivity, AppCompatActivity activity, String idOpen, String idInter, int timeOutOpen, AdCallback adListener) {
+    public void loadSplashOpenAndInter(Class splashActivity, AppCompatActivity activity, String idOpen, String idInter, int timeOutOpen, AdCallback adListener, String tokenAdjust) {
         isAppOpenShowed = false;
         isTimeDelay = false;
         statusOpen = Type_Loading;
@@ -1010,6 +1021,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
+                            if (tokenAdjust != null) {
+                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
+                            }
                         });
 
                         splashAdOpen = appOpenAd;
@@ -1048,7 +1062,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                         public void onTick(long l) {
                                             if (statusInter == Type_Load_Success && !isAppOpenShowed) {
                                                 isAppOpenShowed = true;
-                                                Admob.getInstance().onShowSplash(activity, adListener, splashAdInter);
+                                                Admob.getInstance().onShowSplash(activity, adListener, splashAdInter, tokenAdjust);
                                             } else if (statusInter == Type_Load_Fail && !isAppOpenShowed) {
                                                 if (adListener != null) {
                                                     isAppOpenShowed = true;
@@ -1106,7 +1120,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                 public void onTick(long l) {
                                     if (statusInter == Type_Load_Success && !isAppOpenShowed) {
                                         isAppOpenShowed = true;
-                                        Admob.getInstance().onShowSplash(activity, adListener, splashAdInter);
+                                        Admob.getInstance().onShowSplash(activity, adListener, splashAdInter, tokenAdjust);
                                     } else if (statusInter == Type_Load_Fail && !isAppOpenShowed) {
                                         if (adListener != null) {
                                             isAppOpenShowed = true;
@@ -1145,6 +1159,10 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     interstitialAd.getAdUnitId(),
                                     interstitialAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.INTERSTITIAL);
+
+                            if (tokenAdjust != null) {
+                                ITGLogEventManager.logPaidAdjustWithToken(adValue, interstitialAd.getAdUnitId(), tokenAdjust);
+                            }
                         });
 
                         splashAdInter = interstitialAd;
@@ -1266,7 +1284,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         }
     };
 
-    public void loadAdOpenSplash2id(Class splashActivity, Activity activity, String idOpenHigh, String idOpenAll, int timeOutOpen, AdCallback adListener) {
+    public void loadAdOpenSplash2id(Class splashActivity, Activity activity, String idOpenHigh, String idOpenAll, int timeOutOpen, AdCallback adListener, String tokenAdjust) {
         if (AppPurchase.getInstance().isPurchased(activity)) {
             if (adListener != null) {
                 adListener.onNextAction();
@@ -1321,6 +1339,11 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             appOpenAd.getAdUnitId(),
                             appOpenAd.getResponseInfo()
                                     .getMediationAdapterClassName(), AdType.APP_OPEN);
+
+                    if (tokenAdjust != null) {
+                        ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
+                    }
+
                 });
 
                 splashAdHigh = appOpenAd;
@@ -1409,6 +1432,10 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
+
+                            if (tokenAdjust != null) {
+                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
+                            }
                         });
 
                         splashAdAll = appOpenAd;

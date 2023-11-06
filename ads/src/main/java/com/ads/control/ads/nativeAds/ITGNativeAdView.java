@@ -74,37 +74,39 @@ public class ITGNativeAdView extends RelativeLayout {
         addView(layoutLoading);
     }
 
-    public void populateNativeAdView(Activity activity, ApNativeAd nativeAd){
-        if(layoutLoading == null){
-            Log.e(TAG, "populateNativeAdView error : layoutLoading not set"  );
+    public void populateNativeAdView(Activity activity, ApNativeAd nativeAd) {
+        if (layoutLoading == null) {
+            Log.e(TAG, "populateNativeAdView error : layoutLoading not set");
             return;
         }
         ITGAd.getInstance().populateNativeAdView(activity, nativeAd, layoutPlaceHolder, layoutLoading);
     }
 
-    public void loadNativeAd(Activity activity, String idAd ) {
-        loadNativeAd(activity, idAd, new ITGAdCallback(){});
+    public void loadNativeAd(Activity activity, String idAd, String tokenAdjust) {
+        loadNativeAd(activity, idAd, new ITGAdCallback() {
+        }, tokenAdjust);
     }
-    public void loadNativeAd(Activity activity, String idAd, ITGAdCallback ITGAdCallback) {
-        if(layoutLoading == null){
+
+    public void loadNativeAd(Activity activity, String idAd, ITGAdCallback ITGAdCallback, String tokenAdjust) {
+        if (layoutLoading == null) {
             setLayoutLoading(R.layout.loading_native_medium);
         }
-        if (layoutCustomNativeAd == 0){
+        if (layoutCustomNativeAd == 0) {
             layoutCustomNativeAd = R.layout.custom_native_admod_medium_rate;
             setLayoutCustomNativeAd(layoutCustomNativeAd);
         }
-        ITGAd.getInstance().loadNativeAd(activity, idAd, layoutCustomNativeAd, layoutPlaceHolder, layoutLoading,ITGAdCallback);
+        ITGAd.getInstance().loadNativeAd(activity, idAd, layoutCustomNativeAd, layoutPlaceHolder, layoutLoading, ITGAdCallback, tokenAdjust);
     }
 
-    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading) {
+    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading, String tokenAdjust) {
         setLayoutLoading(idLayoutLoading);
         setLayoutCustomNativeAd(layoutCustomNativeAd);
-        loadNativeAd(activity,idAd);
+        loadNativeAd(activity, idAd, tokenAdjust);
     }
 
-    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading, ITGAdCallback ITGAdCallback) {
+    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading, ITGAdCallback ITGAdCallback, String tokenAdjust) {
         setLayoutLoading(idLayoutLoading);
         setLayoutCustomNativeAd(layoutCustomNativeAd);
-        loadNativeAd(activity,idAd,ITGAdCallback);
+        loadNativeAd(activity, idAd, ITGAdCallback, tokenAdjust);
     }
 }
