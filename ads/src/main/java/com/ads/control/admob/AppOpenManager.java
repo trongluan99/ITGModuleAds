@@ -7,6 +7,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -1597,6 +1598,149 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 e.printStackTrace();
             }
         }
+    }
+
+    public void loadOpenAppAdSplash(final Context context, String idResumeSplash, final long timeDelay, long timeOut, final boolean isShowAdIfReady, final AdCallback adCallback) {
+        this.splashAdId = idResumeSplash;
+        if (!this.isNetworkConnected(context)) {
+            (new Handler()).postDelayed(new Runnable() {
+                public void run() {
+                    adCallback.onAdFailedToLoad((LoadAdError)null);
+                    adCallback.onNextAction();
+                }
+            }, timeDelay);
+        } else {
+            final long currentTimeMillis = System.currentTimeMillis();
+            final Runnable timeOutRunnable = () -> {
+                Log.d("AppOpenManager", "getAdSplash time out");
+                adCallback.onNextAction();
+                isShowingAd = false;
+            };
+            final Handler handler = new Handler();
+            handler.postDelayed(timeOutRunnable, timeOut);
+            AdRequest adRequest = this.getAdRequest();
+            String adUnitId = this.splashAdId;
+            AppOpenAd.AppOpenAdLoadCallback appOpenAdLoadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    handler.removeCallbacks(timeOutRunnable);
+                    adCallback.onAdFailedToLoad((LoadAdError)null);
+                    adCallback.onNextAction();
+                }
+
+                public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
+                    super.onAdLoaded(appOpenAd);
+                    handler.removeCallbacks(timeOutRunnable);
+                    AppOpenManager.this.splashAd = appOpenAd;
+                    AppOpenManager.this.splashAd.setOnPaidEventListener((adValue) -> {
+                    });
+                    appOpenAd.setOnPaidEventListener((adValue) -> {
+                        ITGLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
+                                adValue,
+                                appOpenAd.getAdUnitId(),
+                                appOpenAd.getResponseInfo()
+                                        .getMediationAdapterClassName(), AdType.APP_OPEN);
+                    });
+                    if (isShowAdIfReady) {
+                        long elapsedTime = System.currentTimeMillis() - currentTimeMillis;
+                        if (elapsedTime >= timeDelay) {
+                            elapsedTime = 0L;
+                        }
+
+                        Handler handler1 = new Handler();
+                        Context appOpenAdContext = context;
+                        Runnable showAppOpenSplashRunnable = () -> {
+                            AppOpenManager.this.showAppOpenSplash(appOpenAdContext, adCallback);
+                        };
+                        handler1.postDelayed(showAppOpenSplashRunnable, elapsedTime);
+                    } else {
+                        adCallback.onAdSplashReady();
+                    }
+
+                }
+            };
+            AppOpenAd.load(context, adUnitId, adRequest, 1, appOpenAdLoadCallback);
+        }
+
+    }
+
+    public void loadOpenAppAdSplashFloor(final Context context, final List<String> listIDResume, final boolean isShowAdIfReady, final AdCallback adCallback) {
+        if (!this.isNetworkConnected(context)) {
+            (new Handler()).postDelayed(new Runnable() {
+                public void run() {
+                    adCallback.onAdFailedToLoad((LoadAdError)null);
+                    adCallback.onNextAction();
+                }
+            }, 3000L);
+        } else {
+            if (listIDResume == null) {
+                adCallback.onAdFailedToLoad((LoadAdError)null);
+                adCallback.onNextAction();
+                return;
+            }
+
+            if (listIDResume.size() > 0) {
+                Log.e("AppOpenManager", "load ID :" + (String)listIDResume.get(0));
+            }
+
+            if (listIDResume.size() < 1) {
+                adCallback.onAdFailedToLoad((LoadAdError)null);
+                adCallback.onNextAction();
+                return;
+            }
+
+            AdRequest adRequest = this.getAdRequest();
+            AppOpenAd.AppOpenAdLoadCallback appOpenAdLoadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    listIDResume.remove(0);
+                    if (listIDResume.size() == 0) {
+                        adCallback.onAdFailedToLoad((LoadAdError)null);
+                        adCallback.onNextAction();
+                    } else {
+                        AppOpenManager.this.loadOpenAppAdSplashFloor(context, listIDResume, isShowAdIfReady, adCallback);
+                    }
+
+                }
+
+                public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
+                    super.onAdLoaded(appOpenAd);
+                    AppOpenManager.this.splashAd = appOpenAd;
+                    AppOpenManager.this.splashAd.setOnPaidEventListener((adValue) -> {
+                        ITGLogEventManager.logPaidAdImpression(myApplication.getApplicationContext(),
+                                adValue,
+                                appOpenAd.getAdUnitId(),
+                                appOpenAd.getResponseInfo()
+                                        .getMediationAdapterClassName(), AdType.APP_OPEN);
+                    });
+                    if (isShowAdIfReady) {
+                        AppOpenManager.this.showAppOpenSplash(context, adCallback);
+                    } else {
+                        adCallback.onAdSplashReady();
+                    }
+
+                }
+            };
+            AppOpenAd.load(context, (String)listIDResume.get(0), adRequest, 1, appOpenAdLoadCallback);
+        }
+
+    }
+
+    public void onCheckShowSplashWhenFail(final AppCompatActivity activity, final AdCallback callback, int timeDelay) {
+        (new Handler(activity.getMainLooper())).postDelayed(new Runnable() {
+            public void run() {
+                if (AppOpenManager.this.splashAd != null && !AppOpenManager.isShowingAd) {
+                    Log.e("AppOpenManager", "show ad splash when show fail in background");
+                    AppOpenManager.getInstance().showAppOpenSplash(activity, callback);
+                }
+
+            }
+        }, (long)timeDelay);
+    }
+
+    private boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }
 
