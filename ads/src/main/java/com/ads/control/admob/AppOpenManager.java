@@ -84,10 +84,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private boolean isTimeout = false;
     private static final int TIMEOUT_MSG = 11;
 
-    public Thread threadHigh;
-    public Thread threadMedium;
-    public Thread threadAll;
-
     private AppOpenAd splashAdHigh = null;
     private AppOpenAd splashAdMedium = null;
     private AppOpenAd splashAdAll = null;
