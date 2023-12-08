@@ -273,17 +273,17 @@ public class ITGAd {
         return adConfig;
     }
 
-    public void loadBanner(final Activity mActivity, String id, String tokenAdjust) {
+    public void loadBanner(final Activity mActivity, String id) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadBanner(mActivity, id, tokenAdjust);
+                Admob.getInstance().loadBanner(mActivity, id, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBanner(mActivity, id);
         }
     }
 
-    public void loadBanner(final Activity mActivity, String id, final ITGAdCallback adCallback, String tokenAdjust) {
+    public void loadBanner(final Activity mActivity, String id, final ITGAdCallback adCallback) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadBanner(mActivity, id, new AdCallback() {
@@ -310,7 +310,7 @@ public class ITGAd {
                         super.onAdImpression();
                         adCallback.onAdImpression();
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBanner(mActivity, id, new AdCallback() {
@@ -341,61 +341,82 @@ public class ITGAd {
         }
     }
 
-    public void loadCollapsibleBanner(final Activity activity, String id, String gravity, AdCallback adCallback, String tokenAdjust) {
-        Admob.getInstance().loadCollapsibleBanner(activity, id, gravity, adCallback, tokenAdjust);
+    public void loadCollapsibleBanner(final Activity activity, String id, String gravity, AdCallback adCallback) {
+        Admob.getInstance().loadCollapsibleBanner(activity, id, gravity, adCallback, adConfig.getAdjustTokenTiktok());
     }
 
-    public void loadCollapsibleBannerSizeMedium(final Activity activity, String id, String gravity, AdSize sizeBanner, AdCallback adCallback, String tokenAdjust) {
-        Admob.getInstance().loadCollapsibleBannerSizeMedium(activity, id, gravity, sizeBanner, adCallback, tokenAdjust);
+    public void loadCollapsibleBannerSizeMedium(final Activity activity, String id, String gravity, AdSize sizeBanner, AdCallback adCallback) {
+        Admob.getInstance().loadCollapsibleBannerSizeMedium(activity, id, gravity, sizeBanner, adCallback, adConfig.getAdjustTokenTiktok());
     }
 
-    public void loadBannerFragment(final Activity mActivity, String id, final View rootView, String tokenAdjust) {
+    public void loadBannerFragment(final Activity mActivity, String id, final View rootView) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadBannerFragment(mActivity, id, rootView, tokenAdjust);
+                Admob.getInstance().loadBannerFragment(mActivity, id, rootView, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBannerFragment(mActivity, id, rootView);
         }
     }
 
-    public void loadBannerFragment(final Activity mActivity, String id, final View rootView, final AdCallback adCallback, String tokenAdjust) {
+    public void loadInlineBanner(final Activity mActivity, String idBanner, String inlineStyle) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadBannerFragment(mActivity, id, rootView, adCallback, tokenAdjust);
+                Admob.getInstance().loadInlineBanner(mActivity, idBanner, inlineStyle, adConfig.getAdjustTokenTiktok());
+                break;
+            case ITGAdConfig.PROVIDER_MAX:
+                break;
+        }
+    }
+
+    public void loadInlineBanner(final Activity mActivity, String idBanner, String inlineStyle, AdCallback adCallback) {
+        switch (adConfig.getMediationProvider()) {
+            case ITGAdConfig.PROVIDER_ADMOB:
+                Admob.getInstance().loadInlineBanner(mActivity, idBanner, inlineStyle, adCallback, adConfig.getAdjustTokenTiktok());
+                break;
+            case ITGAdConfig.PROVIDER_MAX:
+                break;
+        }
+    }
+    public void loadBannerFragment(final Activity mActivity, String id, final View rootView, final AdCallback adCallback) {
+        switch (adConfig.getMediationProvider()) {
+            case ITGAdConfig.PROVIDER_ADMOB:
+                Admob.getInstance().loadBannerFragment(mActivity, id, rootView, adCallback, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadBannerFragment(mActivity, id, rootView, adCallback);
         }
     }
 
-    public void loadCollapsibleBannerFragment(final Activity mActivity, String id, final View rootView, String gravity, AdCallback adCallback, String tokenAdjust) {
-        Admob.getInstance().loadCollapsibleBannerFragment(mActivity, id, rootView, gravity, adCallback, tokenAdjust);
+    public void loadBannerInlineFragment(final Activity mActivity, String id, final View rootView, String inlineStyle, final AdCallback adCallback) {
+        switch (adConfig.getMediationProvider()) {
+            case ITGAdConfig.PROVIDER_ADMOB:
+                Admob.getInstance().loadInlineBannerFragment(mActivity, id, rootView, inlineStyle, adCallback, adConfig.getAdjustTokenTiktok());
+                break;
+            case ITGAdConfig.PROVIDER_MAX:
+                break;
+        }
     }
 
-//    public void loadBanner(final Activity mActivity, String id, final ITGAdCallback callback) {
-//        switch (adConfig.getMediationProvider()) {
-//            case ITGAdConfig.PROVIDER_ADMOB:
-//                Admob.getInstance().loadBanner(mActivity, id , new AdCallback(){
-//                    @Override
-//                    public void onAdClicked() {
-//                        super.onAdClicked();
-//                        callback.onAdClicked();
-//                    }
-//                });
-//                break;
-//            case ITGAdConfig.PROVIDER_MAX:
-//                AppLovin.getInstance().loadBanner(mActivity, id, new AppLovinCallback(){
-//
-//                });
-//        }
-//    }
-
-    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, ITGAdCallback adListener, String tokenAdjust) {
-        loadSplashInterstitialAds(context, id, timeOut, timeDelay, true, adListener, tokenAdjust);
+    public void loadBannerInlineFragment(final Activity mActivity, String id, final View rootView, String inlineStyle) {
+        switch (adConfig.getMediationProvider()) {
+            case ITGAdConfig.PROVIDER_ADMOB:
+                Admob.getInstance().loadInlineBannerFragment(mActivity, id, rootView, inlineStyle, adConfig.getAdjustTokenTiktok());
+                break;
+            case ITGAdConfig.PROVIDER_MAX:
+                break;
+        }
     }
 
-    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, boolean showSplashIfReady, ITGAdCallback adListener, String tokenAdjust) {
+    public void loadCollapsibleBannerFragment(final Activity mActivity, String id, final View rootView, String gravity, AdCallback adCallback) {
+        Admob.getInstance().loadCollapsibleBannerFragment(mActivity, id, rootView, gravity, adCallback, adConfig.getAdjustTokenTiktok());
+    }
+
+    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, ITGAdCallback adListener) {
+        loadSplashInterstitialAds(context, id, timeOut, timeDelay, true, adListener);
+    }
+
+    public void loadSplashInterstitialAds(final Context context, String id, long timeOut, long timeDelay, boolean showSplashIfReady, ITGAdCallback adListener) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadSplashInterstitialAds(context, id, timeOut, timeDelay, showSplashIfReady, new AdCallback() {
@@ -445,7 +466,7 @@ public class ITGAd {
                             adListener.onAdClicked();
                         }
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadSplashInterstitialAds(context, id, timeOut, timeDelay, showSplashIfReady, new AppLovinCallback() {
@@ -494,7 +515,7 @@ public class ITGAd {
     }
 
 
-    public void onShowSplash(AppCompatActivity activity, ITGAdCallback adListener, String tokenAdjust) {
+    public void onShowSplash(AppCompatActivity activity, ITGAdCallback adListener) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().onShowSplash(activity, new AdCallback() {
@@ -517,7 +538,7 @@ public class ITGAd {
                             }
 
 
-                        }, tokenAdjust
+                        }, adConfig.getAdjustTokenTiktok()
                 );
                 break;
             case ITGAdConfig.PROVIDER_MAX:
@@ -549,7 +570,7 @@ public class ITGAd {
      * @param timeDelay time delay before call show ad splash (ms)
      */
     public void onCheckShowSplashWhenFail(AppCompatActivity activity, ITGAdCallback callback,
-                                          int timeDelay, String tokenAdjust) {
+                                          int timeDelay) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().onCheckShowSplashWhenFail(activity, new AdCallback() {
@@ -577,7 +598,7 @@ public class ITGAd {
                         super.onAdFailedToShow(adError);
                         callback.onAdFailedToShow(new ApAdError(adError));
                     }
-                }, timeDelay, tokenAdjust);
+                }, timeDelay, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().onCheckShowSplashWhenFail(activity, new AppLovinCallback() {
@@ -616,7 +637,7 @@ public class ITGAd {
      * @param id         admob or max mediation
      * @param adListener
      */
-    public ApInterstitialAd getInterstitialAds(Context context, String id, ITGAdCallback adListener, String tokenAdjust) {
+    public ApInterstitialAd getInterstitialAds(Context context, String id, ITGAdCallback adListener) {
         ApInterstitialAd apInterstitialAd = new ApInterstitialAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -641,7 +662,7 @@ public class ITGAd {
                         adListener.onAdFailedToShow(new ApAdError(adError));
                     }
 
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 return apInterstitialAd;
 
             case ITGAdConfig.PROVIDER_MAX:
@@ -693,7 +714,7 @@ public class ITGAd {
      * @param context
      * @param id      admob or max mediation
      */
-    public ApInterstitialAd getInterstitialAds(Context context, String id, String tokenAdjust) {
+    public ApInterstitialAd getInterstitialAds(Context context, String id) {
         ApInterstitialAd apInterstitialAd = new ApInterstitialAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -715,7 +736,7 @@ public class ITGAd {
                         super.onAdFailedToShow(adError);
                     }
 
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 return apInterstitialAd;
 
             case ITGAdConfig.PROVIDER_MAX:
@@ -764,8 +785,8 @@ public class ITGAd {
      * @param callback
      */
     public void forceShowInterstitial(Context context, ApInterstitialAd mInterstitialAd,
-                                      final ITGAdCallback callback, String tokenAdjust) {
-        forceShowInterstitial(context, mInterstitialAd, callback, false, tokenAdjust);
+                                      final ITGAdCallback callback) {
+        forceShowInterstitial(context, mInterstitialAd, callback, false);
     }
 
     /**
@@ -777,7 +798,7 @@ public class ITGAd {
      * @param shouldReloadAds auto reload ad when ad close
      */
     public void forceShowInterstitial(@NonNull Context context, ApInterstitialAd mInterstitialAd,
-                                      @NonNull final ITGAdCallback callback, boolean shouldReloadAds, String tokenAdjust) {
+                                      @NonNull final ITGAdCallback callback, boolean shouldReloadAds) {
         if (System.currentTimeMillis() - SharePreferenceUtils.getLastImpressionInterstitialTime(context)
                 < ITGAd.getInstance().adConfig.getIntervalInterstitialAd() * 1000L
         ) {
@@ -821,7 +842,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            }, tokenAdjust);
+                            }, adConfig.getAdjustTokenTiktok());
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -861,7 +882,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            }, tokenAdjust);
+                            }, adConfig.getAdjustTokenTiktok());
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -931,7 +952,7 @@ public class ITGAd {
      * @param shouldReloadAds auto reload ad when ad close
      */
     public void showInterstitialAdByTimes(Context context, ApInterstitialAd mInterstitialAd,
-                                          final ITGAdCallback callback, boolean shouldReloadAds, String tokenAdjust) {
+                                          final ITGAdCallback callback, boolean shouldReloadAds) {
         if (mInterstitialAd.isNotReady()) {
             Log.e(TAG, "forceShowInterstitial: ApInterstitialAd is not ready");
             callback.onAdFailedToShow(new ApAdError("ApInterstitialAd is not ready"));
@@ -968,7 +989,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            }, tokenAdjust);
+                            }, adConfig.getAdjustTokenTiktok());
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -1008,7 +1029,7 @@ public class ITGAd {
                                     callback.onAdFailedToShow(new ApAdError(adError));
                                 }
 
-                            }, tokenAdjust);
+                            }, adConfig.getAdjustTokenTiktok());
                         } else {
                             mInterstitialAd.setInterstitialAd(null);
                         }
@@ -1084,8 +1105,7 @@ public class ITGAd {
      * @param id
      * @param layoutCustomNative
      */
-    public void loadNativeAd(final Activity activity, String id,
-                             int layoutCustomNative, String tokenAdjust) {
+    public void loadNativeAd(final Activity activity, String id, int layoutCustomNative) {
         FrameLayout adPlaceHolder = activity.findViewById(R.id.fl_adplaceholder);
         ShimmerFrameLayout containerShimmerLoading = activity.findViewById(R.id.shimmer_container_native);
 
@@ -1110,7 +1130,7 @@ public class ITGAd {
                         super.onAdFailedToLoad(i);
                         Log.e(TAG, "onAdFailedToLoad : NativeAd");
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1141,7 +1161,7 @@ public class ITGAd {
      */
     public void loadNativeAd(final Activity activity, String id,
                              int layoutCustomNative, FrameLayout adPlaceHolder, ShimmerFrameLayout
-                                     containerShimmerLoading, String tokenAdjust) {
+                                     containerShimmerLoading) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
@@ -1156,7 +1176,7 @@ public class ITGAd {
                         super.onAdFailedToLoad(i);
                         Log.e(TAG, "onAdFailedToLoad : NativeAd");
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1187,7 +1207,7 @@ public class ITGAd {
      */
     public void loadNativeAd(final Activity activity, String id,
                              int layoutCustomNative, FrameLayout adPlaceHolder, ShimmerFrameLayout
-                                     containerShimmerLoading, ITGAdCallback callback, String tokenAdjust) {
+                                     containerShimmerLoading, ITGAdCallback callback) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
@@ -1221,7 +1241,7 @@ public class ITGAd {
                         super.onAdClicked();
                         callback.onAdClicked();
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1258,7 +1278,7 @@ public class ITGAd {
      * @param callback
      */
     public void loadNativeAdResultCallback(final Activity activity, String id,
-                                           int layoutCustomNative, ITGAdCallback callback, String tokenAdjust) {
+                                           int layoutCustomNative, ITGAdCallback callback) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
                 Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
@@ -1285,7 +1305,7 @@ public class ITGAd {
                         super.onAdClicked();
                         callback.onAdClicked();
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
@@ -1349,7 +1369,7 @@ public class ITGAd {
     }
 
 
-    public ApRewardAd getRewardAd(Activity activity, String id, String tokenAdjust) {
+    public ApRewardAd getRewardAd(Activity activity, String id) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1361,7 +1381,7 @@ public class ITGAd {
                         Log.i(TAG, "getRewardAd AdLoaded: ");
                         apRewardAd.setAdmobReward(rewardedAd);
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1375,7 +1395,7 @@ public class ITGAd {
         return apRewardAd;
     }
 
-    public ApRewardAd getRewardAdInterstitial(Activity activity, String id, String tokenAdjust) {
+    public ApRewardAd getRewardAdInterstitial(Activity activity, String id) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1387,7 +1407,7 @@ public class ITGAd {
                         Log.i(TAG, "getRewardAdInterstitial AdLoaded: ");
                         apRewardAd.setAdmobReward(rewardedAd);
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 break;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1401,7 +1421,7 @@ public class ITGAd {
         return apRewardAd;
     }
 
-    public ApRewardAd getRewardAd(Activity activity, String id, ITGAdCallback callback, String tokenAdjust) {
+    public ApRewardAd getRewardAd(Activity activity, String id, ITGAdCallback callback) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1412,7 +1432,7 @@ public class ITGAd {
                         apRewardAd.setAdmobReward(rewardedAd);
                         callback.onAdLoaded();
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 return apRewardAd;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1428,7 +1448,7 @@ public class ITGAd {
         return apRewardAd;
     }
 
-    public ApRewardAd getRewardInterstitialAd(Activity activity, String id, ITGAdCallback callback, String tokenAdjust) {
+    public ApRewardAd getRewardInterstitialAd(Activity activity, String id, ITGAdCallback callback) {
         ApRewardAd apRewardAd = new ApRewardAd();
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
@@ -1439,7 +1459,7 @@ public class ITGAd {
                         apRewardAd.setAdmobReward(rewardedAd);
                         callback.onAdLoaded();
                     }
-                }, tokenAdjust);
+                }, adConfig.getAdjustTokenTiktok());
                 return apRewardAd;
             case ITGAdConfig.PROVIDER_MAX:
                 MaxRewardedAd maxRewardedAd = AppLovin.getInstance().getRewardAd(activity, id, new AppLovinCallback() {
@@ -1456,7 +1476,7 @@ public class ITGAd {
     }
 
     public void forceShowRewardAd(Activity activity, ApRewardAd apRewardAd, ITGAdCallback
-            callback, String tokenAdjust) {
+            callback) {
         if (!apRewardAd.isReady()) {
             Log.e(TAG, "forceShowRewardAd fail: reward ad not ready");
             callback.onNextAction();
@@ -1490,7 +1510,7 @@ public class ITGAd {
                                 callback.onAdClicked();
                             }
                         }
-                    }, tokenAdjust);
+                    }, adConfig.getAdjustTokenTiktok());
                 } else {
                     Admob.getInstance().showRewardAds(activity, apRewardAd.getAdmobReward(), new RewardCallback() {
 
@@ -1517,7 +1537,7 @@ public class ITGAd {
                                 callback.onAdClicked();
                             }
                         }
-                    }, tokenAdjust);
+                    }, adConfig.getAdjustTokenTiktok());
                 }
                 break;
             case ITGAdConfig.PROVIDER_MAX:

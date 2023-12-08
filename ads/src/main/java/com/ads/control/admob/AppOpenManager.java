@@ -24,6 +24,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.ads.control.R;
 import com.ads.control.billing.AppPurchase;
+import com.ads.control.config.ITGAdConfig;
 import com.ads.control.dialog.PrepareLoadingAdsDialog;
 import com.ads.control.dialog.ResumeLoadingDialog;
 import com.ads.control.event.ITGLogEventManager;
@@ -640,7 +641,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         }
     }
 
-    public void loadSplashOpenHighFloor(Class splashActivity, Activity activity, String idOpenHigh, String idOpenMedium, String idOpenAll, int timeOutOpen, AdCallback adListener, String tokenAdjust) {
+    public void loadSplashOpenHighFloor(Class splashActivity, Activity activity, String idOpenHigh, String idOpenMedium, String idOpenAll, int timeOutOpen, AdCallback adListener) {
         isAppOpenShowed = false;
         isTimeDelay = false;
 
@@ -739,9 +740,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
 
-                            if (tokenAdjust != null) {
-                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
-                            }
+                            ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                         });
 
                         if (!isAppOpenShowed) {
@@ -850,9 +849,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
-                            if (tokenAdjust != null) {
-                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
-                            }
+                            ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                         });
                     }
 
@@ -949,9 +946,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
-                            if (tokenAdjust != null) {
-                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
-                            }
+                            ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                         });
                     }
 
@@ -980,7 +975,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         AppOpenAd.load(myApplication, idOpenAll, request2, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallbackAll);
     }
 
-    public void loadSplashOpenAndInter(Class splashActivity, AppCompatActivity activity, String idOpen, String idInter, int timeOutOpen, AdCallback adListener, String tokenAdjust) {
+    public void loadSplashOpenAndInter(Class splashActivity, AppCompatActivity activity, String idOpen, String idInter, int timeOutOpen, AdCallback adListener) {
         isAppOpenShowed = false;
         isTimeDelay = false;
         statusOpen = Type_Loading;
@@ -1021,9 +1016,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getAdUnitId(),
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
-                            if (tokenAdjust != null) {
-                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
-                            }
+                            ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                         });
 
                         splashAdOpen = appOpenAd;
@@ -1062,7 +1055,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                         public void onTick(long l) {
                                             if (statusInter == Type_Load_Success && !isAppOpenShowed) {
                                                 isAppOpenShowed = true;
-                                                Admob.getInstance().onShowSplash(activity, adListener, splashAdInter, tokenAdjust);
+                                                Admob.getInstance().onShowSplash(activity, adListener, splashAdInter, ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                                             } else if (statusInter == Type_Load_Fail && !isAppOpenShowed) {
                                                 if (adListener != null) {
                                                     isAppOpenShowed = true;
@@ -1120,7 +1113,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                 public void onTick(long l) {
                                     if (statusInter == Type_Load_Success && !isAppOpenShowed) {
                                         isAppOpenShowed = true;
-                                        Admob.getInstance().onShowSplash(activity, adListener, splashAdInter, tokenAdjust);
+                                        Admob.getInstance().onShowSplash(activity, adListener, splashAdInter, ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                                     } else if (statusInter == Type_Load_Fail && !isAppOpenShowed) {
                                         if (adListener != null) {
                                             isAppOpenShowed = true;
@@ -1160,9 +1153,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     interstitialAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.INTERSTITIAL);
 
-                            if (tokenAdjust != null) {
-                                ITGLogEventManager.logPaidAdjustWithToken(adValue, interstitialAd.getAdUnitId(), tokenAdjust);
-                            }
+                            ITGLogEventManager.logPaidAdjustWithToken(adValue, interstitialAd.getAdUnitId(), ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                         });
 
                         splashAdInter = interstitialAd;
@@ -1284,7 +1275,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         }
     };
 
-    public void loadAdOpenSplash2id(Class splashActivity, Activity activity, String idOpenHigh, String idOpenAll, int timeOutOpen, AdCallback adListener, String tokenAdjust) {
+    public void loadAdOpenSplash2id(Class splashActivity, Activity activity, String idOpenHigh, String idOpenAll, int timeOutOpen, AdCallback adListener) {
         if (AppPurchase.getInstance().isPurchased(activity)) {
             if (adListener != null) {
                 adListener.onNextAction();
@@ -1340,9 +1331,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             appOpenAd.getResponseInfo()
                                     .getMediationAdapterClassName(), AdType.APP_OPEN);
 
-                    if (tokenAdjust != null) {
-                        ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
-                    }
+                    ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), ITGAdConfig.ADJUST_TOKEN_TIKTOK);
 
                 });
 
@@ -1433,9 +1422,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                     appOpenAd.getResponseInfo()
                                             .getMediationAdapterClassName(), AdType.APP_OPEN);
 
-                            if (tokenAdjust != null) {
-                                ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), tokenAdjust);
-                            }
+                            ITGLogEventManager.logPaidAdjustWithToken(adValue, appOpenAd.getAdUnitId(), ITGAdConfig.ADJUST_TOKEN_TIKTOK);
                         });
 
                         splashAdAll = appOpenAd;

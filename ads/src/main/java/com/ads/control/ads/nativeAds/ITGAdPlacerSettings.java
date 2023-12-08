@@ -8,18 +8,20 @@ public class ITGAdPlacerSettings {
     private int layoutCustomAd = -1;
     private int layoutAdPlaceHolder = -1;
     private ITGAdPlacer.Listener listener;
+
     public ITGAdPlacerSettings(String adUnitId, int layoutCustomAd, int layoutPlaceHolderAd) {
         this.adUnitId = adUnitId;
         this.layoutCustomAd = layoutCustomAd;
         this.layoutAdPlaceHolder = layoutPlaceHolderAd;
     }
+
     public ITGAdPlacerSettings(int layoutCustomAd, int layoutPlaceHolderAd) {
         this.adUnitId = adUnitId;
         this.layoutCustomAd = layoutCustomAd;
         this.layoutAdPlaceHolder = layoutPlaceHolderAd;
     }
 
-    public void setFixedPosition(int positionAd){
+    public void setFixedPosition(int positionAd) {
         positionFixAd = positionAd;
         isRepeatingAd = false;
     }
@@ -31,7 +33,6 @@ public class ITGAdPlacerSettings {
     public void setListener(ITGAdPlacer.Listener listener) {
         this.listener = listener;
     }
-
 
 
     public int getLayoutCustomAd() {
@@ -50,8 +51,8 @@ public class ITGAdPlacerSettings {
         this.layoutCustomAd = layoutCustomAd;
     }
 
-    public void setRepeatingInterval(int positionAd){
-        positionFixAd = positionAd-1;
+    public void setRepeatingInterval(int positionAd) {
+        positionFixAd = positionAd - 1;
         isRepeatingAd = true;
     }
 
@@ -71,7 +72,6 @@ public class ITGAdPlacerSettings {
     public boolean isRepeatingAd() {
         return isRepeatingAd;
     }
-
 
 
 }

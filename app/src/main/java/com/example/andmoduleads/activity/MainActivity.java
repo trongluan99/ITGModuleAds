@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAdImpression() {
                 super.onAdImpression();
             }
-        }, null);
+        });
 
 
         AppPurchase.getInstance().setPurchaseListener(new PurchaseListener() {
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAdImpression() {
                 super.onAdImpression();
             }
-        }, null);
+        });
         loadAdInterstitial();
 
         findViewById(R.id.btShowAds).setOnClickListener(v -> {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         super.onInterstitialShow();
                         Log.d(TAG, "onInterstitialShow");
                     }
-                }, true, null);
+                }, true);
             } else {
                 Toast.makeText(this, "start loading ads", Toast.LENGTH_SHORT).show();
                 loadAdInterstitial();
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                         super.onInterstitialShow();
                         Log.d(TAG, "onInterstitialShow");
                     }
-                }, true, null);
+                }, true);
             } else {
                 loadAdInterstitial();
             }
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnShowReward).setOnClickListener(v -> {
             if (rewardAd != null && rewardAd.isReady()) {
-                ITGAd.getInstance().forceShowRewardAd(this, rewardAd, new ITGAdCallback(), null);
+                ITGAd.getInstance().forceShowRewardAd(this, rewardAd, new ITGAdCallback());
                 return;
             }
             rewardAd = ITGAd.getInstance().getRewardAd(this,  BuildConfig.ad_reward, null);
@@ -273,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        AppPurchase.getInstance().handleActivityResult(requestCode, resultCode, data);
         Log.e("onActivityResult", "ProductPurchased:" + data.toString());
         if (AppPurchase.getInstance().isPurchased(this)) {
             findViewById(R.id.btIap).setVisibility(View.GONE);

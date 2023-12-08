@@ -46,11 +46,9 @@ public class ITGAdPlacer {
 
     public void configData() {
         if (settings.isRepeatingAd()) {
-            //calculator position add ad native to list
             int posAddAd = 0;
             int countNewAdapter = adapterOriginal.getItemCount();
             while (posAddAd <= countNewAdapter - settings.getPositionFixAd()) {
-//                Log.i(TAG, "add native to list pos: " + posAddAd);
                 posAddAd += settings.getPositionFixAd();
                 if (listAd.get(posAddAd) == null) {
                     listAd.put(posAddAd, new ApNativeAd(StatusAd.AD_INIT));

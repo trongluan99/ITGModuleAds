@@ -82,12 +82,12 @@ public class ITGNativeAdView extends RelativeLayout {
         ITGAd.getInstance().populateNativeAdView(activity, nativeAd, layoutPlaceHolder, layoutLoading);
     }
 
-    public void loadNativeAd(Activity activity, String idAd, String tokenAdjust) {
+    public void loadNativeAd(Activity activity, String idAd) {
         loadNativeAd(activity, idAd, new ITGAdCallback() {
-        }, tokenAdjust);
+        });
     }
 
-    public void loadNativeAd(Activity activity, String idAd, ITGAdCallback ITGAdCallback, String tokenAdjust) {
+    public void loadNativeAd(Activity activity, String idAd, ITGAdCallback ITGAdCallback) {
         if (layoutLoading == null) {
             setLayoutLoading(R.layout.loading_native_medium);
         }
@@ -95,18 +95,18 @@ public class ITGNativeAdView extends RelativeLayout {
             layoutCustomNativeAd = R.layout.custom_native_admod_medium_rate;
             setLayoutCustomNativeAd(layoutCustomNativeAd);
         }
-        ITGAd.getInstance().loadNativeAd(activity, idAd, layoutCustomNativeAd, layoutPlaceHolder, layoutLoading, ITGAdCallback, tokenAdjust);
+        ITGAd.getInstance().loadNativeAd(activity, idAd, layoutCustomNativeAd, layoutPlaceHolder, layoutLoading, ITGAdCallback);
     }
 
-    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading, String tokenAdjust) {
+    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading) {
         setLayoutLoading(idLayoutLoading);
         setLayoutCustomNativeAd(layoutCustomNativeAd);
-        loadNativeAd(activity, idAd, tokenAdjust);
+        loadNativeAd(activity, idAd);
     }
 
-    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading, ITGAdCallback ITGAdCallback, String tokenAdjust) {
+    public void loadNativeAd(Activity activity, String idAd, int layoutCustomNativeAd, int idLayoutLoading, ITGAdCallback ITGAdCallback) {
         setLayoutLoading(idLayoutLoading);
         setLayoutCustomNativeAd(layoutCustomNativeAd);
-        loadNativeAd(activity, idAd, ITGAdCallback, tokenAdjust);
+        loadNativeAd(activity, idAd, ITGAdCallback);
     }
 }
